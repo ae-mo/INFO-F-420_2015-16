@@ -12,7 +12,7 @@ public class Key implements Comparable<Key>{
 		this.e = e;
 		
 		if(!e.a.equals(p))
-			this.flipEdge();
+			this.e.flip();
 		
 	}
 	

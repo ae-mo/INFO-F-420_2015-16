@@ -12,7 +12,7 @@ class RadialSort {
 	}
 
 
-	public RadialSort(float qx, float qy, ArrayList<Point> points) {
+	public RadialSort(double qx, double qy, ArrayList<Point> points) {
 
 		this(new Point(qx, qy), points);
 
@@ -30,10 +30,10 @@ class RadialSort {
 
 			// Partition
 			for (Point i: arr) {
-				int comparison = compare (q, i, pivot);
-				if (comparison < 0)
+				int comparison = compare(q, i, pivot);
+				if (comparison > 0)
 					less.add(i);
-				else if (comparison > 0)
+				else if (comparison < 0)
 					more.add(i);
 				else
 					pivotList.add(i);
@@ -51,12 +51,12 @@ class RadialSort {
 		return arr;
 	}
 
-	private int compare(Point q, Point curr, Point pivot) {
+	public static int compare(Point q, Point pivot, Point curr) {
 
 		int result = 0;
 
 		Turn t = new Turn(q, pivot, curr);
-
+		
 		if(t.value > 0) result = 1;
 		else if (t.value < 0) result = -1;
 		else result = comesBefore(q, pivot, curr);
@@ -65,12 +65,12 @@ class RadialSort {
 
 	}
 
-	private int comesBefore(Point q, Point a, Point b) {
+	private static int comesBefore(Point q, Point a, Point b) {
 
-		float xDiff = b.x - a.x - q.x;
-		float yDiff = b.y - a.y;
+		double xDiff = b.x - a.x - q.x;
+		double yDiff = b.y - a.y -q.y;
 
-		if(xDiff == 0 && yDiff == 0) return 0;
+		if(a.x == b.x && a.y == b.y) return 0;
 		else if((xDiff > 0) || (xDiff == 0 && yDiff > 0)) return 1;
 		else  return -1;
 

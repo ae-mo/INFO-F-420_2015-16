@@ -1,7 +1,7 @@
 
 class DotProduct {
 
-	float value;
+	double value;
 
 
 	public DotProduct(Point a1, Point a2, Point b1, Point b2) {

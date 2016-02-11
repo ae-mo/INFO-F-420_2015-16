@@ -50,5 +50,13 @@ public class Edge {
 
 		return this.intersectsRay(new Point(ax, ay), new Point(bx, by));
 	}
+	
+	public void flip() {
+		
+		Point temp = this.a;
+		this.a = this.b;
+		this.b = temp;
+		
+	}
 
 }

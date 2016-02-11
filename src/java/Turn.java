@@ -1,7 +1,7 @@
 
 public class Turn {
 	
-	float value;
+	double value;
 	
 	public Turn(Point a, Point b, Point c) {
 		

@@ -1,15 +1,15 @@
 public class Point {
 
-  float x, y, z;
+  double x, y, z;
 
-  Point(float x, float y) {
+  Point(double x, double y) {
     this.x = x;
     this.y = y;
     this.z = 0;
   }
 
 
-  Point(float x, float y, float z) {
+  Point(double x, double y, double z) {
     this.x = x;
     this.y = y;
     this.z = z;
