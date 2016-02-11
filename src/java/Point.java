@@ -21,4 +21,25 @@ public class Point {
     this.y = a.y;
     this.z = a.z;
   }
+
+
+@Override
+public boolean equals(Object obj) {
+	
+	if (obj == null) {
+        return false;
+    }
+    if (!Point.class.isAssignableFrom(obj.getClass())) {
+        return false;
+    }
+    final Point other = (Point) obj;
+    
+    if (this.x != other.x || this.y != other.y) {
+        return false;
+    }
+    return true;
+	
+}
+
+  
 }
