@@ -23,20 +23,31 @@ public class Edge {
 
 	public boolean intersectsRay(Edge e) {
 
-		Turn abEa = new Turn(this, e.a);
-		Turn ea = new Turn(e, a);
-		Turn eb = new Turn(e, b);
+		Turn ea = new Turn(e, this.a);
+		Turn eb = new Turn(e, this.b);
 
-		return true;
+		if((eb.value >= 0 && ea.value <= 0) ||
+				(eb.value <= 0 && ea.value >= 0)) {
+
+			Triangle abEb = new Triangle(a, b, e.b);
+
+			boolean strictlyContains = abEb.strictlyContains(e.a);
+
+			if(strictlyContains) return false;
+			else return true;
+
+		}
+
+		return false;
 	}
 
 	public boolean intersectsRay(Point a, Point b) {
-		
+
 		return this.intersectsRay(new Edge(a, b));
 	}
-	
+
 	public boolean intersectsRay(float ax, float ay, float bx, float by) {
-		
+
 		return this.intersectsRay(new Point(ax, ay), new Point(bx, by));
 	}
 
