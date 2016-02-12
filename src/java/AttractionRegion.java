@@ -58,8 +58,8 @@ abstract class AttractionRegion {
 	 */
 	private Point computeRayVertex(RedBlackBST<Key, Edge> status, Point b, Point p) {
 		
-		RedBlackBST.Node last = status.lastInserted;
-		RedBlackBST.Node rayNode = status._min(last);
+		RedBlackBST<Key, Edge>.Node last = status.lastInserted;
+		RedBlackBST<Key, Edge>.Node rayNode = status._min(last);
 		
 		Edge rayEdge = (Edge) rayNode.val;
 		
@@ -116,7 +116,7 @@ abstract class AttractionRegion {
 				        (bpEa.value != 0 && bpEb.value != 0)) {
 
 					Key k = new Key(b, e.a, e);
-					status.put(k, e);
+					status.put(k, new Edge(e.a, e.b));
 
 				}
 

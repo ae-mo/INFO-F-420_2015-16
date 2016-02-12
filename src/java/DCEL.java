@@ -53,7 +53,7 @@ class DCEL {
 		this.halfedges.add(h1);
 		this.halfedges.add(h2);
 
-		return (this.vertices.size() - 1);
+		return (this.halfedges.size() - 2);
 
 	}
 

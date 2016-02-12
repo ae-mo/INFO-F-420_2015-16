@@ -23,6 +23,7 @@ class RadialSort {
 		if (!arr.isEmpty()) {
 			Point pivot = arr.get(0); //This pivot can change to get faster results
 
+			
 
 			List<Point> less = new ArrayList<Point>();
 			List<Point> pivotList = new ArrayList<Point>();

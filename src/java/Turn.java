@@ -2,10 +2,16 @@
 public class Turn {
 	
 	double value;
+	private final double EPSILON = 0.00001;
 	
 	public Turn(Point a, Point b, Point c) {
 		
-		this.value = b.x*c.y - a.x*c.y + a.x*b.y - b.y*c.x + a.y*c.x - a.y*b.x;
+		double result = b.x*c.y - a.x*c.y + a.x*b.y - b.y*c.x + a.y*c.x - a.y*b.x;
+		
+		if(result < EPSILON && result > -EPSILON)
+			result = 0;
+		
+		this.value = result;
 		
 	}
 	
