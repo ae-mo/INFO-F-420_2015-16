@@ -6,13 +6,17 @@ class DCEL {
 	ArrayList<Point> vertices;
 	ArrayList<Halfedge> halfedges;
 	Face outer;
+	private boolean initialized;
 
 	DCEL() {
 
+		this.initialized = false;
 		this.faces = new ArrayList<Face>();
 		this.vertices = new ArrayList<Point>();
 		this.halfedges = new ArrayList<Halfedge>();
 		outer = new Face();
+
+		this.faces.add(outer);
 	}
 
 	/**
@@ -21,7 +25,10 @@ class DCEL {
 	 * @param h
 	 * @param v
 	 */
-	public static void addVertexAt(Face f, Halfedge h, Point v) {
+	public int addVertexAt(int face, int halfedge, Point v) {
+
+		Face f = this.faces.get(face);
+		Halfedge h = this.halfedges.get(halfedge);
 
 		Point u = h.target;
 
@@ -42,6 +49,12 @@ class DCEL {
 		h.next = h1;
 		h2.next.prev = h2;
 
+		this.vertices.add(v);
+		this.halfedges.add(h1);
+		this.halfedges.add(h2);
+
+		return (this.vertices.size() - 1);
+
 	}
 
 	/**
@@ -51,7 +64,11 @@ class DCEL {
 	 * @param v
 	 * @return
 	 */
-	public static ArrayList<Face> splitFace(Face f, Halfedge h, Point v) {
+	public int[] splitFace(int face, int halfedge, int vertex) {
+
+		Halfedge h = this.halfedges.get(halfedge);
+		Point v = this.vertices.get(vertex);
+		int[] newFaces = new int[2];
 
 		Point u = h.target;
 
@@ -93,10 +110,51 @@ class DCEL {
 			i = i.next;
 		} while (i.target.x != u.x || i.target.y != u.y);
 
-		ArrayList<Face> newFaces = new ArrayList<Face>();
-		newFaces.add(f1);
-		newFaces.add(f2);
+		this.faces.remove(face);
+		this.faces.add(f1);
+		newFaces[0] = this.faces.size() - 1;
+		this.faces.add(f2);
+		newFaces[1] = this.faces.size() - 1;
+
+		this.halfedges.add(h1);
+		this.halfedges.add(h2);
 
 		return newFaces;
+	}
+
+	public int initialize(Point p1, Point p2) {
+		
+		if(initialized) return -1;
+		
+		Halfedge h1 = new Halfedge();
+		Halfedge h2 = new Halfedge();
+		Face f = this.outer;
+
+		p1.h = h1;
+		p2.h = h2;
+
+		h1.target = p2;
+		h1.face = f;
+		h1.twin = h2;
+		h1.next = h2;
+		h1.prev = h2;
+
+		h2.target = p1;
+		h2.face = f;
+		h2.twin = h1;
+		h2.next = h1;
+		h2.prev = h1;
+
+		f.h = h1;
+		
+		this.vertices.add(p1);
+		this.vertices.add(p2);
+		this.halfedges.add(h1);
+		this.halfedges.add(h2);
+		
+		this.initialized = true;
+		
+		return (this.halfedges.size() - 2);
+
 	}
 }

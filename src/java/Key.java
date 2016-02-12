@@ -38,8 +38,11 @@ public class Key implements Comparable<Key>{
 		
 		int result = 0;
 		
+		if(this.equals(_key)) return 0;
+		
 		boolean intersectsBeA = _key.e.intersectsRay(this.beacon, this.e.a);
 		boolean intersectsBeB = _key.e.intersectsRay(this.beacon, this.e.b);
+		
 		
 		if(intersectsBeA && intersectsBeB) {
 			
@@ -82,5 +85,23 @@ public class Key implements Comparable<Key>{
 		e.b = temp;
 		
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == null) {
+			return false;
+		}
+		if (!Key.class.isAssignableFrom(obj.getClass())) {
+			return false;
+		}
+		final Key other = (Key) obj;
+
+		if(this.beacon.equals(other.beacon) && this.p.equals(other.p) && this.e.equals(other.e)) 
+			return true;
+		
+		return false;
+	}
+
 
 }
