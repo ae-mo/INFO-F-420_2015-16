@@ -197,5 +197,22 @@ public class Tests {
 		System.out.println(key.compareTo(key2));
 
 	}
+	
+	public static void test13() {
+		
+		RedBlackBST<Key, Edge> status = new RedBlackBST<Key, Edge>();
+		
+		Point beacon = new Point(12, -2);
+		Point a = new Point(13.29273, -4.18535);
+		Point b = new Point(20.91224, -0.36486);
+		
+		Edge e = new Edge(a, b);
+		Key k = new Key(beacon, a, e);
+		
+		status.put(k, e);
+		
+		
+		
+	}
 
 }
