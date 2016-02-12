@@ -1,6 +1,7 @@
 public class Point {
 
   double x, y, z;
+  Halfedge h;
 
   Point(double x, double y) {
     this.x = x;
@@ -21,6 +22,19 @@ public class Point {
     this.y = a.y;
     this.z = a.z;
   }
+  
+  Point(double x, double y, Halfedge h) {
+	    this.x = x;
+	    this.y = y;
+	    this.h = h;
+	  }
+
+	  Point(Point a, Halfedge h) {
+
+	    this.x = a.x;
+	    this.y = a.y;
+	    this.h = h;
+	  }
 
 
 @Override

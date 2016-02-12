@@ -58,5 +58,24 @@ public class Edge {
 		this.b = temp;
 		
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj == null) {
+	        return false;
+	    }
+	    if (!Edge.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    final Edge other = (Edge) obj;
+	    
+	   if((this.a.equals(other.a) && this.b.equals(other.b)) ||
+			   (this.a.equals(other.b) && this.b.equals(other.a)))
+		   return true;
+	   
+	   return false;
+	}
+
 
 }

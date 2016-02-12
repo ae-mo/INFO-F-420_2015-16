@@ -70,6 +70,8 @@ public class Key implements Comparable<Key>{
 			else result = -1;
 		}
 		
+		System.out.println("Comparison: " + result);
+		
 		return result;
 	}
 	
