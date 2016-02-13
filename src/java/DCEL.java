@@ -92,7 +92,7 @@ class DCEL {
 		Halfedge i = h2;
 		i.face = f2;
 
-		while (i.target.x != v.x || i.target.y != v.y) {
+		while (!i.target.equals(v)) {
 
 			i = i.next;
 			i.face = f2;

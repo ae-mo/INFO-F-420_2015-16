@@ -41,8 +41,20 @@ abstract class AttractionRegion {
 			
 			this.updateStatus(status, b, p);
 			
-			if(this.isSplitVertex(b, p))
-				rayVertices.add(this.computeRayVertex(status, b, p));
+			Edge min = status._min().e;
+			Edge max = status._max().e;
+			
+			System.out.println();
+			System.out.println("min edge: " + min.a.x + ", " + min.a.y + "; "+ min.b.x + ", " + min.b.y );
+			System.out.println("max edge: " + max.a.x + ", " + max.a.y + "; "+ max.b.x + ", " + max.b.y );
+			
+			if(this.isSplitVertex(b, p))  {
+				
+				Point vtx = this.computeRayVertex(status, b, p);
+				
+				if(vtx != null)
+					rayVertices.add(vtx);
+			}
 
 		}
 
@@ -58,18 +70,26 @@ abstract class AttractionRegion {
 	 */
 	private Point computeRayVertex(RedBlackBST<Key, Edge> status, Point b, Point p) {
 		
-		RedBlackBST<Key, Edge>.Node last = status.lastInserted;
-		RedBlackBST<Key, Edge>.Node rayNode = status._min(last);
+		Point next = p.h.target;
 		
-		Edge rayEdge = (Edge) rayNode.val;
+		Key k = new Key(b, p, new Edge(p, next));
 		
-		return this.computeLineLineIntersection(b.x, b.y, p.x, p.y, rayEdge.a.x, rayEdge.a.y, rayEdge.b.x, rayEdge.b.y);
+		int rank = status.rank(k);
+		
+		if(rank >= status._size() || status._size() == 1) return null;
+		
+		//System.out.println("Rank: " + rank);
+		//System.out.println("Size: " + status._size());
+		
+		Key k2 = status.select(rank + 1);
+		
+		return this.computeLineLineIntersection(b.x, b.y, p.x, p.y, k2.e.a.x, k2.e.a.y, k2.e.b.x, k2.e.b.y);
 	}
 
 	private void updateStatus(RedBlackBST<Key, Edge> status, Point b, Point p) {
 		
-		Point next = p.h.target;
-		Point prev = p.h.twin.next.target;
+		Point prev = p.h.target;
+		Point next = p.h.prev.twin.target;
 		
 		Action actionNext = decideAction(b, p, next);
 		Action actionPrev = decideAction(b, p, prev);
@@ -115,8 +135,8 @@ abstract class AttractionRegion {
 						(bpEb.value == 0 && bEba.value > 0) ||
 				        (bpEa.value != 0 && bpEb.value != 0)) {
 
-					Key k = new Key(b, e.a, e);
-					status.put(k, new Edge(e.a, e.b));
+					Key k = new Key(b, e.a, new Edge(e.a, e.b));
+					status.put(k, e);
 
 				}
 
@@ -176,8 +196,18 @@ abstract class AttractionRegion {
 	
 	private boolean isSplitVertex(Point b, Point p) {
 		
-		Point next = p.h.target;
-		Point prev = p.h.twin.next.target;
+		Point prev = p.h.target;
+		Point next = p.h.prev.twin.target;
+		
+		System.out.println();
+		System.out.println("prev: " + prev.x + ", "+prev.y);
+		System.out.println("p: " + p.x + ", "+p.y);
+		System.out.println("next: " + next.x + ", "+next.y);
+		
+		Turn prevPNext = new Turn(prev, p, next);
+		
+		if(prevPNext.value >= 0)
+			return false;
 		
 		CrossProduct bp_pNext = new CrossProduct(b, p, p, next);
 		CrossProduct bp_prevP = new CrossProduct(b, p, prev, p);

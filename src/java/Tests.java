@@ -313,17 +313,48 @@ public class Tests {
 			
 		}
 		
-		dcel.splitFace(0, he, 0);
-		h = dcel.halfedges.get(dcel.halfedges.size() - 2);
+		Point v = dcel.vertices.get(0);
+		Halfedge vh = dcel.halfedges.get(he);
 		
 		System.out.println();
-		System.out.println("Last halfedge");
-		System.out.println("target: " + h.target.x + ", " + h.target.y);
-		System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-		System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-		System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
 		
+		System.out.println();
+		System.out.println("point: " + v.x + ", " + v.y);
+		System.out.println(" hook halfedge");
+		System.out.println("target: " + vh.target.x + ", " + vh.target.y);
+		System.out.println("twin target: " + vh.twin.target.x + ", " + vh.twin.target.y);
+		System.out.println("next target: " + vh.next.target.x + ", " + vh.next.target.y);
+		System.out.println("prev target: " + vh.prev.target.x + ", " + vh.prev.target.y);
 		
+		dcel.splitFace(0, he, 0);
+		
+		p1.h = p1.h.prev.twin;
+		h = p1.h;
+		
+		while(!h.target.equals(p1)) {
+			
+			System.out.println();
+			System.out.println("Halfedge after split");
+			System.out.println("target: " + h.target.x + ", " + h.target.y);
+			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
+			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
+			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
+			
+			h =h.next;
+		}
+		
+		for(Point p: dcel.vertices) {
+			
+			Halfedge hp = p.h;
+			
+			System.out.println();
+			System.out.println("vertex:" + p.x + ", " + p.y);
+			System.out.println("Halfedge");
+			System.out.println("target: " + hp.target.x + ", " + hp.target.y);
+			System.out.println("twin target: " + hp.twin.target.x + ", " + hp.twin.target.y);
+			System.out.println("next target: " + hp.next.target.x + ", " + hp.next.target.y);
+			System.out.println("prev target: " + hp.prev.target.x + ", " + hp.prev.target.y);
+		}
 
 	}
 	
@@ -356,10 +387,14 @@ public class Tests {
 			
 		}
 		
+		
+		
 		dcel.splitFace(0, he, 0);
+		p1.h = p1.h.prev.twin;
+		
 		h = dcel.halfedges.get(dcel.halfedges.size() - 2);
 		
-		Point b = new Point(6.82772, 7.07683);
+		Point b = new Point(18.60624, 3.07992);
 		
 		AttractionRegionSimple attr = new AttractionRegionSimple(b, dcel);
 		
