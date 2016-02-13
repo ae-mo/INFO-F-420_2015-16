@@ -2,7 +2,7 @@
 public class Turn {
 	
 	double value;
-	private final double EPSILON = 0.00001;
+	private final double EPSILON = 0.00000000001;
 	
 	public Turn(Point a, Point b, Point c) {
 		

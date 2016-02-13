@@ -21,8 +21,8 @@ public class Halfedge {
 
 	public Edge getEdge() {
 		
-		Point a = new Point(this.twin.target.x, this.twin.target.y);
-		Point b = new Point(this.target.x, this.target.y);
+		Point a = new Point(this.twin.target.x, this.twin.target.y, this.twin.target.h);
+		Point b = new Point(this.target.x, this.target.y, this.target.h);
 
 		return new Edge(a, b);
 

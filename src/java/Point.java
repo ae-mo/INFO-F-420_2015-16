@@ -1,5 +1,6 @@
 public class Point {
 
+  public static final double EPSILON = 0.00000000001;
   double x, y, z;
   Halfedge h;
 
@@ -48,7 +49,7 @@ public boolean equals(Object obj) {
     }
     final Point other = (Point) obj;
     
-    if (this.x != other.x || this.y != other.y) {
+    if ((Math.abs(this.x - other.x) > Point.EPSILON) || Math.abs(this.y - other.y) > Point.EPSILON) {
         return false;
     }
     return true;

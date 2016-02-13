@@ -64,9 +64,9 @@ class DCEL {
 	 * @param v
 	 * @return
 	 */
-	public int[] splitFace(int face, int halfedge, int vertex) {
+	public int[] splitFace(int face, Halfedge h, int vertex) {
 
-		Halfedge h = this.halfedges.get(halfedge);
+		Face f = this.faces.get(face);
 		Point v = this.vertices.get(vertex);
 		int[] newFaces = new int[2];
 
@@ -108,20 +108,107 @@ class DCEL {
 
 			i.face = f1;
 			i = i.next;
-		} while (i.target.x != u.x || i.target.y != u.y);
+		} while (!i.target.equals(u));
 
-		this.faces.remove(face);
+		
+		// copy f2 into f
+		f.h = f2.h;
+		f.n = f2.n;
+		
 		this.faces.add(f1);
 		newFaces[0] = this.faces.size() - 1;
-		this.faces.add(f2);
-		newFaces[1] = this.faces.size() - 1;
+		newFaces[1] = face;
 
 		this.halfedges.add(h1);
 		this.halfedges.add(h2);
 
 		return newFaces;
 	}
+	
+	/**
+	 * Splits and edge, represented by a halfedge, into two new edges, incident to a given point.
+	 * @param halfedge
+	 * @param w
+	 * @return
+	 */
+	public int[] splitEdge(Halfedge h, Point w) {
+		
+		int[] halfedges = new int[2];
+;
+		Face f1 = h.twin.face;
+		Face f2 = h.face;
+		
+		Halfedge h1 = new Halfedge();
+		Halfedge h2 = new Halfedge();
+		
+		Halfedge k1 = new Halfedge();
+		Halfedge k2 = new Halfedge();
+		
+		h1.face = f2;
+		h1.next = h2;
+		h1.prev = h.prev;
+		h1.twin = k2;
+		h1.target = w;
+		
+		h2.face = f2;
+		h2.next = h.next;
+		h2.prev = h1;
+		h2.twin = k1;
+		h2.target = h.target;
+		
+		k1.face = f1;
+		k1.next = k2;
+		k1.prev = h.twin.prev;
+		k1.twin = h2;
+		k1.target = w;
 
+		k2.face = f1;
+		k2.next = h.twin.next;
+		k2.prev = k1;
+		k2.twin = h1;
+		k2.target = h.twin.target;
+		
+		h1.prev.next = h1;
+		k1.prev.next = k1;
+		
+		h2.next.prev = h2;
+		k2.next.prev = k2;
+
+		w.h = k2;
+		h.target.h = k1;
+		
+		// copy k1 into h.twin
+		h.twin.next = k1.next;
+		h.twin.prev = k1.prev;
+		h.twin.twin = k1.twin;
+		h.twin.target = k1.target;
+		
+		// copy h1 into h
+		h.next = h1.next;
+		h.prev = h1.prev;
+		h.twin = h1.twin;
+		h.target = h1.target;
+		
+		this.halfedges.add(h2);
+		this.halfedges.add(k2);
+		
+		int size = this.halfedges.size();
+		
+		halfedges[0] = size - 2;
+		halfedges[1] = size - 1;
+		
+		this.vertices.add(w);
+		
+		return halfedges;
+		
+	}
+
+	/**
+	 * Initializes the dcel with a single edge.
+	 * @param p1
+	 * @param p2
+	 * @return
+	 */
 	public int initialize(Point p1, Point p2) {
 		
 		if(initialized) return -1;

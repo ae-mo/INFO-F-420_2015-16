@@ -150,6 +150,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
 	private Value getValue(Node x, Key _key) {
 		while (x != null) {
 			int cmp = _key.compareTo(x._key);
+			System.out.println("Comparison: " + cmp);
 			if      (cmp < 0) x = x.left;
 			else if (cmp > 0) x = x.right;
 			else              return x.val;
@@ -292,7 +293,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
 	public void delete(Key _key) { 
 		if (_key == null) throw new NullPointerException("argument to delete() is null");
 		if (!contains(_key)) return;
-
+		System.out.println("ohyes");
 		// if both children of root are black, set root to red
 		if (!isRed(root.left) && !isRed(root.right))
 			root.colored = RED;
