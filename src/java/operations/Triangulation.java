@@ -42,11 +42,11 @@ public class Triangulation {
 				break;
 				
 			case MERGE:
-				this.handleMergeVertex(status, e);
+				this.handleMergeVertex(status, dcel, e);
 				break;
 				
 			case REGULAR:
-				this.handleRegularVertex(status, e);
+				this.handleRegularVertex(status, dcel, e);
 				break;
 			
 			}
@@ -104,7 +104,7 @@ public class Triangulation {
 		
 	}
 	
-	private void handleMergeVertex(RedBlackBST<Key, Edge> status, Event ev) {
+	private void handleMergeVertex(RedBlackBST<Key, Edge> status, DCEL dcel, Event ev) {
 		
 		Halfedge he= ev.p.h.twin;
 		Edge e = he.getEdge();
@@ -126,10 +126,68 @@ public class Triangulation {
 		
 	}
 	
-	private void handleRegularVertex(RedBlackBST<Key, Edge> status, Event ev) {
+	private void handleRegularVertex(RedBlackBST<Key, Edge> status, DCEL dcel, Event ev) {
 		
+		int count = 0;
 		
+		Iterable<Key> keys = status._keys();
 		
+		Edge ray = new Edge(ev.p.x, ev.p.y, ev.p.x + 1, ev.p.y);
+		
+		for(Key k: keys) {
+			
+			if(k.e.intersectsRay(ray))
+				count++;
+			
+		}
+		
+		Key max = status._max();
+		if(max.e.intersectsRay(ray))
+			count++;
+		 
+		if(count % 2 == 0) {
+			
+			Halfedge hei_1 = ev.p.h.twin;
+			Edge ei_1 = hei_1.getEdge();
+			
+			if(this.decideType(ei_1.helper) == Type.MERGE) {
+				Halfedge hh = ei_1.helper.h.twin;
+				dcel.splitFace(dcel.faces.size() - 1, hh, ev.p);
+			}
+			
+			Key kei_1 = new Key(ei_1);
+			status.delete(kei_1);
+			
+			Halfedge hei = ev.p.h.prev.twin;
+			Edge ei = hei.getEdge();
+			
+			ei.helper = ev.p;
+			Key kei = new Key(ei);
+			status.put(kei, ei);
+			
+		}
+		else {
+			
+			Halfedge hei = ev.p.h.prev.twin;
+			Edge ei = hei.getEdge();
+			Key kei = new Key(ei);
+			
+			int rank = status.rank(kei);
+			
+			Key kj = status.select(rank - 1);
+			Edge ej = kj.e;
+			
+			if(this.decideType(ej.helper) == Type.MERGE) {
+				
+				Halfedge hei_1 = ev.p.h.twin;
+				Edge ei_1 = hei_1.getEdge();
+				
+				dcel.splitFace(dcel.faces.size() - 1, hei_1, ej.helper);
+				
+			}
+				
+			ej.helper = ev.p;
+		}
 	}
 
 	private void constructQueue(PriorityQueue<Event> queue, ArrayList<Point> vertices) {
