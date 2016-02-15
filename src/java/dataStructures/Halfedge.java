@@ -1,13 +1,14 @@
+package dataStructures;
 
 public class Halfedge {
 
-	Point target;
-	Face face;
-	Halfedge twin;
-	Halfedge next;
-	Halfedge prev;
+	public Point target;
+	public Face face;
+	public Halfedge twin;
+	public Halfedge next;
+	public Halfedge prev;
 
-	Halfedge(Point target, Face face, Halfedge twin, Halfedge next, Halfedge prev) {
+	public Halfedge(Point target, Face face, Halfedge twin, Halfedge next, Halfedge prev) {
 
 		this.target = target;
 		this.face = face;
@@ -16,7 +17,7 @@ public class Halfedge {
 		this.prev = prev;
 	}
 
-	Halfedge() {
+	public Halfedge() {
 	}
 
 	public Edge getEdge() {

@@ -1,7 +1,10 @@
+package operations;
+import dataStructures.Edge;
+import dataStructures.Point;
 
-class CrossProduct {
+public class CrossProduct {
 	
-	double value;
+	public double value;
 
 
 	public CrossProduct(Point a1, Point a2, Point b1, Point b2) {

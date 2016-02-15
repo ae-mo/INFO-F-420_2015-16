@@ -1,14 +1,15 @@
+package dataStructures;
 import java.util.ArrayList;
 
-class DCEL {
+public class DCEL {
 
-	ArrayList<Face> faces;
-	ArrayList<Point> vertices;
-	ArrayList<Halfedge> halfedges;
-	Face outer;
+	public ArrayList<Face> faces;
+	public ArrayList<Point> vertices;
+	public ArrayList<Halfedge> halfedges;
+	public Face outer;
 	private boolean initialized;
 
-	DCEL() {
+	public DCEL() {
 
 		this.initialized = false;
 		this.faces = new ArrayList<Face>();

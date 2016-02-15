@@ -1,11 +1,36 @@
+package attractionRegion;
 import java.util.ArrayList;
 
-abstract class AttractionRegion {
+import dataStructures.DCEL;
+import dataStructures.Edge;
+import dataStructures.Halfedge;
+import dataStructures.Point;
+import dataStructures.RedBlackBST;
+import operations.CrossProduct;
+import operations.DotProduct;
+import operations.RadialSort;
+import operations.Turn;
 
-	/**
-	 * The complete algorithm. To be overridden in subclasses.
-	 */
-	public abstract void computeAttractionRegion();
+public class AttractionRegion {
+
+	DCEL dcel;
+	Point b;
+
+	public AttractionRegion(Point b, DCEL dcel) {
+
+		this.dcel = dcel;
+		this.b = b;
+		this.computeAttractionRegion();
+
+	}
+
+	public void computeAttractionRegion() {
+
+		ArrayList<Point> sortedVertices = this.sortVertices(b, this.dcel.vertices);
+
+		this.computeRayVertices(b, sortedVertices, this.dcel);
+
+	}
 
 	/**
 	 * Sort the vertices of the polygon about an angle around the query beacon point.

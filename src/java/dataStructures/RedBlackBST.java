@@ -1,3 +1,4 @@
+package dataStructures;
 /******************************************************************************
  *  Compilation:  javac RedBlackBST.java
  *  Execution:    java RedBlackBST < input.txt
@@ -65,7 +66,7 @@ import java.lang.Comparable;
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
-class RedBlackBST<Key extends Comparable<Key>, Value> {
+public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
 	private static final boolean RED   = true;
 	private static final boolean BLACK = false;

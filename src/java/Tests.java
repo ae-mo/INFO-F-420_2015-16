@@ -1,5 +1,15 @@
 import java.util.ArrayList;
 
+import attractionRegion.AttractionRegion;
+import attractionRegion.Key;
+import dataStructures.DCEL;
+import dataStructures.Edge;
+import dataStructures.Face;
+import dataStructures.Halfedge;
+import dataStructures.Point;
+import dataStructures.RedBlackBST;
+import operations.RadialSort;
+
 public class Tests {
 
 	public static void main(String[] args) {
@@ -665,7 +675,7 @@ public class Tests {
 
 		Point b = new Point(18.60624, 3.07992);
 
-		AttractionRegionSimple attr = new AttractionRegionSimple(b, dcel);
+		AttractionRegion attr = new AttractionRegion(b, dcel);
 
 		System.out.println();
 		System.out.println("****FACES OF THE ARRANGEMENT****");
@@ -767,7 +777,7 @@ public class Tests {
 
 		Point b = new Point(21.55712, 5.47748);
 
-		AttractionRegionSimple attr = new AttractionRegionSimple(b, dcel);
+		AttractionRegion attr = new AttractionRegion(b, dcel);
 
 		System.out.println();
 		System.out.println("****FACES OF THE ARRANGEMENT****");

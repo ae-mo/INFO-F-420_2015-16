@@ -1,9 +1,13 @@
+package attractionRegion;
+import dataStructures.Edge;
+import dataStructures.Point;
+import operations.Turn;
 
 public class Key implements Comparable<Key>{
 
-	Point beacon;
-	Point p;
-	Edge e;
+	public Point beacon;
+	public Point p;
+	public Edge e;
 
 	public Key(Point beacon, Point p, Edge e) {
 

@@ -1,9 +1,12 @@
+package operations;
 import java.util.ArrayList;
 import java.util.List;
 
-class RadialSort {
+import dataStructures.Point;
 
-	ArrayList<Point> result;
+public class RadialSort {
+
+	public ArrayList<Point> result;
 
 	public RadialSort(Point q, ArrayList<Point> points) {
 

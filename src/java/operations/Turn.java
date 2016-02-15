@@ -1,7 +1,10 @@
+package operations;
+import dataStructures.Edge;
+import dataStructures.Point;
 
 public class Turn {
 	
-	double value;
+	public double value;
 	private final double EPSILON = 0.00000000001;
 	
 	public Turn(Point a, Point b, Point c) {

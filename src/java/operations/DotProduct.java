@@ -1,7 +1,10 @@
+package operations;
+import dataStructures.Edge;
+import dataStructures.Point;
 
-class DotProduct {
+public class DotProduct {
 
-	double value;
+	public double value;
 
 
 	public DotProduct(Point a1, Point a2, Point b1, Point b2) {

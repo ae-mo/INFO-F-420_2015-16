@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+import dataStructures.Edge;
+import dataStructures.Point;
+
 class Polygon {
 
 	ArrayList<Point> vertices;

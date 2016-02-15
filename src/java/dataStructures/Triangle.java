@@ -1,9 +1,11 @@
+package dataStructures;
+import operations.Turn;
 
 class Triangle {
 
-	Point a;
-	Point b;
-	Point c;
+	public Point a;
+	public Point b;
+	public Point c;
 
 	public Triangle(Point a, Point b, Point c) {
 
