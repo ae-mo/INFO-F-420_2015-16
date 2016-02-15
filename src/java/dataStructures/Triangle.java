@@ -1,7 +1,7 @@
 package dataStructures;
 import operations.Turn;
 
-class Triangle {
+public class Triangle {
 
 	public Point a;
 	public Point b;

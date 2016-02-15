@@ -8,6 +8,8 @@ public class Halfedge {
 	public Halfedge next;
 	public Halfedge prev;
 
+	public Point helper;
+	
 	public Halfedge(Point target, Face face, Halfedge twin, Halfedge next, Halfedge prev) {
 
 		this.target = target;
@@ -25,7 +27,11 @@ public class Halfedge {
 		Point a = new Point(this.twin.target.x, this.twin.target.y, this.twin.target.h);
 		Point b = new Point(this.target.x, this.target.y, this.target.h);
 
-		return new Edge(a, b);
+		Edge e= new Edge(a, b);
+		
+		e.helper = this.helper;
+		
+		return e;
 
 	}
 

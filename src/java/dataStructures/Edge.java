@@ -10,6 +10,7 @@ public class Edge {
 
 	public Point a;
 	public Point b;
+	public Point helper;
 
 	public Edge(Point a, Point b) {
 
@@ -18,11 +19,23 @@ public class Edge {
 
 	}
 
-	public Edge(float x1, float y1, float x2, float y2) {
+	public Edge(double x, double y, double d, double e) {
 
-		this.a = new Point(x1, y1);
-		this.b = new Point(x2, y2);
+		this.a = new Point(x, y);
+		this.b = new Point(d, e);
 
+	}
+	
+	public boolean intersectsLine(Edge e) {
+		
+		Turn ea = new Turn(e, this.a);
+		Turn eb = new Turn(e, this.b);
+		
+		if((eb.value >= 0 && ea.value <= 0) ||
+				(eb.value <= 0 && ea.value >= 0)) 
+			return true;
+		return false;
+		
 	}
 
 	public boolean intersectsRay(Edge e) {
