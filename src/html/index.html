@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha256-QSktus/KATft+5BD6tKvAwzSxP75hHX0SrIjYto471M= 
+sha512-787L1W8XyGQkqtvQigyUGnPxsRudYU2fEunzUP5c59Z3m4pKl1YaBGTcdhfxOfBvqTmJFmb6GDgm0iQRVWOvLQ==" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron">
+  <h1>Bootstrap Tutorial</h1> 
+  <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive,
+  mobile-first projects on the web.</p> 
+</div>
+
+
+
+<div class="container-fluid">
+  <ul class="nav nav-pills nav-justified">
+    <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
+    <li><a data-toggle="pill" href="#david">David</a></li>
+    <li><a data-toggle="pill" href="#andrea">Andrea</a></li>
+    <li><a data-toggle="pill" href="#game">Game</a></li>
+	<li><a data-toggle="pill" href="#ack">Acknowledgements</a></li>
+  </ul>
+
+  <div class="tab-content">
+  <div id="home" class="tab-pane fade in active">
+  <div class="row-fluid">
+    <nav class="col-sm-3" id="homeScrollSpy">
+	<div class="row">&nbsp;</div>
+	<div class="row">&nbsp;</div>
+      <ul class="nav nav-pills nav-stacked affix-top">
+        <li class="active"><a href="#section1">Section 1</a></li>
+        <li><a href="#section2">Section 2</a></li>
+        <li><a href="#section3">Section 3</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#section41">Section 4-1</a></li>
+            <li><a href="#section42">Section 4-2</a></li>                     
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div class="col-sm-9">
+      <div id="section1">    
+        <h1>Section 1</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+      <div id="section2"> 
+        <h1>Section 2</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>        
+      <div id="section3">         
+        <h1>Section 3</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+      <div id="section41">         
+        <h1>Section 4-1</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>      
+      <div id="section42">         
+        <h1>Section 4-2</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="david" class="tab-pane fade">
+    <div class="row-fluid">
+    <nav class="col-sm-3" id="myScrollspy">
+	<div class="row">&nbsp;</div>
+	<div class="row">&nbsp;</div>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#d-routing" data-toggle="collapse" data-target="#d-drilldown-1">Routing</a>
+			<div style="padding-left:0px;">
+			  <ul id="d-drilldown-1" class="nav nav-pills nav-stacked collapse">
+				<li><a href="#d-routing-simple">Routing in Simple Polygons</a></li>
+				<li><a href="#d-routing-holes">Routing in Polygons with Holes</a></li>
+				<li><a href="#d-routing-ortho">Routing in Simple Orthogonal Polygons</a></li>
+			  </ul>
+			  </div>
+		</li>
+        <li><a href="#d-coverage">Coverage</a></li>
+        <li><a href="#d-impl">Algorithm Implementation</a></li>
+      </ul>
+    </nav>
+    <div class="col-sm-9">
+      <div id="d-routing">    
+        <h1>Routing</h1>
+        <div id="d-routing-simple">
+			<h2>Routing in Simple Polygons</h2>
+			<p>We first have a very important result we will use many times in the following theorems. 
+			It is the simplest case, but, as in many cases in mathematics, it provides a strong 'block' to be able to build the next results easily. 
+			The theorem has two parts, the second one being the most significant.</p>
+		</div>
+		<div>
+			<h3>1. Given a simple polygon P, int(n/2) - 1 beacons are sometimes necessary to route between any pair of points in P.</h3>
+			<h4>Proof</h4>
+			<p>It is sufficient to provide an example of a simple polygon in which we would need int(n/2) - 1 beacons to route between 
+			any pair of points in P, focusing on an extreme pair.</p>
+			<p>In figure 1, we can see a simple polygon of 11 vertices. If we look at points G and F, to be able to take G to F’s position we will have 
+			to place 4 beacons in the green vertices. This is caused by the fact that G will tend to get stuck in every spike during its journey to F,
+			so we must place one beacon per spike, 4 in total ( int(11/2) – 1 = 5 – 1 = 4).</p>
+		</div>
+		<div>
+			<h3>2. Given a simple polygon P, int(n/2) - 1 beacons are always sufficient to route between any pair of points in P.</h3>
+			<h4>Proof</h4>
+			<p>We will present an algorithm to place int(n/2) – 1 beacons in any simple polygon in such a way we can route between any pair of points in it.</p>
+			<p>Firstly, we will triangulate the polygon. Considering this triangulation, we will peel off triangles starting with an extreme triangle 
+			(lowest leaf of the dual graph associated to that triangulation) in each iteration. These removed triangles will mean “routed territory”, that 
+			is to say, a part of the polygon in which we can route between any pair of points with the beacons already placed.</p>
+			<p>There will be two types of extremes triangles a = ABC, as shown below:</p>
+			<p>How are we going to place the beacons in our peeling off?</p>
+			<p>In the case of figure 1, we will put a beacon Z in C. This way, any point in the three triangles can navigate to Z if attracted by it and vice versa. 
+			We note it will be analogous if we had a hypothetic BDE instead of CDE.<br/>
+			The second case is a bit more complicated, as we have to consider 4 triangles instead of 3. Here we will use something stronger than attraction, visibility, 
+			which will be useful afterwards. Then we cannot put Z in C, as F may be to the left of line BC. But, considering the point B, we will be able to see triangles 
+			ABC and BDF from it. Therefore we could put a beacon Z in B and we would have visibility over every triangle shown in the figure except DCE, but this will not 
+			affect the future proof. All in all, every point before segment CD will be visible to Z and therefore every point could be routed to or from Z. (*)</p>
+			<p></p>
+		</div>
+		<div id="d-routing-holes">
+			<h2>Routing in Polygons with Holes</h2>
+		</div>
+		<div id="d-routing-ortho">
+			<h2>Routing in Simple Orthogonal Polygons</h2>
+		</div>
+      </div>
+      <div id="d-coverage"> 
+        <h1>Section 2</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>        
+      <div id="d-impl">         
+        <h1>Section 3</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="andrea" class="tab-pane fade">
+    <h3>Menu 2</h3>
+    <p>Some content in menu 2.</p>
+  </div>
+  <div id="game" class="tab-pane fade in active">
+  <p>The game.</p>
+  </div>
+  <div id="ack" class="tab-pane fade in active">
+  <div class="row-fluid">
+    <nav class="col-sm-3" id="homeScrollSpy">
+	<div class="row">&nbsp;</div>
+	<div class="row">&nbsp;</div>
+      <ul class="nav nav-pills nav-stacked affix-top">
+        <li class="active"><a href="#section1">Section 1</a></li>
+        <li><a href="#section2">Section 2</a></li>
+        <li><a href="#section3">Section 3</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#section41">Section 4-1</a></li>
+            <li><a href="#section42">Section 4-2</a></li>                     
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div class="col-sm-9">
+      <div id="section1">    
+        <h1>Section 1</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+      <div id="section2"> 
+        <h1>Section 2</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>        
+      <div id="section3">         
+        <h1>Section 3</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+      <div id="section41">         
+        <h1>Section 4-1</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>      
+      <div id="section42">         
+        <h1>Section 4-2</h1>
+        <p>Try to scroll this section and look at the navigation list while scrolling!</p>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+
+</body>
+</html>
