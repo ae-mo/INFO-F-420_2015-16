@@ -25,6 +25,7 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
@@ -104,22 +105,321 @@ In this page we will look at how beacons interact with objects placed in
 \end_inset
 
 .
+\begin_inset Newline newline
+\end_inset
+
+The content of this page is a rielaboration from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+In Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Setting-and-Terminology"
+
+\end_inset
+
+ we describe the generic setting that we consider throughout the page and
+ give basic definitions; Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Vertices-Classification"
+
+\end_inset
+
+ is devoted to classify a polygon's vertices with respect to a beacon contained
+ in it; in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:The-Attraction-Region"
+
+\end_inset
+
+ we define the Attraction Region of a beacon, give its properties and algorithms
+ to compute it; in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:The-Inverse-Attraction"
+
+\end_inset
+
+ we discuss the Inverse Attraction Region of a point, following an outline
+ that is similar to the previous section; Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Algorithms-for-Beacon-Based"
+
+\end_inset
+
+ contains two algorithm that route an object from a point 
+\begin_inset Formula $s$
+\end_inset
+
+ to a point 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ One requires a set of candidate intermediate beacons, the other is a polynomial
+-time approximation of the optimal route.
+\end_layout
+
+\begin_layout Section
+Setting and Terminology
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Setting-and-Terminology"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We consider a 
+\emph on
+simple polygon
+\emph default
+ 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ A 
+\emph on
+beacon
+\emph default
+ 
+\begin_inset Formula $b$
+\end_inset
+
+ is a point in the interior of 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ that can be activated to exercise a 'magnetic pull' on an object initially
+ placed at a point 
+\begin_inset Formula $p\epsilon P$
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+When 
+\begin_inset Formula $b$
+\end_inset
+
+ is active, the object decreases its distance from 
+\begin_inset Formula $b$
+\end_inset
+
+ greedily, following a straight line towards b until it reaches either 
+\begin_inset Formula $b$
+\end_inset
+
+ or
+\begin_inset Formula $\partial P$
+\end_inset
+
+.
+ In the second case, it slides along 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ provided that its distance from 
+\begin_inset Formula $b$
+\end_inset
+
+ decreases monotonically.
+ When the object is no more constrained by 
+\begin_inset Formula $\partial P$
+\end_inset
+
+, it moves again in a straight line.
+ Thus, a generic route from a point 
+\begin_inset Formula $p$
+\end_inset
+
+ to a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ alternates between these described modes.
+\begin_inset Newline newline
+\end_inset
+
+If the object reaches a point in which the distance from 
+\begin_inset Formula $b$
+\end_inset
+
+ cannot decrease, we say it is 
+\emph on
+stuck
+\emph default
+.
+ The reached point is called a 
+\emph on
+dead point
+\emph default
+ on 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ for beacon 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ If an object starting at 
+\begin_inset Formula $p$
+\end_inset
+
+ is able to reach 
+\begin_inset Formula $b$
+\end_inset
+
+, we say that 
+\begin_inset Formula $b$
+\end_inset
+
+ 
+\emph on
+attracts
+\emph default
+ 
+\begin_inset Formula $p$
+\end_inset
+
+ (
+\begin_inset Formula $p$
+\end_inset
+
+ 
+\emph on
+is attracted to
+\emph default
+ 
+\begin_inset Formula $b$
+\end_inset
+
+).
+\begin_inset Newline newline
+\end_inset
+
+When routing an object from a starting point 
+\begin_inset Formula $p$
+\end_inset
+
+ to a destination 
+\begin_inset Formula $t$
+\end_inset
+
+, we use a set 
+\begin_inset Formula $M$
+\end_inset
+
+ of beacon points, which we activate in sequence: only one beacon at a time
+ is active, and it remains active until it is reached by the object.
+ At that point the next beacon is activated and the old one is simultaneously
+ disactivated.
+ We say that 
+\begin_inset Formula $s$
+\end_inset
+
+ and 
+\begin_inset Formula $t$
+\end_inset
+
+ are 
+\emph on
+routed
+\emph default
+ if we can find a set 
+\begin_inset Formula $M'$
+\end_inset
+
+of beacon points that, if activated in the right sequence, can route an
+ object from 
+\begin_inset Formula $s$
+\end_inset
+
+ to 
+\begin_inset Formula $t$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
 Vertices Classification
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Vertices-Classification"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 The Attraction Region
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:The-Attraction-Region"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 The Inverse Attraction Region
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:The-Inverse-Attraction"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 Algorithms for Beacon-Based Routing
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Algorithms-for-Beacon-Based"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "geometric-routing,routing-guarding"
+options "plain"
+
+\end_inset
+
+
 \end_layout
 
 \end_body
