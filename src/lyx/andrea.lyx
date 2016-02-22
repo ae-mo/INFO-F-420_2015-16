@@ -2,8 +2,13 @@
 \lyxformat 474
 \begin_document
 \begin_header
-\textclass article
+\textclass amsart
 \use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
 \maintain_unincluded_children false
 \language english
 \language_package default
@@ -75,7 +80,7 @@ Introduction
 
 \begin_layout Standard
 In this page we will look at how beacons interact with objects placed in
- a simple polygon.
+ a polygon.
  We will define relevant regions in a polygon, with respect to one or more
  beacons and interacting objects, namely the Attraction Region 
 \begin_inset Formula $A\left(b\right)$
@@ -108,7 +113,7 @@ In this page we will look at how beacons interact with objects placed in
 \begin_inset Newline newline
 \end_inset
 
-The content of this page is a rielaboration from 
+The content of this page is a re-elaboration from 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "biro2013beacon"
@@ -268,7 +273,11 @@ If the object reaches a point in which the distance from
 \begin_inset Formula $b$
 \end_inset
 
- cannot decrease, we say it is 
+ cannot decrease that is different from
+\begin_inset Formula $b$
+\end_inset
+
+, we say the object is 
 \emph on
 stuck
 \emph default
@@ -286,6 +295,14 @@ dead point
 \end_inset
 
 .
+ The set of dead points for 
+\begin_inset Formula $b$
+\end_inset
+
+ is referred to as 
+\begin_inset Formula $D\left(b\right)$
+\end_inset
+
  If an object starting at 
 \begin_inset Formula $p$
 \end_inset
@@ -337,7 +354,7 @@ When routing an object from a starting point
  of beacon points, which we activate in sequence: only one beacon at a time
  is active, and it remains active until it is reached by the object.
  At that point the next beacon is activated and the old one is simultaneously
- disactivated.
+ deactivated.
  We say that 
 \begin_inset Formula $s$
 \end_inset
@@ -364,17 +381,73 @@ of beacon points that, if activated in the right sequence, can route an
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Section
-Vertices Classification
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:Vertices-Classification"
-
+\begin_inset Newline newline
 \end_inset
 
+Given a dead point 
+\begin_inset Formula $d$
+\end_inset
 
+ and a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, we call 
+\begin_inset Formula $DR_{b}\left(d\right)$
+\end_inset
+
+ the 
+\emph on
+dead region
+\emph default
+ of 
+\begin_inset Formula $d$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $b$
+\end_inset
+
+, which we define as the set of points 
+\begin_inset Formula $p\epsilon P$
+\end_inset
+
+ that will eventually get stuck at 
+\begin_inset Formula $d$
+\end_inset
+
+ under the influence of 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ There are two types of dead points: vertex dead points and edge dead points.
+\begin_inset Newline newline
+\end_inset
+
+We can distinguish points belonging to 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ as 
+\emph on
+odd boundary points 
+\emph default
+or 
+\emph on
+even boundary points, 
+\emph default
+depending on whether an object placed at them moves unconstrained or along
+ 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ under the influence of 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ It can be easily seen that all dead points are even boundary points.
 \end_layout
 
 \begin_layout Section
@@ -382,6 +455,295 @@ The Attraction Region
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:The-Attraction-Region"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Definition
+\end_layout
+
+\begin_layout Standard
+The Attraction Region of a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ is defined as follows:
+\end_layout
+
+\begin_layout Definition
+The Attraction Region 
+\begin_inset Formula $A(b)$
+\end_inset
+
+ of a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ is the set of points 
+\begin_inset Formula $p\epsilon P$
+\end_inset
+
+ that are attracted to b.
+\end_layout
+
+\begin_layout Subsection
+Properties
+\end_layout
+
+\begin_layout Standard
+We would like to obtain insights on how to easily define the boundaries
+ of Attraction Regions, so we explore some of their properties, but also
+ the properties of other related entities.
+\begin_inset Newline newline
+\end_inset
+
+Let's start by asking ourselves how many dead points are there, given a
+ beacon 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ The following theorems give us tight bounds, distinguishing between polygons
+ without or with holes.
+\end_layout
+
+\begin_layout Theorem
+Given a simple polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ with 
+\begin_inset Formula $n$
+\end_inset
+
+ vertices, we have 
+\begin_inset Formula $0\leq\left|D(b)\right|\leq n-3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+If 
+\begin_inset Formula $P$
+\end_inset
+
+ is convex it has no dead points, so the lower bound can be easily observed.
+ For the upper bound, consider a beacon 
+\begin_inset Formula $b\epsilon P$
+\end_inset
+
+.
+ It can be easily seen that at least 
+\begin_inset Formula $3$
+\end_inset
+
+ edges of 
+\begin_inset Formula $P$
+\end_inset
+
+ are visible to 
+\begin_inset Formula $b$
+\end_inset
+
+, so any ray starting from 
+\begin_inset Formula $b$
+\end_inset
+
+ that crosses these edges would cross them first.
+ Thus we would have an odd number of crossings for each of these three edges,
+ that consequently cannot contain dead points.
+ Finally, an edge contains at most 
+\begin_inset Formula $1$
+\end_inset
+
+ dead point, so the given upper bound holds.
+\end_layout
+
+\begin_layout Theorem
+Given a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ with 
+\begin_inset Formula $n$
+\end_inset
+
+ vertices and 
+\begin_inset Formula $h$
+\end_inset
+
+ holes, we have 
+\begin_inset Formula $0\leq\left|D(b)\right|\leq n-h-3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+This time we can observe the lower bound by taking a convex polygon with
+ the holes being only triangles, oriented so that they don't have any dead
+ points.
+ For the upper bound, first imagine to remove the holes from 
+\begin_inset Formula $P$
+\end_inset
+
+ and consider the resulting simple polygon 
+\begin_inset Formula $P'$
+\end_inset
+
+.
+ If 
+\begin_inset Formula $n_{i}$
+\end_inset
+
+ is the number of vertices of the 
+\begin_inset Formula $i$
+\end_inset
+
+th hole, then 
+\begin_inset Formula $P'$
+\end_inset
+
+ has 
+\begin_inset Formula $n-\sum_{i}n_{i}$
+\end_inset
+
+ vertices.
+ 
+\begin_inset Formula $b\epsilon P$
+\end_inset
+
+ so 
+\begin_inset Formula $P'$
+\end_inset
+
+ as at most 
+\begin_inset Formula $n-\sum_{i}n_{i}-3$
+\end_inset
+
+.
+ To be continued with figures
+\end_layout
+
+\begin_layout Standard
+Thanks to these theorems, we can limit the number of dead points for a beacon
+ 
+\begin_inset Formula $b$
+\end_inset
+
+, thus we can also limit the number of its dead regions.
+ We take a step further towards our goal by stating that the dead regions
+ of 
+\begin_inset Formula $b$
+\end_inset
+
+ and 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ form a partition of 
+\begin_inset Formula $P$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Theorem
+The dead regions of a beacon
+\begin_inset Formula $b$
+\end_inset
+
+ in a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+, along with 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ partition 
+\begin_inset Formula $P$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+First of all, an object starting at a point in 
+\begin_inset Formula $P$
+\end_inset
+
+ will either reach 
+\begin_inset Formula $b$
+\end_inset
+
+ or a dead point 
+\begin_inset Formula $d$
+\end_inset
+
+, thus fulfilling the requirement that the regions taken togheter yeld 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ It remains to show that these regions don't overlap.
+ In a situation as that of Figure, our definitions are not enough precise
+ to decide along which edge incident to a reflex vertex 
+\begin_inset Formula $v$
+\end_inset
+
+ an object at 
+\begin_inset Formula $v$
+\end_inset
+
+ will slide.
+ The problem is eliminated by adopting the convention that objects at 
+\begin_inset Formula $v$
+\end_inset
+
+ go always left.
+ We have ensured that an object will follow a unique path under the influence
+ of 
+\begin_inset Formula $b$
+\end_inset
+
+: 
+\begin_inset Formula $P$
+\end_inset
+
+ is subdivided into disjoint regions.
+ From what we said, each point is located in a region, so the proof is complete.
+\end_layout
+
+\begin_layout Standard
+This result gives us an interesting hint, because it tells us that to identify
+ 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ we can try to determine the edges of the partition induced by 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ How to do this? It turns out that we need to use a particular kind of vertices
+ in 
+\begin_inset Formula $P$
+\end_inset
+
+, called split vertices.
+ We elaborate on them in the next subsection.
+\end_layout
+
+\begin_layout Section
+Vertices Classification
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Vertices-Classification"
 
 \end_inset
 
