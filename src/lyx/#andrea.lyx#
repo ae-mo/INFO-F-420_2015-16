@@ -197,13 +197,14 @@ name "sec:Setting-and-Terminology"
 \begin_layout Standard
 We consider a 
 \emph on
-simple polygon
+polygon
 \emph default
  
 \begin_inset Formula $P$
 \end_inset
 
-.
+, whose boundary edges are oriented counterclockwise (the edges of a hole
+ are instead oriented clockwise).
  A 
 \emph on
 beacon
@@ -737,6 +738,523 @@ This result gives us an interesting hint, because it tells us that to identify
 
 , called split vertices.
  We elaborate on them in the next subsection.
+\end_layout
+
+\begin_layout Subsection
+Split Vertices
+\end_layout
+
+\begin_layout Standard
+We start by defining 
+\emph on
+cut vertices
+\emph default
+, which are a particular case of reflex vertices.
+\end_layout
+
+\begin_layout Definition
+Given a reflex vertex 
+\begin_inset Formula $p$
+\end_inset
+
+, we say that 
+\begin_inset Formula $p$
+\end_inset
+
+ is a cut vertex if the ray 
+\begin_inset Formula $\overrightarrow{bp}$
+\end_inset
+
+ with its origin translated to 
+\begin_inset Formula $p$
+\end_inset
+
+ cuts the interior of 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ starting immediately from 
+\begin_inset Formula $p$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+How do we recognize a cut vertex? We can simply compute two dot products,
+ as the next proposition precises.
+\end_layout
+
+\begin_layout Proposition
+Given a reflex vertex 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+, we say it is a cut vertex if:
+\end_layout
+
+\begin_layout Proposition
+1.
+ 
+\begin_inset Formula $\overrightarrow{bp_{i}}\times\overrightarrow{p_{i}p_{i+1}}<0$
+\end_inset
+
+ and 
+\begin_inset Formula $\overrightarrow{bp_{i}}\times\overrightarrow{p_{i-1}p_{i}}<0$
+\end_inset
+
+ (Class I)
+\end_layout
+
+\begin_layout Proposition
+2.
+ 
+\begin_inset Formula $\overrightarrow{bp_{i}}\times\overrightarrow{p_{i}p_{i+1}}>0$
+\end_inset
+
+ and 
+\begin_inset Formula $\overrightarrow{bp_{i}}\times\overrightarrow{p_{i-1}p_{i}}<0$
+\end_inset
+
+ (Class II)
+\end_layout
+
+\begin_layout Proposition
+3.
+ 
+\begin_inset Formula $\overrightarrow{bp_{i}}\times\overrightarrow{p_{i}p_{i+1}}<0$
+\end_inset
+
+ and 
+\begin_inset Formula $\overrightarrow{bp_{i}}\times\overrightarrow{p_{i-1}p_{i}}>0$
+\end_inset
+
+ (Class III)
+\end_layout
+
+\begin_layout Standard
+Now, a split vertex is just a particular case of cut vertex.
+ We can identify it just by computing some additional dot products:
+\end_layout
+
+\begin_layout Proposition
+Given a cut vertex 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+, we say it is a reflex vertex if and only if:
+\end_layout
+
+\begin_layout Proposition
+1.
+ It is a class I cut vertex and 
+\begin_inset Formula $\overrightarrow{bp_{i}}\cdot\overrightarrow{p_{i}p_{i+1}}<0$
+\end_inset
+
+, 
+\begin_inset Formula $\overrightarrow{bp_{i}}\cdot\overrightarrow{p_{i-1}p_{i}}>0$
+\end_inset
+
+b
+\end_layout
+
+\begin_layout Proposition
+2.
+ It is a class II cut vertex and 
+\begin_inset Formula $\overrightarrow{bp_{i}}\cdot\overrightarrow{p_{i-1}p_{i}}>0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Proposition
+3.
+ It is a class III cut vertex and 
+\begin_inset Formula $\overrightarrow{bp_{i}}\cdot\overrightarrow{p_{i}p_{i+1}}<0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Given a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ and a split vertex 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $b$
+\end_inset
+
+, we can identify the corresponding 
+\emph on
+split edge
+\emph default
+ by considering the first intersection of the ray 
+\begin_inset Formula $\overrightarrow{bp_{i}}$
+\end_inset
+
+ starting at 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ with 
+\begin_inset Formula $\partial P$
+\end_inset
+
+, which we call the 
+\emph on
+ray vertex
+\emph default
+.
+ Split edges play a central role in the partition induced by a beacon: they
+ are the boundary between two adjacent regions (although in polygons wih
+ holes they might be entirely contained in a region).
+\end_layout
+
+\begin_layout Theorem
+Given a simple polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ and one of its split edges 
+\begin_inset Formula $e=\overline{p_{i}q_{i}}$
+\end_inset
+
+ with respect to a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ (
+\begin_inset Formula $q_{i}$
+\end_inset
+
+ is the ray vertex), 
+\begin_inset Formula $e$
+\end_inset
+
+ represents the boundary between two dead regions or between 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ and a dead region.
+ This might not be the case for a polygon with holes, where 
+\begin_inset Formula $e$
+\end_inset
+
+ might be entirely contained in the interior of 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ or a dead region, but it can intersect at most one region.
+\end_layout
+
+\begin_layout Proof
+Consider first the case where 
+\begin_inset Formula $P$
+\end_inset
+
+ is simple.
+ Then 
+\begin_inset Formula $e$
+\end_inset
+
+ represents a diagonal of 
+\begin_inset Formula $P+q_{i}$
+\end_inset
+
+.
+ This polygon is divided into two parts, that we call 
+\begin_inset Formula $P_{L}$
+\end_inset
+
+and 
+\begin_inset Formula $P_{R}$
+\end_inset
+
+.
+ We need to figure out how an object could possibly cross 
+\begin_inset Formula $e$
+\end_inset
+
+ under the attracion of 
+\begin_inset Formula $b$
+\end_inset
+
+ , and show that any possible case is infeasible.
+ Objects placed on 
+\begin_inset Formula $e$
+\end_inset
+
+ will eventually reach 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ and slide left, because of our convention.
+ What's more, an object moving unconstrained under the influence of 
+\begin_inset Formula $b$
+\end_inset
+
+ could never cross 
+\begin_inset Formula $e$
+\end_inset
+
+ and switch between 
+\begin_inset Formula $P_{L}$
+\end_inset
+
+and 
+\begin_inset Formula $P_{R}$
+\end_inset
+
+, because e is parallel to the ray 
+\begin_inset Formula $\overrightarrow{bp_{i}}$
+\end_inset
+
+.
+ It remains to handle the case where the objects starts sliding along 
+\begin_inset Formula $\partial P$
+\end_inset
+
+.
+ But the crossing of 
+\begin_inset Formula $e$
+\end_inset
+
+ cannot happen here, because of the following argument.
+ 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ is a split vertex; this means that objects sliding along the edges adjacent
+ to 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ move away from it, thus if they are on differents sides of 
+\begin_inset Formula $e$
+\end_inset
+
+, they are in different regions.
+ 
+\begin_inset Formula $e$
+\end_inset
+
+ is on the the boundary of at most two regions, because the points on a
+ ray move unconstrained until they all meet 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ at hte same location, meaning that they will end up in the same point.
+ Thus ray on different sides of 
+\begin_inset Formula $e$
+\end_inset
+
+ are in different regions, that have 
+\begin_inset Formula $e$
+\end_inset
+
+ as boundary.
+\begin_inset Newline newline
+\end_inset
+
+If 
+\begin_inset Formula $P$
+\end_inset
+
+ has holes, some points on different sides of 
+\begin_inset Formula $e$
+\end_inset
+
+ could slide around a hole and end up in the same location, causing 
+\begin_inset Formula $e$
+\end_inset
+
+ to be contained in a region.
+\end_layout
+
+\begin_layout Standard
+We are now close to a correct description of a partition induced by a beacon
+ 
+\begin_inset Formula $b$
+\end_inset
+
+ on a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ In addition to split edges, we need to say something about the edges of
+ 
+\begin_inset Formula $\partial P$
+\end_inset
+
+, and establish which kind of edges can form the partition.
+\end_layout
+
+\begin_layout Theorem
+A boundary edge of a region in the partition of a simple polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ induced by a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ can be either:
+\end_layout
+
+\begin_layout Theorem
+1.
+ An edge of 
+\begin_inset Formula $P$
+\end_inset
+
+ that has not been divided by a split edge
+\end_layout
+
+\begin_layout Theorem
+2.
+ A split edge
+\end_layout
+
+\begin_layout Theorem
+3.
+ An edge of the form 
+\begin_inset Formula $\left(p_{k},q_{i}\right)$
+\end_inset
+
+, 
+\begin_inset Formula $\left(q_{i},p_{l}\right)$
+\end_inset
+
+ or 
+\begin_inset Formula $\left(q_{i},q_{j}\right)$
+\end_inset
+
+, with 
+\begin_inset Formula $q_{i}$
+\end_inset
+
+and 
+\begin_inset Formula $q_{j}$
+\end_inset
+
+ adjacent ray vertices lying on the edge 
+\begin_inset Formula $e=\left(p_{k},p_{l}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Proof
+For simple polygons, let us start by noticing that all the edges are on
+ the boundary of one or more regions, because all the points in 
+\begin_inset Formula $P$
+\end_inset
+
+ belong to the partition.
+ We have already talked about split edges.
+ We can easily notice that the edges descibed at the third element of our
+ list are components of an edge of 
+\begin_inset Formula $P$
+\end_inset
+
+, that have been split by one or more ray vertices, in such a way that they
+ are on the boundary of only one region, while the original edge 
+\begin_inset Formula $\left(p_{k},p_{l}\right)$
+\end_inset
+
+is on the boundary of a different region per different component.
+ We are not done yet; we need to show that no other type of edge can be
+ on the boundary of a region.
+ Let us imagine that there exists a component 
+\begin_inset Formula $c$
+\end_inset
+
+ on the boundary of a region that isn't of any type mentioned so far.
+ First, it cannot be that any part of 
+\begin_inset Formula $c$
+\end_inset
+
+ isn't parallel to a ray casted from the beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, that intesects 
+\begin_inset Formula $c$
+\end_inset
+
+, because otherwise objects on some points of the ray would move unconstrained
+ until they would cross 
+\begin_inset Formula $c$
+\end_inset
+
+, thus sharing the region of the points on the other side of 
+\begin_inset Formula $c$
+\end_inset
+
+ .
+ We also have to take into account that 
+\begin_inset Formula $c$
+\end_inset
+
+ would intersect 
+\begin_inset Formula $P$
+\end_inset
+
+ at two points, that we may call 
+\begin_inset Formula $s_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $s_{2}$
+\end_inset
+
+.
+ Assume that 
+\begin_inset Formula $s_{1}$
+\end_inset
+
+ is the closer to 
+\begin_inset Formula $b$
+\end_inset
+
+ between the two.
+ Where is 
+\begin_inset Formula $s_{1}$
+\end_inset
+
+? It turns out that it must be a vertex of 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ Points on 
+\begin_inset Formula $c$
+\end_inset
+
+ will reach 
+\begin_inset Formula $s_{1}$
+\end_inset
+
+.
+ If 
+\begin_inset Formula $s_{1}$
+\end_inset
+
+ was in the interior of an edge of 
+\begin_inset Formula $P$
+\end_inset
+
+, we would have crossings of 
+\begin_inset Formula $c$
+\end_inset
+
+: i
 \end_layout
 
 \begin_layout Section
