@@ -3,11 +3,16 @@
 \begin_document
 \begin_header
 \textclass amsart
+\begin_preamble
+\usepackage{algorithmic}
+\floatname{algorithm}{Algorithm}
+\end_preamble
 \use_default_options true
 \begin_modules
 theorems-ams
 eqs-within-sections
 figs-within-sections
+theorems-sec
 \end_modules
 \maintain_unincluded_children false
 \language english
@@ -1283,6 +1288,294 @@ is on the boundary of a different region per different component.
 
 In a polygon with holes, it might happen that some split edges or components
  of divided edges are not on the boundary of a region.
+\end_layout
+
+\begin_layout Standard
+Now we can define a concrete strategy for obtaining the attraction region
+ algorithmically! Given a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ and a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, first we need to find the split vertices of 
+\begin_inset Formula $P$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $b$
+\end_inset
+
+, then compute the corresponding ray vertices to obtain the split edges
+ and the components of the divided edges of 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ In case of a polygon with holes this is not enough; we also need to discard
+ the edges that we meet twice when walking along the boundaries of the regions.
+ By doing this we will obtain a set of regions, namely the dead regions,
+ each containing a different dead point, and the atracion region.
+\begin_inset Newline newline
+\end_inset
+
+There are a few more properties of the attraction region of a beacon that
+ are worth mentioning; we give them in the next section.
+\end_layout
+
+\begin_layout Subsection
+Additional Properties
+\end_layout
+
+\begin_layout Proposition
+If 
+\begin_inset Formula $b$
+\end_inset
+
+ is a beacon, 
+\begin_inset Formula $b\epsilon A\left(b\right)$
+\end_inset
+
+.
+ Moreover, if 
+\begin_inset Formula $V\left(b\right)$
+\end_inset
+
+ is the visibility polygon of 
+\begin_inset Formula $b$
+\end_inset
+
+, we have that 
+\begin_inset Formula $V\left(b\right)\subseteq A\left(b\right)$
+\end_inset
+
+ (equality might hold as well).
+\end_layout
+
+\begin_layout Theorem
+Given a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ is connected.
+\end_layout
+
+\begin_layout Standard
+a
+\end_layout
+
+\begin_layout Theorem
+Given a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ is convex with respect to 
+\begin_inset Formula $P$
+\end_inset
+
+, if 
+\begin_inset Formula $P$
+\end_inset
+
+ is simple (not necessarily if it has holes).
+\end_layout
+
+\begin_layout Standard
+a
+\end_layout
+
+\begin_layout Corollary
+Given a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+ has no holes, if 
+\begin_inset Formula $P$
+\end_inset
+
+ is simple (not necessarily if it has holes).
+\end_layout
+
+\begin_layout Theorem
+The partition of 
+\begin_inset Formula $P$
+\end_inset
+
+ induced by a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ has boundary complexity 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+, as well as 
+\begin_inset Formula $A\left(b\right)$
+\end_inset
+
+.
+ There exist cases with also
+\begin_inset Formula $\Omega\left(n\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Algorithms for the Attraction Region
+\end_layout
+
+\begin_layout Standard
+In this subsection we review the existing algorithms for computing the attractio
+n region of a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ There are four algorithms in total.
+ We will describe in detail only the third one, which is the one that we
+ implented.
+\end_layout
+
+\begin_layout Subsubsection
+Algorithm 1
+\end_layout
+
+\begin_layout Standard
+The first algorithm runs in 
+\begin_inset Formula $O\left(n\log n\right)$
+\end_inset
+
+ time for simple polygons, computing the complete partition induced by a
+ beacon on a polygon.
+ The idea is the one we mentioned above.
+ To compute split edges we use the data structure described in REF, which
+ we don't treat here beacuse it is not directly related to the topic.
+ We now give the pseudocode of the algorithm (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithm}   
+\backslash
+caption{Counting mismatches between two packed 
+\backslash
+DNA strings     
+\backslash
+label{alg:packed-dna-hamming}}   
+\backslash
+begin{algorithmic}[1]     
+\backslash
+Require{$x$ and $y$ are packed 
+\backslash
+DNA strings of equal length $n$}     
+\backslash
+Statex     
+\backslash
+Function{Distance}{$x, y$}       
+\backslash
+Let{$z$}{$x 
+\backslash
+oplus y$} 
+\backslash
+Comment{$
+\backslash
+oplus$: bitwise exclusive-or}       
+\backslash
+Let{$
+\backslash
+delta$}{$0$}       
+\backslash
+For{$i 
+\backslash
+gets 1 
+\backslash
+textrm{ to } n$}         
+\backslash
+If{$z_i 
+\backslash
+neq 0$}           
+\backslash
+Let{$
+\backslash
+delta$}{$
+\backslash
+delta + 1$}         
+\backslash
+EndIf       
+\backslash
+EndFor       
+\backslash
+State 
+\backslash
+Return{$
+\backslash
+delta$}     
+\backslash
+EndFunction   
+\backslash
+end{algorithmic} 
+\backslash
+end{algorithm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+CIao
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
