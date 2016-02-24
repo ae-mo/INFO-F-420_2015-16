@@ -1447,8 +1447,13 @@ n region of a beacon
 
 .
  There are four algorithms in total.
- We will describe in detail only the third one, which is the one that we
+ We will describe in detail only the first one, which is the one that we
  implented.
+ In the complexity analyses, 
+\begin_inset Formula $n$
+\end_inset
+
+ refers to the number of vertices of a polygon.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1456,15 +1461,16 @@ Algorithm 1
 \end_layout
 
 \begin_layout Standard
-The first algorithm runs in 
-\begin_inset Formula $O\left(n\log n\right)$
-\end_inset
-
- time for simple polygons, computing the complete partition induced by a
- beacon on a polygon.
- The idea is the one we mentioned above.
- To compute split edges we use the data structure described in REF, which
- we don't treat here beacuse it is not directly related to the topic.
+This algorithm exploits the idea that we mentioned in Subsection REF.
+ It employs a rotational sweep technique.
+ First it sorts the vertices of a polygon radially around a beacon, then
+ it examines the sorted list to find split vertices, maintining a status
+ of the edges intersecting the sweep line in order of increasing distance
+ from the beacon.
+ Once a split vertex is found, it determines the corresponding ray vertex.
+ In the end it will yeld the partition induced by the beacon.
+ For a polygon with holes, we have to be careful excluding edges contained
+ in a region, as we mentioned in Subsection REF.
  We now give the pseudocode of the algorithm (taken from 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -1475,81 +1481,83 @@ key "biro2013beacon"
 ).
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Float algorithm
 wide false
 sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=Ada,numbers=left"
+inline true
 status open
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status open
+
+procedure AttractionRegion(P, b)
+\end_layout
 
 \begin_layout Plain Layout
 
+	Sort the vertices by angle about b, and keep in an ordered event list L=(p1,
+ p2, ..., pn)
+\end_layout
 
-\backslash
-begin{algorithm}   
-\backslash
-caption{Counting mismatches between two packed 
-\backslash
-DNA strings     
-\backslash
-label{alg:packed-dna-hamming}}   
-\backslash
-begin{algorithmic}[1]     
-\backslash
-Require{$x$ and $y$ are packed 
-\backslash
-DNA strings of equal length $n$}     
-\backslash
-Statex     
-\backslash
-Function{Distance}{$x, y$}       
-\backslash
-Let{$z$}{$x 
-\backslash
-oplus y$} 
-\backslash
-Comment{$
-\backslash
-oplus$: bitwise exclusive-or}       
-\backslash
-Let{$
-\backslash
-delta$}{$0$}       
-\backslash
-For{$i 
-\backslash
-gets 1 
-\backslash
-textrm{ to } n$}         
-\backslash
-If{$z_i 
-\backslash
-neq 0$}           
-\backslash
-Let{$
-\backslash
-delta$}{$
-\backslash
-delta + 1$}         
-\backslash
-EndIf       
-\backslash
-EndFor       
-\backslash
-State 
-\backslash
-Return{$
-\backslash
-delta$}     
-\backslash
-EndFunction   
-\backslash
-end{algorithmic} 
-\backslash
-end{algorithm}
+\begin_layout Plain Layout
+
+	Find the order of intersection of edges from p1 along the ray bp1 and store
+ as status S
+\end_layout
+
+\begin_layout Plain Layout
+
+	for the next vertex pi in L do
+\end_layout
+
+\begin_layout Plain Layout
+
+		Update S as necessary
+\end_layout
+
+\begin_layout Plain Layout
+
+		if pi is a split vertex with respect to b then
+\end_layout
+
+\begin_layout Plain Layout
+
+			Find qi, the ray-vertex of pi with respect to b
+\end_layout
+
+\begin_layout Plain Layout
+
+			Add qi to the arrangement of P
+\end_layout
+
+\begin_layout Plain Layout
+
+			Add edge (pi, qi) to the arrangement of P
+\end_layout
+
+\begin_layout Plain Layout
+
+		end if
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for
+\end_layout
+
+\begin_layout Plain Layout
+
+	return the arrangement of P
+\end_layout
+
+\begin_layout Plain Layout
+
+end procedure
 \end_layout
 
 \end_inset
@@ -1561,7 +1569,10 @@ end{algorithm}
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-CIao
+\begin_inset Formula $O(n\log n)$
+\end_inset
+
+ running-time algorithm in simple polygons
 \end_layout
 
 \end_inset
@@ -1569,13 +1580,243 @@ CIao
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\begin_inset Newline newline
+\end_inset
+
+Complexity analysis
+\end_layout
+
+\begin_layout Standard
+The algorithm requires a comparison-based sorting algorithm in order to
+ obtain the ordered list of points.
+ Since a comparisons can be done in constant time using turns, the sorting
+ part takes 
+\begin_inset Formula $O(n\log n)$
+\end_inset
+
+ as usual.
+ Maintining a sweep line status also costs 
+\begin_inset Formula $O(n\log n)$
+\end_inset
+
+.
+ Determining if a vertex is a split vertex takes constant time (we saw how
+ to do this in Section REF).
+ Finding the ray vertex also takes constant time, because we can exploit
+ the sweep line status to find the edge on which it lies.
+\begin_inset Newline newline
+\end_inset
+
+In polygons with holes, the time spent walking on regions' boundaries is
+ linear, so it is dominated, for instance, by the sorting algorithm.
+\begin_inset Newline newline
+\end_inset
+
+The space complexity is 
+\begin_inset Formula $O(n)$
+\end_inset
+
+, because we can only find 
+\begin_inset Formula $O(n)$
+\end_inset
+
+ split edges and, consequently, 
+\begin_inset Formula $O(n)$
+\end_inset
+
+ components of divided edges.
+\end_layout
+
+\begin_layout Paragraph*
+Implementation
+\end_layout
+
+\begin_layout Standard
+In our implementation, we used a modified version of the quicksort algorithm
+ in order to obtain the ordered event list, and we used a red-black binary
+ search tree to maintain the sweep line status.
+ An input polygon is stored and updated during the algorithm by using a
+ doubly connected edge list.
+ Adding a split edge and splitting the edge on which its ray vertex lies
+ is achieved by a split-edge operation using the ray vertex, followed by
+ a split-face that adds the split edge.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Algorithm 2
+\end_layout
+
+\begin_layout Standard
+The second algorithm is similar to the first one, but in order to compute
+ split edges it uses the geodesic triangulation data structure described
+ in REF, which we don't treat here beacuse it is not directly related to
+ the topic.
+ Basically this data structure allows performing ray shooting queries efficientl
+y, after some initial preprocessing, thus avoiding sorting and maintaining
+ a sweepline status, in order to find ray vertices.
+\end_layout
+
+\begin_layout Paragraph*
+Complexity analysis
+\end_layout
+
+\begin_layout Standard
+Preprocessing the polygon for the geodesic triangulation takes 
+\begin_inset Formula $O(n\log n)$
+\end_inset
+
+, although it might be completed in linear time by using the fastest triangulati
+on algorightm known.
+ A ray shooting query takes 
+\begin_inset Formula $O(\log n)$
+\end_inset
+
+ for a split vertex and since we might have 
+\begin_inset Formula $\Theta\left(n\right)$
+\end_inset
+
+ of them, we get a running time of 
+\begin_inset Formula $O(n\log n)$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+In polygons with holes, the preprocessing time becomes 
+\begin_inset Formula $O\left(n\sqrt{h}+h^{\frac{3}{2}}\log h+n\log n\right)$
+\end_inset
+
+, while the query time is 
+\begin_inset Formula $O\left(\sqrt{h}\log n\right)$
+\end_inset
+
+ (REF).
+ Thus, getting the raw arrangement takes 
+\begin_inset Formula $O\left(\sqrt{h}n\log n\right)$
+\end_inset
+
+, and it dominates the postprocessing time to eliminate false positives,
+ which is linear as we explained before.
+\begin_inset Newline newline
+\end_inset
+
+Space complexity is again 
+\begin_inset Formula $O(n)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Algorithm 3
+\end_layout
+
+\begin_layout Standard
+The third algorithm is more involved.
+ It starts by computing a triangulation of the input polygon, form which
+ it obtains its dual graph, later transformed in a directed tree, which
+ it uses to select only the edges on the boundary of the attraction region,
+ that are obtained by discarding the split edges that are 
+\begin_inset Quotes eld
+\end_inset
+
+outside
+\begin_inset Quotes erd
+\end_inset
+
+ other split edges (the path from the beacon to them crosses other split
+ edges).
+ For each triangle we record the split edges that propagate through it.
+ A split edge that is found to be on the boundary of the attraction region
+ is propagated iteratively through the triangles containing it, which will
+ eventually lead to finding the ray vertex.
+ The attraction region is simply the region containing the beacon.
+\begin_inset Newline newline
+\end_inset
+
+In polygons with holes we do the same as for the previous algorithms, but
+ only for the attraction region.
+ We don't need to compute a triangulation that considers the holes of the
+ polygon.
+\end_layout
+
+\begin_layout Paragraph*
+Complexity Analysis
+\end_layout
+
+\begin_layout Standard
+The initial triangulation can be computed in 
+\begin_inset Formula $O(n)$
+\end_inset
+
+ time, due to the algorithm in REF.
+ Its dual, from which we obtain the directed tree and a list of interesting
+ triangles can be obtained in linear time by performing a search from the
+ triangle containing the beacon.
+ Each triangle is considered once, and for each triangle we propagate at
+ most two split edges (as the attraction reagon in a simple polygon is simple
+ and all edges outside it are suddenly discarded), so we have a final running
+ time equal to 
+\begin_inset Formula $O(n)$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+For polygons with holes, the difference is that we would need to propagate
+ 
+\begin_inset Formula $O(h)$
+\end_inset
+
+ edges for each triangle, because of the holes, which might contribute with
+ two split edges each, possibly propagated through many triangles.
+ Thus the complexity becomes 
+\begin_inset Formula $O(hn)$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+The triangulation , its dual, and the remaining data structures are all
+ linear, so we get a space complexity of 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Algorithm 4
+\end_layout
+
+\begin_layout Standard
+The last algorithm employs a radial trapezoidization.
+ First it finds the visibility polygon of a beacon from the triangulation
+ of the polygons, then it considers the remaining regions, for which it
+ computes horizontal trapzoidizations in a projective space that brings
+ the beacon to infinity.
+ Reversing the projection yelds the radial trapezioidization of these regions.
+ For each split vertex, use the trapezoidizations to find the ray vertex.
+\begin_inset Newline newline
+\end_inset
+
+In polygons with holes the complexity is dominated by the triangulation,
+ that here considers also the holes and it's computed in 
+\begin_inset Formula $O\left(n+h\log^{1+\epsilon}h\right)$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+Space complexity is linear as usual.
 \end_layout
 
 \begin_layout Section
@@ -1600,6 +1841,416 @@ name "sec:The-Inverse-Attraction"
 
 \end_layout
 
+\begin_layout Subsection
+Definition
+\end_layout
+
+\begin_layout Definition
+Given a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ and a point 
+\begin_inset Formula $p\epsilon P$
+\end_inset
+
+, the inverse attraction region 
+\begin_inset Formula $IA\left(p\right)$
+\end_inset
+
+ is the set of points in 
+\begin_inset Formula $P$
+\end_inset
+
+ to which 
+\begin_inset Formula $p$
+\end_inset
+
+ is attracted.
+ 
+\end_layout
+
+\begin_layout Standard
+a
+\end_layout
+
+\begin_layout Definition
+Given a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+ and a subset 
+\begin_inset Formula $R$
+\end_inset
+
+ of 
+\begin_inset Formula $P$
+\end_inset
+
+, the inverse attraction region of 
+\begin_inset Formula $R$
+\end_inset
+
+, 
+\begin_inset Formula $IA\left(R\right)$
+\end_inset
+
+, is the set of points in 
+\begin_inset Formula $P$
+\end_inset
+
+ that attract at least one point in 
+\begin_inset Formula $R$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Algorithm for the Inverse Attraction Region of a Point
+\end_layout
+
+\begin_layout Standard
+In order to obtain the inverse attraction region of a point, we can consider
+ a line arrangement induced by a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+, which we call 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+, constructed in the following way: take the lines defined by the edges
+ of 
+\begin_inset Formula $P$
+\end_inset
+
+ and, for each reflex vertex, those intersecting it that are perpendicular
+ to its incident edges.
+\begin_inset Newline newline
+\end_inset
+
+This arrangement has some interesting properties that give ideas for an
+ algorithm.
+\end_layout
+
+\begin_layout Lemma
+Given two points 
+\begin_inset Formula $b_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $b_{2}$
+\end_inset
+
+ contained in a face 
+\begin_inset Formula $F$
+\end_inset
+
+ of 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+, and given a vertex 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ of 
+\begin_inset Formula $P$
+\end_inset
+
+, if 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ is a split vertex for 
+\begin_inset Formula $b_{1}$
+\end_inset
+
+ when we consider it as a beacon, then it is also a split vertex for 
+\begin_inset Formula $b_{2}$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+This interesting fact can be used to prove a even stronger result:
+\end_layout
+
+\begin_layout Theorem
+Given two points 
+\begin_inset Formula $b_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $b_{2}$
+\end_inset
+
+ contained in a face 
+\begin_inset Formula $F$
+\end_inset
+
+ of 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+, and given a point 
+\begin_inset Formula $p$
+\end_inset
+
+ of 
+\begin_inset Formula $P$
+\end_inset
+
+, if 
+\begin_inset Formula $p\epsilon A\left(b_{1}\right)$
+\end_inset
+
+, then it is also a split vertex for 
+\begin_inset Formula $p\epsilon A\left(b_{2}\right)$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+This is a great simplification, because it's telling us that we can just
+ test a single point in a face of the considered arrangement.
+ We now give the presudocode of the algorithm (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=Ada,numbers=left"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+procedure InverseAttractionRegion(P, p)
+\end_layout
+
+\begin_layout Plain Layout
+
+	Initialize Ap = ∅
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each edge e in P do
+\end_layout
+
+\begin_layout Plain Layout
+
+		Add line e to Ap
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each reflex vertex r in P do
+\end_layout
+
+\begin_layout Plain Layout
+
+		Add line rp to Ap
+\end_layout
+
+\begin_layout Plain Layout
+
+		Add the lines r1 and r2 through r and perpendicular to the edges incident
+ on r to Ap
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for
+\end_layout
+
+\begin_layout Plain Layout
+
+	Initialize IA(p) = ∅
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each face F of Ap do
+\end_layout
+
+\begin_layout Plain Layout
+
+		Choose an arbitrary point bF of F and compute A(bF)
+\end_layout
+
+\begin_layout Plain Layout
+
+		if p ∈ A(bF ) then
+\end_layout
+
+\begin_layout Plain Layout
+
+			Add F to IA(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+		end if
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for
+\end_layout
+
+\begin_layout Plain Layout
+
+	return IA(p), the inverse attraction region of p
+\end_layout
+
+\begin_layout Plain Layout
+
+end procedure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(n^{2})$
+\end_inset
+
+running-time algorithm for 
+\begin_inset Formula $IA(p)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Complexity Analysis
+\end_layout
+
+\begin_layout Standard
+This algorithm uses an attraction region algorithm (
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+/
+\begin_inset Formula $O\left(n+h\log^{1+\epsilon}h\right)$
+\end_inset
+
+) and it tests, for each attraction region computed, if the given point
+ is in it (
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+).
+ There are 
+\begin_inset Formula $O\left(n^{2}\right)$
+\end_inset
+
+ faces in the arrangement, but walking through them in a breadth-first fashion
+ using the dual graph allows updating the attraction regions, quickly, making
+ the overall complexity 
+\begin_inset Formula $O\left(n^{2}\right)$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+The space complexity is 
+\begin_inset Formula $O\left(n^{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Algorithm for the Inverse Attraction Region of a Region
+\end_layout
+
+\begin_layout Standard
+To compute the attraction region of a region, it is convenient to consider
+ a modified version of the line arrangement considered above.
+ We call the new arrangement 
+\begin_inset Formula $\mathit{A_{R}}$
+\end_inset
+
+ and we obtain it by considering the lines from each reflex vertex of the
+ input regions through each reflex vertex of the input polygon.
+ This arrangement has a property that is similar to that of 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+ with respect to attracting points in a region.
+\end_layout
+
+\begin_layout Theorem
+Given two points 
+\begin_inset Formula $b_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $b_{2}$
+\end_inset
+
+ contained in a face 
+\begin_inset Formula $F$
+\end_inset
+
+ of 
+\begin_inset Formula $\mathit{A_{R}}$
+\end_inset
+
+, if 
+\begin_inset Formula $R\cap A\left(b_{1}\right)\neq\varnothing$
+\end_inset
+
+, then 
+\begin_inset Formula $R\cap A\left(b_{2}\right)\neq\varnothing$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+Thanks to this fact we can easily determine te attraction region of 
+\begin_inset Formula $R$
+\end_inset
+
+, by using a point for each face of the arrangement.
+\end_layout
+
 \begin_layout Section
 Algorithms for Beacon-Based Routing
 \begin_inset CommandInset label
@@ -1608,6 +2259,186 @@ name "sec:Algorithms-for-Beacon-Based"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+Now that we have seen how to compute these two regions, we would like to
+ use them in order to perform beacon-based routing.
+ We would also like to find the minimum routing paths each time.
+ In this section we consider first the case where we are given a set of
+ candidate beacons, then the case where we have no beacon except the destination
+, which we solve with a nearly optimal approximation algorithm.
+\end_layout
+
+\begin_layout Subsection
+Algorithm for Routing with Candidate Beacons
+\end_layout
+
+\begin_layout Standard
+This algorithm's main task consists in building a directed graph, that has
+ the candidate beacons, the starting point and the destination as nodes,
+ and edges of the type 
+\begin_inset Formula $\overrightarrow{\left(u,v\right)}$
+\end_inset
+
+ if 
+\begin_inset Formula $u\in A\left(v\right)$
+\end_inset
+
+.
+ Once the graph is computed, the routing path is simply a shortest path
+ between the starting point and the destination.
+ We now give the pseudocode of the algorithm (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=Ada,numbers=left"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+procedure Minimum Beacon Path with Candidates(P,M, s, t)
+\end_layout
+
+\begin_layout Plain Layout
+
+	Compute a triangulation T of P 
+\end_layout
+
+\begin_layout Plain Layout
+
+	C = M ∪ s ∪ t 
+\end_layout
+
+\begin_layout Plain Layout
+
+	Initialize directed graph G = (C, ∅) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each c ∈ C do 
+\end_layout
+
+\begin_layout Plain Layout
+
+		Compute A(c) 
+\end_layout
+
+\begin_layout Plain Layout
+
+		for each triangle t ∈ T do 
+\end_layout
+
+\begin_layout Plain Layout
+
+			Record the subset of t that is attractable to c 
+\end_layout
+
+\begin_layout Plain Layout
+
+			for each d ∈ M ∩ t do 
+\end_layout
+
+\begin_layout Plain Layout
+
+				if d ∈ A(c) then 
+\end_layout
+
+\begin_layout Plain Layout
+
+					Add directed edge dc to G 
+\end_layout
+
+\begin_layout Plain Layout
+
+				end if 
+\end_layout
+
+\begin_layout Plain Layout
+
+			end for 
+\end_layout
+
+\begin_layout Plain Layout
+
+		end for 
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for 
+\end_layout
+
+\begin_layout Plain Layout
+
+	Find a shortest path p from s to t in G 
+\end_layout
+
+\begin_layout Plain Layout
+
+	return the sequence of beacons in p 
+\end_layout
+
+\begin_layout Plain Layout
+
+end procedure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $O(m(n+m))$
+\end_inset
+
+running-time algorithm in simple polygons
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+Complexity Analysis
+\end_layout
+
+\begin_layout Paragraph*
+Implementation
+\end_layout
+
+\begin_layout Subsection
+Approximation Algorithm
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 
