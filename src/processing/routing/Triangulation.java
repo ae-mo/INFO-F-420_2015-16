@@ -1,10 +1,4 @@
-package operations;
-
 import java.util.ArrayList;
-
-
-import dataStructures.*;
-import operations.*;
 
 public class Triangulation {
 

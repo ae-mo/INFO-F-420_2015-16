@@ -1,4 +1,3 @@
-package dataStructures;
 import java.util.ArrayList;
 
 public class DCEL {
@@ -106,7 +105,6 @@ public class DCEL {
 			i.face = f2;
 		}
 
-		
 		h1.next = i.next;
 		h1.next.prev = h1;
 		i.next = h2;
