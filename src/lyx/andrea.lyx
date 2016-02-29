@@ -144,15 +144,7 @@ reference "sec:Setting-and-Terminology"
 \end_inset
 
  we describe the generic setting that we consider throughout the page and
- give basic definitions; Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Vertices-Classification"
-
-\end_inset
-
- is devoted to classify a polygon's vertices with respect to a beacon contained
- in it; in Section 
+ give basic definitions; in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:The-Attraction-Region"
@@ -229,6 +221,48 @@ beacon
 
 .
  
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/1.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ excercises a 'magnetic pull' on a point 
+\begin_inset Formula $p$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -272,6 +306,52 @@ When
 \end_inset
 
  alternates between these described modes.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/2.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An object starting at 
+\begin_inset Formula $p$
+\end_inset
+
+ moves unconstrained 
+\begin_inset Newline newline
+\end_inset
+
+unless it meets 
+\begin_inset Formula $\partial P$
+\end_inset
+
+, then it slides along it.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -386,7 +466,48 @@ of beacon points that, if activated in the right sequence, can route an
 \begin_inset Formula $t$
 \end_inset
 
-.
+.i
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/5.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $s$
+\end_inset
+
+ and 
+\begin_inset Formula $t$
+\end_inset
+
+ are routed.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -428,6 +549,130 @@ dead region
 
 .
  There are two types of dead points: vertex dead points and edge dead points.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/6.png
+	scale 39
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The dead region of 
+\begin_inset Formula $d$
+\end_inset
+
+ is shown in red.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/3.png
+	scale 39
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $d$
+\end_inset
+
+ is a vertex dead point.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/4.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $d$
+\end_inset
+
+ is an edge dead point.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Types of dead points.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -493,6 +738,47 @@ The Attraction Region
 \end_inset
 
  that are attracted to b.
+\end_layout
+
+\begin_layout Definition
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/7.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The attraction region of 
+\begin_inset Formula $b$
+\end_inset
+
+ is shown in green.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -567,6 +853,118 @@ If
 \end_inset
 
  dead point, so the given upper bound holds.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/8.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $P$
+\end_inset
+
+ has 
+\begin_inset Formula $7-3=n-3=4$
+\end_inset
+
+ dead points.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/9.png
+	scale 49
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $P$
+\end_inset
+
+ has 
+\begin_inset Formula $13-2-3=n-h-3=8$
+\end_inset
+
+ dead points.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Polygons showing that the upper bounds for dead points are reachable.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Theorem
@@ -676,6 +1074,13 @@ The dead regions of a beacon
 \end_inset
 
 .
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:The-dead-regions"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Proof
@@ -726,6 +1131,123 @@ First of all, an object starting at a point in
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/10.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+We arbitrarily decide that 
+\begin_inset Formula $p$
+\end_inset
+
+ goes always left.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/11.png
+	scale 37
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An example partition, induced by 
+\begin_inset Formula $b$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+The attraction region is in green, the dead 
+\begin_inset Newline newline
+\end_inset
+
+regions with their respective dead points are in red.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualization of the arguments of Theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:The-dead-regions"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 This result gives us an interesting hint, because it tells us that to identify
  
 \begin_inset Formula $A\left(b\right)$
@@ -786,6 +1308,42 @@ Given a reflex vertex
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/12.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is a cut vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 How do we recognize a cut vertex? We can simply compute two dot products,
  as the next proposition precises.
 \end_layout
@@ -838,6 +1396,139 @@ Given a reflex vertex
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/13.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is Class I cut vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/14.png
+	scale 53
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is Class II cut vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/15.png
+	scale 51
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is Class III cut vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Types of cut vertices.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 Now, a split vertex is just a particular case of cut vertex.
  We can identify it just by computing some additional dot products:
 \end_layout
@@ -847,7 +1538,7 @@ Given a cut vertex
 \begin_inset Formula $p_{i}$
 \end_inset
 
-, we say it is a reflex vertex if and only if:
+, we say it is a split vertex if and only if:
 \end_layout
 
 \begin_layout Proposition
@@ -882,6 +1573,139 @@ b
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/13.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is a Class I cut vertex and a split vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/16.png
+	scale 47
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is a Class II cut vertex and a split vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/17.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $p$
+\end_inset
+
+ is a Class III cut vertex and a split vertex.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Types of split vertices.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 Given a beacon 
 \begin_inset Formula $b$
 \end_inset
@@ -918,6 +1742,56 @@ ray vertex
  Split edges play a central role in the partition induced by a beacon: they
  are the boundary between two adjacent regions (although in polygons wih
  holes they might be entirely contained in a region).
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/19.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $v$
+\end_inset
+
+ is the ray vertex correspoinding to 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ 
+\begin_inset Formula $\overline{pv}$
+\end_inset
+
+ is a split edge.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Theorem
@@ -955,6 +1829,13 @@ Given a simple polygon
 \end_inset
 
  or a dead region, but it can intersect at most one region.
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:Given-a-simple"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Proof
@@ -1082,6 +1963,161 @@ If
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/20.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An object starting at 
+\begin_inset Formula $p$
+\end_inset
+
+ and moving unconstrained can never cross 
+\begin_inset Formula $e$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/21.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An object starting at 
+\begin_inset Formula $p$
+\end_inset
+
+ and reaching 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ will always move away from 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/22.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Objects on the same ray cast from 
+\begin_inset Formula $b$
+\end_inset
+
+ end in the same point.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualization of the arguments of Theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:Given-a-simple"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 We are now close to a correct description of a partition induced by a beacon
  
 \begin_inset Formula $b$
@@ -1153,6 +2189,13 @@ and
 \end_inset
 
 .
+\begin_inset CommandInset label
+LatexCommand label
+name "thm:3.-An-edge"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Proof
@@ -1291,6 +2334,187 @@ In a polygon with holes, it might happen that some split edges or components
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/23.png
+	scale 125
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+If 
+\begin_inset Formula $c$
+\end_inset
+
+ wasn't entirely parallel to 
+\begin_inset Newline newline
+\end_inset
+
+a ray cast from 
+\begin_inset Formula $b$
+\end_inset
+
+ that crosses it, 
+\begin_inset Newline newline
+\end_inset
+
+some points would cross 
+\begin_inset Formula $c$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/24.png
+	scale 46
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $s_{1}$
+\end_inset
+
+ cannot be an edge dead point,
+\begin_inset Newline newline
+\end_inset
+
+ because otherwise points on
+\begin_inset Newline newline
+\end_inset
+
+different sides of 
+\begin_inset Formula $c$
+\end_inset
+
+ would reach it.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/25.png
+	height 10.3cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $s_{1}$
+\end_inset
+
+ cannot be on an edge in
+\begin_inset Newline newline
+\end_inset
+
+general, because otherwise 
+\begin_inset Newline newline
+\end_inset
+
+some points would cross it and 
+\begin_inset Newline newline
+\end_inset
+
+go into the adjacent region.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualization of the arguments of Theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:3.-An-edge"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 Now we can define a concrete strategy for obtaining the attraction region
  algorithmically! Given a polygon 
 \begin_inset Formula $P$
@@ -1817,17 +3041,6 @@ In polygons with holes the complexity is dominated by the triangulation,
 \end_inset
 
 Space complexity is linear as usual.
-\end_layout
-
-\begin_layout Section
-Vertices Classification
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:Vertices-Classification"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
