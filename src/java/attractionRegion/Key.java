@@ -1,39 +1,45 @@
 package attractionRegion;
 import dataStructures.Edge;
 import dataStructures.Point;
+import dataStructures.Triangle;
 import operations.Turn;
 
 public class Key implements Comparable<Key>{
 
 	public Point beacon;
-	public Point p;
 	public Edge e;
 
-	public Key(Point beacon, Point p, Edge e) {
+	public Key(Point beacon, Edge e) {
 
+		Turn bEab = new Turn(beacon, e.a, e.b);
+		
+		if(bEab.value <= 0) {
+			
+			Point temp = e.a;
+			e.a = e.b;
+			e.b = temp;
+			
+		}
+		
 		this.beacon = beacon;
-		this.p = p;
 		this.e = e;
 
-		if(!e.a.equals(p))
-			this.e.flip();
+	}
+
+	public Key(Point beacon, float ax, float ay, float bx, float by) {
+
+		this(beacon, new Edge(ax, ay, bx, by));
 
 	}
 
-	public Key(Point beacon, Point p, float ax, float ay, float bx, float by) {
+	public Key(float bx, float by, Edge e) {
 
-		this(beacon, p, new Edge(ax, ay, bx, by));
-
+		this(new Point(bx, by), e);
 	}
 
-	public Key(float bx, float by, float px, float py, Edge e) {
+	public Key(float bex, float bey, float ax, float ay, float bx, float by) {
 
-		this(new Point(bx, by),  new Point(px, py), e);
-	}
-
-	public Key(float bex, float bey, float px, float py, float ax, float ay, float bx, float by) {
-
-		this(new Point(bex, bey), new Point(px, py), new Edge(ax, ay, bx, by));
+		this(new Point(bex, bey), new Edge(ax, ay, bx, by));
 
 	}
 
@@ -50,47 +56,37 @@ public class Key implements Comparable<Key>{
 
 		if(intersectsBeA && intersectsBeB) {
 
-			boolean intersectsAB = _key.e.intersectsRay(this.e);
-
-			if(intersectsAB && !this.e.a.equals(_key.e.a)) { 
-
-				System.out.println("heyheyhey");
-				Turn ea = new Turn(this.e, _key.e.a);
-				if(ea.value > 0 ) result = 1;
-				else result = -1;
-
-			}
-			else {
+			Triangle tr = new Triangle(this.e.b, _key.e.b, _key.e.a);
+			
+			if(tr.contains(this.e.a)) {
+				
 				Turn eb = new Turn(this.e, _key.e.b);
 				if(eb.value > 0 ) result = 1;
 				else result = -1;
+				
 			}
-
+			else {
+				
+				Turn ea = new Turn(this.e, _key.e.a);
+				if(ea.value > 0 ) result = 1;
+				else result = -1;
+				
+			}
 		}
-		else if(!intersectsBeB) {
-
+		else if(intersectsBeA) {
 			Turn eb = new Turn(this.e, _key.e.b);
 			if(eb.value > 0 ) result = 1;
 			else result = -1;
-
 		}
-		else if(!intersectsBeA) {
+		else {
+
 			Turn ea = new Turn(this.e, _key.e.a);
 			if(ea.value > 0 ) result = 1;
 			else result = -1;
+
 		}
 
-		//System.out.println("Comparison: " + result);
-
 		return result;
-	}
-
-	private void flipEdge() {
-
-		Point temp = this.e.a;
-		e.a = e.b;
-		e.b = temp;
-
 	}
 
 	@Override
@@ -103,15 +99,6 @@ public class Key implements Comparable<Key>{
 			return false;
 		}
 		final Key other = (Key) obj;
-		
-		System.out.println();
-		System.out.println(" this beacon:" + this.beacon.x + ", " + this.beacon.y );
-		System.out.println(" this ref:" + this.p.x + ", " + this.p.y );
-		System.out.println(" this edge:" + this.e.a.x + ", " + this.e.a.y + "; " + this.e.b.x + ", " + this.e.b.y);
-		
-		System.out.println(" other beacon:" + other.beacon.x + ", " + other.beacon.y );
-		System.out.println(" other ref:" + other.p.x + ", " + other.p.y );
-		System.out.println(" other edge:" + other.e.a.x + ", " + other.e.a.y + "; " + other.e.b.x + ", " + other.e.b.y);
 
 		if(this.e.equals(other.e)) 
 			return true;

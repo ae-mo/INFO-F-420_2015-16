@@ -4,10 +4,9 @@ ArrayList<Point> points;
 Point b;    
 void setup() {
 
-  size(400, 400);
-  textSize(32); 
+  size(800, 800);
 
-  r = 255;
+  r = 0;
   g = 255;
   bl = 0;
 
@@ -25,8 +24,10 @@ void draw() {
 void mouseClicked() {
   if (mouseButton == LEFT) {
     
-    points.add(new Point(mouseX, mouseY));
-  
+    Point p = new Point(mouseX, mouseY);
+    points.add(p);
+    text(p.x + ", " + p.y,(float) p.x, (float)p.y);
+ 
     if(points.size() > 1) {
     
       Point p1 = points.get(points.size()-2);
@@ -43,6 +44,7 @@ void mouseClicked() {
     b = new Point(mouseX, mouseY);
     
     point((float)b.x, (float)b.y);
+    text(b.x + ", " + b.y,(float) b.x, (float)b.y);
     
   }
   
@@ -114,8 +116,10 @@ void test21() {
       Point pp = h.target;
 
       for(int j = 0; j < 15; j++) {
-
-        line((float)h.target.x, (float)h.target.y,(float) h.twin.target.x, (float)h.twin.target.y);
+        
+        System.out.println("Halfedge");
+        System.out.println("target: " + h.target.x + ", " + h.target.y);
+        line((float)h.target.x, (float)h.target.y,(float) h.prev.target.x, (float)h.prev.target.y);
 
         h =h.next;
       }

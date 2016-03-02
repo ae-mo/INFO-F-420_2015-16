@@ -143,9 +143,9 @@ public class DCEL {
 	public int[] splitEdge(Halfedge h, Point w) {
 		
 		int[] halfedges = new int[2];
-;
-		Face f1 = h.twin.face;
-		Face f2 = h.face;
+
+		Face f1 = h.face;
+		Face f2 = h.twin.face;
 		
 		Halfedge h1 = new Halfedge();
 		Halfedge h2 = new Halfedge();
@@ -153,25 +153,25 @@ public class DCEL {
 		Halfedge k1 = new Halfedge();
 		Halfedge k2 = new Halfedge();
 		
-		h1.face = f2;
+		h1.face = f1;
 		h1.next = h2;
 		h1.prev = h.prev;
 		h1.twin = k2;
 		h1.target = w;
 		
-		h2.face = f2;
+		h2.face = f1;
 		h2.next = h.next;
 		h2.prev = h1;
 		h2.twin = k1;
 		h2.target = h.target;
 		
-		k1.face = f1;
+		k1.face = f2;
 		k1.next = k2;
 		k1.prev = h.twin.prev;
 		k1.twin = h2;
 		k1.target = w;
 
-		k2.face = f1;
+		k2.face = f2;
 		k2.next = h.twin.next;
 		k2.prev = k1;
 		k2.twin = h1;
@@ -183,23 +183,22 @@ public class DCEL {
 		h2.next.prev = h2;
 		k2.next.prev = k2;
 
-		w.h = k2;
-		h.target.h = k1;
+		w.h = h2;
 		
-		// copy k1 into h.twin
-		h.twin.next = k1.next;
-		h.twin.prev = k1.prev;
-		h.twin.twin = k1.twin;
-		h.twin.target = k1.target;
+		// copy k2 into h.twin
+		h.twin.next = k2.next;
+		h.twin.prev = k2.prev;
+		h.twin.twin = k2.twin;
+		h.twin.target = k2.target;
 		
 		// copy h1 into h
-		h.next = h1.next;
-		h.prev = h1.prev;
-		h.twin = h1.twin;
-		h.target = h1.target;
+		h.next = h2.next;
+		h.prev = h2.prev;
+		h.twin = h2.twin;
+		h.target = h2.target;
 		
-		this.halfedges.add(h2);
-		this.halfedges.add(k2);
+		this.halfedges.add(h1);
+		this.halfedges.add(k1);
 		
 		int size = this.halfedges.size();
 		

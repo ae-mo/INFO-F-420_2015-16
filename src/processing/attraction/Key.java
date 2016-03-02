@@ -1,118 +1,104 @@
 public class Key implements Comparable<Key>{
 
-	public Point beacon;
-	public Point p;
-	public Edge e;
+  public Point beacon;
+  public Edge e;
 
-	public Key(Point beacon, Point p, Edge e) {
+  public Key(Point beacon, Edge e) {
 
-		this.beacon = beacon;
-		this.p = p;
-		this.e = e;
+    Turn bEab = new Turn(beacon, e.a, e.b);
+    
+    if(bEab.value <= 0) {
+      
+      Point temp = e.a;
+      e.a = e.b;
+      e.b = temp;
+      
+    }
+    
+    this.beacon = beacon;
+    this.e = e;
 
-		if(!e.a.equals(p))
-			this.e.flip();
+  }
 
-	}
+  public Key(Point beacon, float ax, float ay, float bx, float by) {
 
-	public Key(Point beacon, Point p, float ax, float ay, float bx, float by) {
+    this(beacon, new Edge(ax, ay, bx, by));
 
-		this(beacon, p, new Edge(ax, ay, bx, by));
+  }
 
-	}
+  public Key(float bx, float by, Edge e) {
 
-	public Key(float bx, float by, float px, float py, Edge e) {
+    this(new Point(bx, by), e);
+  }
 
-		this(new Point(bx, by),  new Point(px, py), e);
-	}
+  public Key(float bex, float bey, float ax, float ay, float bx, float by) {
 
-	public Key(float bex, float bey, float px, float py, float ax, float ay, float bx, float by) {
+    this(new Point(bex, bey), new Edge(ax, ay, bx, by));
 
-		this(new Point(bex, bey), new Point(px, py), new Edge(ax, ay, bx, by));
-
-	}
-
-
-	public int compareTo(Key _key) {
-
-		int result = 0;
-
-		if(this.equals(_key)) return 0;
-
-		boolean intersectsBeA = _key.e.intersectsRay(this.beacon, this.e.a);
-		boolean intersectsBeB = _key.e.intersectsRay(this.beacon, this.e.b);
+  }
 
 
-		if(intersectsBeA && intersectsBeB) {
+  public int compareTo(Key _key) {
 
-			boolean intersectsAB = _key.e.intersectsRay(this.e);
+    int result = 0;
 
-			if(intersectsAB && !this.e.a.equals(_key.e.a)) { 
+    if(this.equals(_key)) return 0;
 
-				System.out.println("heyheyhey");
-				Turn ea = new Turn(this.e, _key.e.a);
-				if(ea.value > 0 ) result = 1;
-				else result = -1;
+    boolean intersectsBeA = _key.e.intersectsRay(this.beacon, this.e.a);
+    boolean intersectsBeB = _key.e.intersectsRay(this.beacon, this.e.b);
 
-			}
-			else {
-				Turn eb = new Turn(this.e, _key.e.b);
-				if(eb.value > 0 ) result = 1;
-				else result = -1;
-			}
 
-		}
-		else if(!intersectsBeB) {
+    if(intersectsBeA && intersectsBeB) {
 
-			Turn eb = new Turn(this.e, _key.e.b);
-			if(eb.value > 0 ) result = 1;
-			else result = -1;
+      Triangle tr = new Triangle(this.e.b, _key.e.b, _key.e.a);
+      
+      if(tr.contains(this.e.a)) {
+        
+        Turn eb = new Turn(this.e, _key.e.b);
+        if(eb.value > 0 ) result = 1;
+        else result = -1;
+        
+      }
+      else {
+        
+        Turn ea = new Turn(this.e, _key.e.a);
+        if(ea.value > 0 ) result = 1;
+        else result = -1;
+        
+      }
+    }
+    else if(intersectsBeA) {
+      Turn eb = new Turn(this.e, _key.e.b);
+      if(eb.value > 0 ) result = 1;
+      else result = -1;
+    }
+    else {
 
-		}
-		else if(!intersectsBeA) {
-			Turn ea = new Turn(this.e, _key.e.a);
-			if(ea.value > 0 ) result = 1;
-			else result = -1;
-		}
+      Turn ea = new Turn(this.e, _key.e.a);
+      if(ea.value > 0 ) result = 1;
+      else result = -1;
 
-		//System.out.println("Comparison: " + result);
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	private void flipEdge() {
+  @Override
+  public boolean equals(Object obj) {
 
-		Point temp = this.e.a;
-		e.a = e.b;
-		e.b = temp;
+    if (obj == null) {
+      return false;
+    }
+    if (!Key.class.isAssignableFrom(obj.getClass())) {
+      return false;
+    }
+    final Key other = (Key) obj;
 
-	}
+    if(this.e.equals(other.e)) 
+      return true;
 
-	@Override
-	public boolean equals(Object obj) {
-
-		if (obj == null) {
-			return false;
-		}
-		if (!Key.class.isAssignableFrom(obj.getClass())) {
-			return false;
-		}
-		final Key other = (Key) obj;
-		
-		System.out.println();
-		System.out.println(" this beacon:" + this.beacon.x + ", " + this.beacon.y );
-		System.out.println(" this ref:" + this.p.x + ", " + this.p.y );
-		System.out.println(" this edge:" + this.e.a.x + ", " + this.e.a.y + "; " + this.e.b.x + ", " + this.e.b.y);
-		
-		System.out.println(" other beacon:" + other.beacon.x + ", " + other.beacon.y );
-		System.out.println(" other ref:" + other.p.x + ", " + other.p.y );
-		System.out.println(" other edge:" + other.e.a.x + ", " + other.e.a.y + "; " + other.e.b.x + ", " + other.e.b.y);
-
-		if(this.e.equals(other.e)) 
-			return true;
-
-		return false;
-	}
+    return false;
+  }
 
 
 }

@@ -15,7 +15,7 @@ public class Tests {
 
 	public static void main(String[] args) {
 
-		test22();
+		test20();
 
 	}
 
@@ -714,26 +714,17 @@ public class Tests {
 		DCEL dcel = new DCEL();
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		Point p1 = new Point(18.89546, 3.23408);
-		Point p2 = new Point(25.35949, 5.74365);
+		Point p1 = new Point(4.14, 2.06);
+		Point p2 = new Point(2.58, 3.44);
 
 		int he = dcel.initialize(p1, p2);
 
 		Halfedge h = dcel.halfedges.get(he);
 
-		points.add(new Point(23.23016, 15.81994));
-		points.add(new Point(27.56487, 14.37504));
-		points.add(new Point(30.11246, 10.80081));
-		points.add(new Point(35.35974, 16.58042));
-		points.add(new Point(25.51159, 21.75165));
-		points.add(new Point(15.1311, 21.90374));
-		points.add(new Point(6.42367, 21.37141));
-		points.add(new Point(2.69734, 15.09749));
-		points.add(new Point(6, 8));
-		points.add(new Point(13.64818, 17.64508));
-		points.add(new Point(13.99039, 7.1125));
-
-
+		points.add(new Point(4.38, 2.84));
+		points.add(new Point(4.88, 5.34));
+		points.add(new Point (1.1, 4.8));
+		points.add(new Point(2.24, 0.78));
 
 		for(Point p: points) {
 
@@ -776,7 +767,7 @@ public class Tests {
 		//
 		//		}
 
-		Point b = new Point(21.55712, 5.47748);
+		Point b = new Point (2.78, 2.24);
 
 		AttractionRegion attr = new AttractionRegion(b, dcel);
 
