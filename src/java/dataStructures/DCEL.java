@@ -60,9 +60,26 @@ public class DCEL {
 	
 	public int[] splitFace(int face, Halfedge h, int vertex) {
 
+		Face f = this.faces.get(face);
 		Point v = this.vertices.get(vertex);
 		
-		return this.splitFace(face, h, v);
+		return this.splitFace(f, h, v);
+		
+	}
+	
+	public int[] splitFace(int face, Halfedge h, Point v) {
+
+		Face f = this.faces.get(face);
+		
+		return this.splitFace(f, h, v);
+		
+	}
+	
+	public int[] splitFace(Face f, Halfedge h, int vertex) {
+
+		Point v = this.vertices.get(vertex);
+		
+		return this.splitFace(f, h, v);
 		
 	}
 
@@ -73,9 +90,8 @@ public class DCEL {
 	 * @param v
 	 * @return
 	 */
-	public int[] splitFace(int face, Halfedge h, Point v) {
+	public int[] splitFace(Face f, Halfedge h, Point v) {
 
-		Face f = this.faces.get(face);
 		int[] newFaces = new int[2];
 
 		Point u = h.target;
@@ -120,13 +136,13 @@ public class DCEL {
 		} while (!i.target.equals(u));
 
 		
-		// copy f2 into f
-		f.h = f2.h;
-		f.n = f2.n;
+	
+		this.faces.remove(f);
 		
+		this.faces.add(f2);
 		this.faces.add(f1);
 		newFaces[0] = this.faces.size() - 1;
-		newFaces[1] = face;
+		newFaces[1] = this.faces.size() - 2;
 
 		this.halfedges.add(h1);
 		this.halfedges.add(h2);

@@ -714,17 +714,23 @@ public class Tests {
 		DCEL dcel = new DCEL();
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		Point p1 = new Point(4.14, 2.06);
-		Point p2 = new Point(2.58, 3.44);
+		Point p1 = new Point(525, 87);
+		Point p2 = new Point(645, 197);
 
 		int he = dcel.initialize(p1, p2);
 
 		Halfedge h = dcel.halfedges.get(he);
 
-		points.add(new Point(4.38, 2.84));
-		points.add(new Point(4.88, 5.34));
-		points.add(new Point (1.1, 4.8));
-		points.add(new Point(2.24, 0.78));
+		points.add(new Point(476, 330));
+		points.add(new Point(511, 220));
+		points.add(new Point (369, 271));
+		points.add(new Point(460, 426));
+		points.add(new Point(687, 223));
+		points.add(new Point(581, 542));
+		points.add(new Point(258, 489));
+		points.add(new Point(319, 212));
+		
+		
 
 		for(Point p: points) {
 
@@ -742,32 +748,7 @@ public class Tests {
 		dcel.splitFace(0, dcel.halfedges.get(he), 0);
 		p1.h = p1.h.prev.twin;
 
-		//		for(int i = 0; i < dcel.faces.size(); i++) {
-		//
-		//			Face f = dcel.faces.get(i);
-		//
-		//			System.out.println();
-		//			System.out.println("****FACE #" + i +"****"); 
-		//
-		//			h = f.h;
-		//			Point pp = h.target;
-		//
-		//			for(int j = 0; j < 15; j++) {
-		//
-		//				System.out.println();
-		//				System.out.println("Halfedge");
-		//				System.out.println("target: " + h.target.x + ", " + h.target.y);
-		//				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-		//				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-		//				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-		//
-		//				h =h.next;
-		//			}
-		//
-		//
-		//		}
-
-		Point b = new Point (2.78, 2.24);
+		Point b = new Point (436, 210);
 
 		AttractionRegion attr = new AttractionRegion(b, dcel);
 
@@ -789,9 +770,6 @@ public class Tests {
 				System.out.println();
 				System.out.println("Halfedge");
 				System.out.println("target: " + h.target.x + ", " + h.target.y);
-				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
 
 				h =h.next;
 			}

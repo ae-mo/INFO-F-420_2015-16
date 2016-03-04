@@ -103,7 +103,7 @@ public class AttractionRegion {
 			break;
 			
 		case 2:
-			p2 = next;
+			p2 = prev;
 			break;
 			
 		case 3:
@@ -151,7 +151,7 @@ public class AttractionRegion {
 		System.out.println("Splitting using halfedge: " + p.h.target.x + ", " +  p.h.target.y+ "; "+ p.h.twin.target.x + ", " + p.h.twin.target.y);
 		System.out.println("ray vertex: " + rayVertex.x + ", " + rayVertex.y);
 
-		dcel.splitFace(dcel.faces.size()-1, p.h.prev, dcel.vertices.size()-1);
+		dcel.splitFace(p.h.face, p.h.prev, dcel.vertices.size()-1);
 
 	}
 
