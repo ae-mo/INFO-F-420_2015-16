@@ -233,10 +233,14 @@ public class DCEL {
 	 * @param p2
 	 * @return
 	 */
-	public int initialize(Point p1, Point p2) {
+	public void initialize(ArrayList<Point> points) {
 		
-		if(initialized) return -1;
+		if(initialized) return;
+		if(points.size() < 3) throw new IllegalArgumentException("Provide at least 3 vertices!");
 		
+		Point p1 = points.get(0);
+		Point p2 = points.get(1);
+
 		Halfedge h1 = new Halfedge();
 		Halfedge h2 = new Halfedge();
 		Face f = this.outer;
@@ -263,9 +267,22 @@ public class DCEL {
 		this.halfedges.add(h1);
 		this.halfedges.add(h2);
 		
-		this.initialized = true;
+		int he = this.halfedges.size() - 2;
+
+		for(int i = 2; i < points.size(); i++) {
+
+			p2 =  points.get(i);
+			he = this.addVertexAt(0, he, p2);
+		}
+
+		this.splitFace(0, this.halfedges.get(he), 0);
+		p1.h = p1.h.prev.twin;
 		
-		return (this.halfedges.size() - 2);
+		for(Point v: this.vertices)
+			v.h = v.h.prev.twin;
+		
+		this.initialized = true;
+
 
 	}
 }

@@ -2,12 +2,16 @@ import java.util.ArrayList;
 
 public class AttractionRegion {
 
-  DCEL dcel;
+  ArrayList<Point> points;
+  public DCEL dcel;
+  public Face face;
   Point b;
 
-  public AttractionRegion(Point b, DCEL dcel) {
+  public AttractionRegion(Point b, ArrayList<Point> points) {
 
-    this.dcel = dcel;
+    this.points = points;
+    this.dcel = new DCEL();
+    this.dcel.initialize(this.points);
     this.b = b;
     this.computeAttractionRegion();
 
@@ -18,7 +22,21 @@ public class AttractionRegion {
     ArrayList<Point> sortedVertices = this.sortVertices(b, this.dcel.vertices);
 
     this.computeRayVertices(b, sortedVertices, this.dcel);
+    this.computeAttractionFace(b, this.dcel);
 
+  }
+  
+  private void computeAttractionFace(Point b, DCEL dcel) {
+
+    Face f;
+    for(int i = 1; i < this.dcel.faces.size(); i++) {
+      
+      f = this.dcel.faces.get(i);
+      if(f.contains(b)) 
+        this.face = f;
+      
+    }
+    
   }
 
   /**
@@ -42,10 +60,6 @@ public class AttractionRegion {
    * @param edges
    */
   protected void computeRayVertices(Point b, ArrayList<Point> vertices, DCEL dcel) {
-
-    for(Point p: dcel.vertices) {
-      p.h = p.h.prev.twin;
-    }
 
     RedBlackBST<Key, Edge> status = new RedBlackBST<Key, Edge>();
 

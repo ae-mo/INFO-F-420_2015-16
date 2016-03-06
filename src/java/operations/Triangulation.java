@@ -28,8 +28,6 @@ public class Triangulation {
 				convexVertices.add(p);
 
 			}
-			
-			p.h = p.h.prev.twin;
 
 		}
 

@@ -10,12 +10,13 @@ import dataStructures.Point;
 import dataStructures.RedBlackBST;
 import operations.RadialSort;
 import operations.Triangulation;
+import routing.MinimumBeaconPath;
 
 public class Tests {
 
 	public static void main(String[] args) {
 
-		test20();
+		test23();
 
 	}
 
@@ -711,16 +712,10 @@ public class Tests {
 
 	public static void test20() {
 
-		DCEL dcel = new DCEL();
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		Point p1 = new Point(525, 87);
-		Point p2 = new Point(645, 197);
-
-		int he = dcel.initialize(p1, p2);
-
-		Halfedge h = dcel.halfedges.get(he);
-
+		points.add(new Point(525, 87));
+		points.add(new Point(645, 197));
 		points.add(new Point(476, 330));
 		points.add(new Point(511, 220));
 		points.add(new Point (369, 271));
@@ -729,35 +724,18 @@ public class Tests {
 		points.add(new Point(581, 542));
 		points.add(new Point(258, 489));
 		points.add(new Point(319, 212));
-		
-		
-
-		for(Point p: points) {
-
-			p2 =  p;
-			he = dcel.addVertexAt(0, he, p2);
-
-
-			h = dcel.halfedges.get(he);
-
-
-		}
-
-
-
-		dcel.splitFace(0, dcel.halfedges.get(he), 0);
-		p1.h = p1.h.prev.twin;
 
 		Point b = new Point (436, 210);
 
-		AttractionRegion attr = new AttractionRegion(b, dcel);
+		AttractionRegion attr = new AttractionRegion(b, points);
 
 		System.out.println();
 		System.out.println("****FACES OF THE ARRANGEMENT****");
 
-		for(int i = 0; i < dcel.faces.size(); i++) {
+		Halfedge h;
+		for(int i = 0; i < attr.dcel.faces.size(); i++) {
 
-			Face f = dcel.faces.get(i);
+			Face f = attr.dcel.faces.get(i);
 
 			System.out.println();
 			System.out.println("****FACE #" + i +"****"); 
@@ -908,34 +886,34 @@ public class Tests {
 		System.out.println("p1 target:" + p1.h.target.x + ", " + p1.h.target.y);
 		p1.h = p1.h.prev.twin;
 		System.out.println("p1 target:" + p1.h.target.x + ", " + p1.h.target.y);
-		
-		
-		
 
-//		for(int i = 0; i < dcel.faces.size(); i++) {
-//
-//			Face f = dcel.faces.get(i);
-//
-//			System.out.println();
-//			System.out.println("****FACE #" + i +"****"); 
-//
-//			h = f.h;
-//			Point pp = h.target;
-//
-//			for(int j = 0; j < 15; j++) {
-//
-//				System.out.println();
-//				System.out.println("Halfedge");
-//				System.out.println("target: " + h.target.x + ", " + h.target.y);
-//				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-//				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-//				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-//
-//				h =h.next;
-//			}
-//
-//
-//		}
+
+
+
+		//		for(int i = 0; i < dcel.faces.size(); i++) {
+		//
+		//			Face f = dcel.faces.get(i);
+		//
+		//			System.out.println();
+		//			System.out.println("****FACE #" + i +"****"); 
+		//
+		//			h = f.h;
+		//			Point pp = h.target;
+		//
+		//			for(int j = 0; j < 15; j++) {
+		//
+		//				System.out.println();
+		//				System.out.println("Halfedge");
+		//				System.out.println("target: " + h.target.x + ", " + h.target.y);
+		//				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
+		//				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
+		//				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
+		//
+		//				h =h.next;
+		//			}
+		//
+		//
+		//		}
 
 
 		Triangulation tr = new Triangulation(dcel);
@@ -971,5 +949,35 @@ public class Tests {
 
 
 	}
+
+	public static void test23() {
+
+		ArrayList<Point> points = new ArrayList<Point>();
+		ArrayList<Point> m = new ArrayList<Point>();
+		points.add(new Point(200.58313, 218.24492));
+		points.add(new Point(291.30945, 197.7418));
+		points.add(new Point (324.11445, 277.70398));
+		points.add(new Point(187.76867, 272.06563));
+		points.add(new Point (242.61453, 365.35484));
+		points.add(new Point(396.90055, 269.50273));
+		points.add(new Point(423.55461, 431.99));
+		points.add(new Point(57.57383, 403.7982));
+		
+		
+		Point start = new Point(240.56422, 242.33609);
+
+		m.add(new Point(179.56742, 353.56555));
+
+		Point end = new Point (350, 350);
+
+		MinimumBeaconPath mbp = new MinimumBeaconPath(points, m, start, end);
+		
+
+		System.out.println("*********BEACONS*************");
+		for(Point p: mbp.beacons)
+			System.out.println(p.x + ", " + p.y);
+
+	}
+
 
 }

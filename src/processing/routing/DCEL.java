@@ -2,253 +2,286 @@ import java.util.ArrayList;
 
 public class DCEL {
 
-	public ArrayList<Face> faces;
-	public ArrayList<Point> vertices;
-	public ArrayList<Halfedge> halfedges;
-	public Face outer;
-	private boolean initialized;
+  public ArrayList<Face> faces;
+  public ArrayList<Point> vertices;
+  public ArrayList<Halfedge> halfedges;
+  public Face outer;
+  private boolean initialized;
 
-	public DCEL() {
+  public DCEL() {
 
-		this.initialized = false;
-		this.faces = new ArrayList<Face>();
-		this.vertices = new ArrayList<Point>();
-		this.halfedges = new ArrayList<Halfedge>();
-		outer = new Face();
+    this.initialized = false;
+    this.faces = new ArrayList<Face>();
+    this.vertices = new ArrayList<Point>();
+    this.halfedges = new ArrayList<Halfedge>();
+    outer = new Face();
 
-		this.faces.add(outer);
-	}
+    this.faces.add(outer);
+  }
 
-	/**
-	 * Hooks a new vertex to the desired face.
-	 * @param f
-	 * @param h
-	 * @param v
-	 */
-	public int addVertexAt(int face, int halfedge, Point v) {
+  /**
+   * Hooks a new vertex to the desired face.
+   * @param f
+   * @param h
+   * @param v
+   */
+  public int addVertexAt(int face, int halfedge, Point v) {
 
-		Face f = this.faces.get(face);
-		Halfedge h = this.halfedges.get(halfedge);
+    Face f = this.faces.get(face);
+    Halfedge h = this.halfedges.get(halfedge);
 
-		Point u = h.target;
+    Point u = h.target;
 
-		Halfedge h1 = new Halfedge();
-		Halfedge h2 = new Halfedge();
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
 
-		v.h = h2;
-		h1.twin = h2;
-		h2.twin = h1;
-		h1.target = v;
-		h2.target = u;
-		h1.face = f;
-		h2.face = f;
-		h1.next = h2;
-		h2.next = h.next;
-		h1.prev = h;
-		h2.prev = h1;
-		h.next = h1;
-		h2.next.prev = h2;
+    v.h = h2;
+    h1.twin = h2;
+    h2.twin = h1;
+    h1.target = v;
+    h2.target = u;
+    h1.face = f;
+    h2.face = f;
+    h1.next = h2;
+    h2.next = h.next;
+    h1.prev = h;
+    h2.prev = h1;
+    h.next = h1;
+    h2.next.prev = h2;
 
-		this.vertices.add(v);
-		this.halfedges.add(h1);
-		this.halfedges.add(h2);
+    this.vertices.add(v);
+    this.halfedges.add(h1);
+    this.halfedges.add(h2);
 
-		return (this.halfedges.size() - 2);
+    return (this.halfedges.size() - 2);
 
-	}
-	
-	public int[] splitFace(int face, Halfedge h, int vertex) {
+  }
+  
+  public int[] splitFace(int face, Halfedge h, int vertex) {
 
-		Point v = this.vertices.get(vertex);
-		
-		return this.splitFace(face, h, v);
-		
-	}
+    Face f = this.faces.get(face);
+    Point v = this.vertices.get(vertex);
+    
+    return this.splitFace(f, h, v);
+    
+  }
+  
+  public int[] splitFace(int face, Halfedge h, Point v) {
 
-	/**
-	 * Splits a face into two new faces, creating a new edge between two of its vertices.
-	 * @param f
-	 * @param h
-	 * @param v
-	 * @return
-	 */
-	public int[] splitFace(int face, Halfedge h, Point v) {
+    Face f = this.faces.get(face);
+    
+    return this.splitFace(f, h, v);
+    
+  }
+  
+  public int[] splitFace(Face f, Halfedge h, int vertex) {
 
-		Face f = this.faces.get(face);
-		int[] newFaces = new int[2];
+    Point v = this.vertices.get(vertex);
+    
+    return this.splitFace(f, h, v);
+    
+  }
 
-		Point u = h.target;
+  /**
+   * Splits a face into two new faces, creating a new edge between two of its vertices.
+   * @param f
+   * @param h
+   * @param v
+   * @return
+   */
+  public int[] splitFace(Face f, Halfedge h, Point v) {
 
-		Face f1 = new Face();
-		Face f2 = new Face();
+    int[] newFaces = new int[2];
 
-		Halfedge h1 = new Halfedge();
-		Halfedge h2 = new Halfedge();
+    Point u = h.target;
 
-		f1.h = h1;
-		f2.h = h2;
-		h1.twin = h2;
-		h2.twin = h1;
-		h1.target = v;
-		h2.target = u;
-		h2.next = h.next;
-		h2.next.prev = h2;
-		h1.prev = h;
-		h.next = h1;
+    Face f1 = new Face();
+    Face f2 = new Face();
 
-		Halfedge i = h2;
-		i.face = f2;
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
 
-		while (!i.target.equals(v)) {
+    f1.h = h1;
+    f2.h = h2;
+    h1.twin = h2;
+    h2.twin = h1;
+    h1.target = v;
+    h2.target = u;
+    h2.next = h.next;
+    h2.next.prev = h2;
+    h1.prev = h;
+    h.next = h1;
 
-			i = i.next;
-			i.face = f2;
-		}
+    Halfedge i = h2;
+    i.face = f2;
 
-		h1.next = i.next;
-		h1.next.prev = h1;
-		i.next = h2;
-		h2.prev = i;
-		i = h1;
+    while (!i.target.equals(v)) {
 
-		do {
+      i = i.next;
+      i.face = f2;
+    }
 
-			i.face = f1;
-			i = i.next;
-		} while (!i.target.equals(u));
+    
+    h1.next = i.next;
+    h1.next.prev = h1;
+    i.next = h2;
+    h2.prev = i;
+    i = h1;
 
-		
-		// copy f2 into f
-		f.h = f2.h;
-		f.n = f2.n;
-		
-		this.faces.add(f1);
-		newFaces[0] = this.faces.size() - 1;
-		newFaces[1] = face;
+    do {
 
-		this.halfedges.add(h1);
-		this.halfedges.add(h2);
+      i.face = f1;
+      i = i.next;
+    } while (!i.target.equals(u));
 
-		return newFaces;
-	}
-	
-	/**
-	 * Splits and edge, represented by a halfedge, into two new edges, incident to a given point.
-	 * @param halfedge
-	 * @param w
-	 * @return
-	 */
-	public int[] splitEdge(Halfedge h, Point w) {
-		
-		int[] halfedges = new int[2];
-;
-		Face f1 = h.twin.face;
-		Face f2 = h.face;
-		
-		Halfedge h1 = new Halfedge();
-		Halfedge h2 = new Halfedge();
-		
-		Halfedge k1 = new Halfedge();
-		Halfedge k2 = new Halfedge();
-		
-		h1.face = f2;
-		h1.next = h2;
-		h1.prev = h.prev;
-		h1.twin = k2;
-		h1.target = w;
-		
-		h2.face = f2;
-		h2.next = h.next;
-		h2.prev = h1;
-		h2.twin = k1;
-		h2.target = h.target;
-		
-		k1.face = f1;
-		k1.next = k2;
-		k1.prev = h.twin.prev;
-		k1.twin = h2;
-		k1.target = w;
+    
+  
+    this.faces.remove(f);
+    
+    this.faces.add(f2);
+    this.faces.add(f1);
+    newFaces[0] = this.faces.size() - 1;
+    newFaces[1] = this.faces.size() - 2;
 
-		k2.face = f1;
-		k2.next = h.twin.next;
-		k2.prev = k1;
-		k2.twin = h1;
-		k2.target = h.twin.target;
-		
-		h1.prev.next = h1;
-		k1.prev.next = k1;
-		
-		h2.next.prev = h2;
-		k2.next.prev = k2;
+    this.halfedges.add(h1);
+    this.halfedges.add(h2);
 
-		w.h = k2;
-		h.target.h = k1;
-		
-		// copy k1 into h.twin
-		h.twin.next = k1.next;
-		h.twin.prev = k1.prev;
-		h.twin.twin = k1.twin;
-		h.twin.target = k1.target;
-		
-		// copy h1 into h
-		h.next = h1.next;
-		h.prev = h1.prev;
-		h.twin = h1.twin;
-		h.target = h1.target;
-		
-		this.halfedges.add(h2);
-		this.halfedges.add(k2);
-		
-		int size = this.halfedges.size();
-		
-		halfedges[0] = size - 2;
-		halfedges[1] = size - 1;
-		
-		this.vertices.add(w);
-		
-		return halfedges;
-		
-	}
+    return newFaces;
+  }
+  
+  /**
+   * Splits and edge, represented by a halfedge, into two new edges, incident to a given point.
+   * @param halfedge
+   * @param w
+   * @return
+   */
+  public int[] splitEdge(Halfedge h, Point w) {
+    
+    int[] halfedges = new int[2];
 
-	/**
-	 * Initializes the dcel with a single edge.
-	 * @param p1
-	 * @param p2
-	 * @return
-	 */
-	public int initialize(Point p1, Point p2) {
-		
-		if(initialized) return -1;
-		
-		Halfedge h1 = new Halfedge();
-		Halfedge h2 = new Halfedge();
-		Face f = this.outer;
+    Face f1 = h.face;
+    Face f2 = h.twin.face;
+    
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
+    
+    Halfedge k1 = new Halfedge();
+    Halfedge k2 = new Halfedge();
+    
+    h1.face = f1;
+    h1.next = h2;
+    h1.prev = h.prev;
+    h1.twin = k2;
+    h1.target = w;
+    
+    h2.face = f1;
+    h2.next = h.next;
+    h2.prev = h1;
+    h2.twin = k1;
+    h2.target = h.target;
+    
+    k1.face = f2;
+    k1.next = k2;
+    k1.prev = h.twin.prev;
+    k1.twin = h2;
+    k1.target = w;
 
-		p1.h = h1;
-		p2.h = h2;
+    k2.face = f2;
+    k2.next = h.twin.next;
+    k2.prev = k1;
+    k2.twin = h1;
+    k2.target = h.twin.target;
+    
+    h1.prev.next = h1;
+    k1.prev.next = k1;
+    
+    h2.next.prev = h2;
+    k2.next.prev = k2;
 
-		h1.target = p2;
-		h1.face = f;
-		h1.twin = h2;
-		h1.next = h2;
-		h1.prev = h2;
+    w.h = h2;
+    
+    // copy k2 into h.twin
+    h.twin.next = k2.next;
+    h.twin.prev = k2.prev;
+    h.twin.twin = k2.twin;
+    h.twin.target = k2.target;
+    
+    // copy h1 into h
+    h.next = h2.next;
+    h.prev = h2.prev;
+    h.twin = h2.twin;
+    h.target = h2.target;
+    
+    this.halfedges.add(h1);
+    this.halfedges.add(k1);
+    
+    int size = this.halfedges.size();
+    
+    halfedges[0] = size - 2;
+    halfedges[1] = size - 1;
+    
+    this.vertices.add(w);
+    
+    return halfedges;
+    
+  }
 
-		h2.target = p1;
-		h2.face = f;
-		h2.twin = h1;
-		h2.next = h1;
-		h2.prev = h1;
+  /**
+   * Initializes the dcel with a single edge.
+   * @param p1
+   * @param p2
+   * @return
+   */
+  public void initialize(ArrayList<Point> points) {
+    
+    if(initialized) return;
+    if(points.size() < 3) throw new IllegalArgumentException("Provide at least 3 vertices!");
+    
+    Point p1 = points.get(0);
+    Point p2 = points.get(1);
 
-		f.h = h1;
-		
-		this.vertices.add(p1);
-		this.vertices.add(p2);
-		this.halfedges.add(h1);
-		this.halfedges.add(h2);
-		
-		this.initialized = true;
-		
-		return (this.halfedges.size() - 2);
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
+    Face f = this.outer;
 
-	}
+    p1.h = h1;
+    p2.h = h2;
+
+    h1.target = p2;
+    h1.face = f;
+    h1.twin = h2;
+    h1.next = h2;
+    h1.prev = h2;
+
+    h2.target = p1;
+    h2.face = f;
+    h2.twin = h1;
+    h2.next = h1;
+    h2.prev = h1;
+
+    f.h = h1;
+    
+    this.vertices.add(p1);
+    this.vertices.add(p2);
+    this.halfedges.add(h1);
+    this.halfedges.add(h2);
+    
+    int he = this.halfedges.size() - 2;
+
+    for(int i = 2; i < points.size(); i++) {
+
+      p2 =  points.get(i);
+      he = this.addVertexAt(0, he, p2);
+    }
+
+    this.splitFace(0, this.halfedges.get(he), 0);
+    p1.h = p1.h.prev.twin;
+    
+    for(Point v: this.vertices)
+      v.h = v.h.prev.twin;
+    
+    this.initialized = true;
+
+
+  }
 }

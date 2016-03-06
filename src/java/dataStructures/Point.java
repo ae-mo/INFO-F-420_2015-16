@@ -1,5 +1,5 @@
 package dataStructures;
-public class Point {
+public class Point implements Cloneable{
 
 	public static final double EPSILON = 0.00000000001;
 	public double x;
@@ -57,6 +57,12 @@ public class Point {
 		}
 		return true;
 
+	}
+	
+	public Object clone() throws CloneNotSupportedException {
+		
+		return super.clone();
+		
 	}
 
 

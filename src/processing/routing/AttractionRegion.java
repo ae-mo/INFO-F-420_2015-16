@@ -1,16 +1,5 @@
-package attractionRegion;
 import java.util.ArrayList;
 
-import dataStructures.DCEL;
-import dataStructures.Edge;
-import dataStructures.Face;
-import dataStructures.Halfedge;
-import dataStructures.Point;
-import dataStructures.RedBlackBST;
-import operations.CrossProduct;
-import operations.DotProduct;
-import operations.RadialSort;
-import operations.Turn;
 
 public class AttractionRegion {
 

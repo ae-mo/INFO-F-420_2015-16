@@ -1,39 +1,39 @@
-package operations;
+package dataStructures;
 
 import java.io.*;
 import java.util.*;
  
-public class Dijkstra {
-   private static final Graph.Edge[] GRAPH = {
-      new Graph.Edge("a", "b", 7),
-      new Graph.Edge("a", "c", 9),
-      new Graph.Edge("a", "f", 14),
-      new Graph.Edge("b", "c", 10),
-      new Graph.Edge("b", "d", 15),
-      new Graph.Edge("c", "d", 11),
-      new Graph.Edge("c", "f", 2),
-      new Graph.Edge("d", "e", 6),
-      new Graph.Edge("e", "f", 9),
-   };
-   private static final String START = "a";
-   private static final String END = "e";
+//public class Dijkstra {
+//   private static final Graph.Edge[] GRAPH = {
+//      new Graph.Edge("a", "b", 7),
+//      new Graph.Edge("a", "c", 9),
+//      new Graph.Edge("a", "f", 14),
+//      new Graph.Edge("b", "c", 10),
+//      new Graph.Edge("b", "d", 15),
+//      new Graph.Edge("c", "d", 11),
+//      new Graph.Edge("c", "f", 2),
+//      new Graph.Edge("d", "e", 6),
+//      new Graph.Edge("e", "f", 9),
+//   };
+//   private static final String START = "a";
+//   private static final String END = "e";
+// 
+//   public static void main(String[] args) {
+//      Graph g = new Graph(GRAPH);
+//      g.dijkstra(START);
+//      g.printPath(END);
+//      //g.printAllPaths();
+//   }
+//}
  
-   public static void main(String[] args) {
-      Graph g = new Graph(GRAPH);
-      g.dijkstra(START);
-      g.printPath(END);
-      //g.printAllPaths();
-   }
-}
- 
-class Graph {
+public class Graph {
    private final Map<String, Vertex> graph; // mapping of vertex names to Vertex objects, built from a set of Edges
  
    /** One edge of the graph (only used by Graph constructor) */
    public static class Edge {
       public final String v1, v2;
-      public final int dist;
-      public Edge(String v1, String v2, int dist) {
+      public final double dist;
+      public Edge(String v1, String v2, double dist) {
          this.v1 = v1;
          this.v2 = v2;
          this.dist = dist;
@@ -43,9 +43,9 @@ class Graph {
    /** One vertex of the graph, complete with mappings to neighbouring vertices */
    public static class Vertex implements Comparable<Vertex> {
       public final String name;
-      public int dist = Integer.MAX_VALUE; // MAX_VALUE assumed to be infinity
+      public double dist = Double.MAX_VALUE; // MAX_VALUE assumed to be infinity
       public Vertex previous = null;
-      public final Map<Vertex, Integer> neighbours = new HashMap<>();
+      public final Map<Vertex, Double> neighbours = new HashMap<>();
  
       public Vertex(String name) {
          this.name = name;
@@ -61,9 +61,21 @@ class Graph {
             System.out.printf(" -> %s(%d)", this.name, this.dist);
          }
       }
+      private ArrayList<String> getPath(ArrayList<String> path) {
+          if (this == this.previous) {
+             path.add(this.name);
+          } else if (this.previous == null) {
+             return null;
+          } else {
+             this.previous.getPath(path);
+             path.add(this.name);
+          }
+          
+          return path;
+       }
  
       public int compareTo(Vertex other) {
-         return Integer.compare(dist, other.dist);
+         return Double.compare(dist, other.dist);
       }
    }
  
@@ -96,7 +108,7 @@ class Graph {
       // set-up vertices
       for (Vertex v : graph.values()) {
          v.previous = v == source ? source : null;
-         v.dist = v == source ? 0 : Integer.MAX_VALUE;
+         v.dist = v == source ? 0 : Double.MAX_VALUE;
          q.add(v);
       }
  
@@ -109,13 +121,13 @@ class Graph {
       while (!q.isEmpty()) {
  
          u = q.pollFirst(); // vertex with shortest distance (first iteration will return source)
-         if (u.dist == Integer.MAX_VALUE) break; // we can ignore u (and any other remaining vertices) since they are unreachable
+         if (u.dist == Double.MAX_VALUE) break; // we can ignore u (and any other remaining vertices) since they are unreachable
  
          //look at distances to each neighbour
-         for (Map.Entry<Vertex, Integer> a : u.neighbours.entrySet()) {
+         for (Map.Entry<Vertex, Double> a : u.neighbours.entrySet()) {
             v = a.getKey(); //the neighbour in this iteration
  
-            final int alternateDist = u.dist + a.getValue();
+            final double alternateDist = u.dist + a.getValue();
             if (alternateDist < v.dist) { // shorter path to neighbour found
                q.remove(v);
                v.dist = alternateDist;
@@ -136,6 +148,17 @@ class Graph {
       graph.get(endName).printPath();
       System.out.println();
    }
+
+   /** Returns a path from the source to the specified vertex */
+   public ArrayList<String> getPath(String endName, ArrayList<String> path) {
+	      if (!graph.containsKey(endName)) {
+	         System.err.printf("Graph doesn't contain end vertex \"%s\"\n", endName);
+	         return null;
+	      }
+	 
+	      return graph.get(endName).getPath(path);
+	   }
+   
    /** Prints the path from the source to every vertex (output order is not guaranteed) */
    public void printAllPaths() {
       for (Vertex v : graph.values()) {
