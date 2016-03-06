@@ -1,5 +1,7 @@
 package dataStructures;
 import operations.Turn;
+import operations.CrossProduct;
+import operations.DotProduct;
 
 /*
  * Represents a polygon's edge.
@@ -45,13 +47,20 @@ public class Edge {
 
 		if((eb.value >= 0 && ea.value <= 0) ||
 				(eb.value <= 0 && ea.value >= 0)) {
-
-			Triangle abEb = new Triangle(a, b, e.b);
-
-			boolean strictlyContains = abEb.strictlyContains(e.a);
-
-			if(strictlyContains) return false;
-			else return true;
+			
+			CrossProduct aEaB = new CrossProduct(this.a, this.b, this.a, e.a);
+			DotProduct EaEbP = new DotProduct(this.a, this.b, new Point(0, 0), new Point(-(e.b.y-e.a.y), (e.b.x-e.a.x)));
+			
+			double t1 = aEaB.value/EaEbP.value;
+			
+			if(t1 >= 0) return true;
+			
+//			Triangle abEb = new Triangle(a, b, e.b);
+//
+//			boolean strictlyContains = abEb.strictlyContains(e.a);
+//
+//			if(strictlyContains) return false;
+//			else return true;
 
 		}
 

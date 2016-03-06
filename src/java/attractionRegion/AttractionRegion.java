@@ -44,8 +44,11 @@ public class AttractionRegion {
 		for(int i = 1; i < this.dcel.faces.size(); i++) {
 			
 			f = this.dcel.faces.get(i);
-			if(f.contains(b)) 
+			if(f.contains(b))  {
 				this.face = f;
+				break;
+			}
+				
 			
 		}
 		

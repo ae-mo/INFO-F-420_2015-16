@@ -954,21 +954,51 @@ public class Tests {
 
 		ArrayList<Point> points = new ArrayList<Point>();
 		ArrayList<Point> m = new ArrayList<Point>();
-		points.add(new Point(200.58313, 218.24492));
-		points.add(new Point(291.30945, 197.7418));
-		points.add(new Point (324.11445, 277.70398));
-		points.add(new Point(187.76867, 272.06563));
-		points.add(new Point (242.61453, 365.35484));
-		points.add(new Point(396.90055, 269.50273));
-		points.add(new Point(423.55461, 431.99));
-		points.add(new Point(57.57383, 403.7982));
-		
-		
-		Point start = new Point(240.56422, 242.33609);
+		points.add(new Point(160.0, 171.0));
+		points.add(new Point(313.0, 47.0));
+		points.add(new Point(520.0, 109.0));
+		points.add(new Point(413.0, 216.0));
+		points.add(new Point(320.0, 74.0));
+		points.add(new Point(274.0, 180.0));
+		points.add(new Point(448.0, 350.0));
+		points.add(new Point(723.0, 198.0));
+		points.add(new Point(552.0, 189.0));
+		points.add(new Point(632.0, 31.0));
+		points.add(new Point(460.0, 36.0));
+		points.add(new Point(557.0, 14.0));
+		points.add(new Point(726.0, 25.0));
+		points.add(new Point(689.0, 107.0));
+		points.add(new Point(627.0, 122.0));
+		points.add(new Point(755.0, 165.0));
+		points.add(new Point(719.0, 306.0));
+		points.add(new Point(558.0, 350.0));
+		points.add(new Point(557.0, 455.0));
+		points.add(new Point(716.0, 394.0));
+		points.add(new Point(649.0, 522.0));
+		points.add(new Point(475.0, 509.0));
+		points.add(new Point(522.0, 375.0));
+		points.add(new Point(564.0, 321.0));
+		points.add(new Point(472.0, 366.0));
+		points.add(new Point(315.0, 383.0));
+		points.add(new Point(278.0, 295.0));
+		points.add(new Point(324.0, 301.0));
+		points.add(new Point(273.0, 234.0));
+		points.add(new Point(151.0, 209.0));
 
-		m.add(new Point(179.56742, 353.56555));
+		
+		Point start = new Point(557.0, 24.0);
 
-		Point end = new Point (350, 350);
+		m.add(new Point(688.0, 30.0));
+		m.add(new Point(631.0, 158.0));
+		m.add(new Point(600.0, 177.0));
+		m.add(new Point(729.0, 215.0));
+		m.add(new Point(607.0, 301.0));
+		m.add(new Point(616.0, 484.0));
+		m.add(new Point(358.0, 306.0));
+		m.add(new Point(267.0, 113.0));
+		m.add(new Point(320.0, 68.0));
+		
+		Point end = new Point(421.0, 109.0);
 
 		MinimumBeaconPath mbp = new MinimumBeaconPath(points, m, start, end);
 		

@@ -1,0 +1,7 @@
+m.add(new Point(530.0, 81.0));
+m.add(new Point(530.0, 163.0));
+m.add(new Point(457.0, 280.0));
+m.add(new Point(246.0, 297.0));
+m.add(new Point(248.0, 115.0));
+m.add(new Point(167.0, 34.0));
+m.add(new Point(381.0, 155.0));
