@@ -25,10 +25,4 @@ public class DotProduct {
 
 	}
 
-	public DotProduct(Edge a, Point b1, Point b2) {
-
-		this(a.a, a.b, b1, b2);
-
-	}
-
 }

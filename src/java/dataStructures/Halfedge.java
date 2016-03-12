@@ -35,13 +35,9 @@ public class Halfedge {
 
 	}
 
-	@Override
 	public boolean equals(Object obj) {
 
 		if (obj == null) {
-			return false;
-		}
-		if (!Halfedge.class.isAssignableFrom(obj.getClass())) {
 			return false;
 		}
 		final Halfedge other = (Halfedge) obj;

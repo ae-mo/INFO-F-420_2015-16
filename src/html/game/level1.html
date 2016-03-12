@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Bootstrap Example</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha256-QSktus/KATft+5BD6tKvAwzSxP75hHX0SrIjYto471M= 
+	sha512-787L1W8XyGQkqtvQigyUGnPxsRudYU2fEunzUP5c59Z3m4pKl1YaBGTcdhfxOfBvqTmJFmb6GDgm0iQRVWOvLQ==" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="../../css/level.css">
+	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	  	<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.16/processing.min.js"></script>
+	  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	  	<script type="text/javascript" async
+  			src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+		<script type="text/javascript">
+			
+			function toggleAudio() {
+
+				var audio = document.getElementById("music");
+				var glyph = document.getElementById("volumeGlyph");
+				
+				audio.muted = !audio.muted;
+
+				if(audio.muted)
+					glyph.className = "glyphicon glyphicon-volume-off"; 
+				else {
+					glyph.className = "glyphicon glyphicon-volume-up"; 
+					audio.currentTime = 0;
+				}
+			}
+		</script>
+		<script type="text/javascript">
+
+			var NR_OF_LEVELS = 3;
+			var level = 1;
+			function changeLevel(dir) {
+
+				level = level + dir;
+				var game = document.getElementById("game");
+				
+				processingInstances = Processing.instances.length;
+	            // stop any running sketch
+	            if (processingInstances > 0) {
+	                Processing.instances[0].exit();
+	            }	
+				Processing.loadSketchFromSources(game, ["../../processing/game/level" + level + "/level" + level + ".pde"]);
+
+				if(level == NR_OF_LEVELS) {
+
+					var next = document.getElementById("next");
+					next.disabled = true;
+
+				}
+				if(level - dir == NR_OF_LEVELS) {
+					
+					var next = document.getElementById("next");
+					next.disabled = false;
+
+				}
+				if(level == 1) {
+
+					var prev = document.getElementById("prev");
+					prev.disabled = true;
+
+				}
+				if(level - dir == 1) {
+					
+					var prev = document.getElementById("prev");
+					prev.disabled = false;
+
+				}
+
+			}
+		</script>
+		<script type="text/javascript">
+			
+			function showHint() {
+
+				var id = "game";
+				var pjs = Processing.getInstanceById(id);
+				pjs.showHint();
+
+
+			}
+
+		</script>
+	</head>
+	<body>
+		<audio id="music" src="../../music/Investigations.mp3" autoplay loop>
+			<p>Your browser does not support the audio element </p>
+		</audio>
+		<div class="container">
+			<div class="page-header">
+  				<img class="img-responsive center-block" src="../../img/game/title.png">
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12">
+						    <div class="well">
+						    	<canvas id="game" data-processing-sources="../../processing/game/test/test.pde"></canvas>
+						    </div>
+						</div>						
+					</div>
+					<div class="row">
+						<div class="col-sm-1">
+							<a id="back" disabled="true" class="btn btn-danger">
+								<span class="glyphicon glyphicon-backward"></span> Back
+							</a>
+						</div>
+						<div class="col-sm-4 col-sm-offset-3">
+							<div class="btn-group btn-group-justified" role="group">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-primary"> Start
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button onclick="showHint()" type="button" class="btn btn-primary"> Hint
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-primary"> Ready!
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-1">
+							<button  type="button" onclick="toggleAudio()" class="btn btn-default"> 
+								<span id="volumeGlyph" class="glyphicon glyphicon-volume-up"></span>
+							</button>
+						</div>
+						<div class="col-sm-2 col-sm-offset-1">
+							<div class="btn-group btn-group-justified" role="group">
+								<div class="btn-group" role="group">
+									<button id="prev" disabled="true" onclick="changeLevel(-1)" type="button" class="btn btn-success">
+										<span class="glyphicon glyphicon-backward"></span> Prev
+									</button>
+								</div>
+								<div class="btn-group" role="group">
+									<button id="next" onclick="changeLevel(1)" type="button" class="btn btn-success">
+										Next <span class="glyphicon glyphicon-forward"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

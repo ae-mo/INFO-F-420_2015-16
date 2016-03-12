@@ -17,7 +17,7 @@ public class Triangle {
 
 	public Triangle(float ax, float ay, float bx, float by, float cx, float cy) {
 
-		this(new Point(ax, ay), new Point(bx, by), new Point(cx, cy));
+		this(new Point(ax, ay, null), new Point(bx, by, null), new Point(cx, cy, null));
 
 	}
 
@@ -36,7 +36,7 @@ public class Triangle {
 
 	public boolean contains(float qx, float qy) {
 
-		return contains(new Point(qx, qy));
+		return contains(new Point(qx, qy, null));
 
 	}
 
@@ -56,7 +56,7 @@ public class Triangle {
 
 	public boolean strictlyContains(float qx, float qy) {
 
-		return strictlyContains(new Point(qx, qy));
+		return strictlyContains(new Point(qx, qy, null));
 
 	}
 

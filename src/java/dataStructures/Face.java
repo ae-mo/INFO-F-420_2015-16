@@ -33,7 +33,7 @@ public class Face {
 				}
 				else {
 					
-					Turn pP1eA = new Turn(p, new Point(p.x+1, p.y), e.a);
+					Turn pP1eA = new Turn(p, new Point(p.x+1, p.y, null), e.a);
 					if(pP1eA.value != 0)
 						count++;
 					

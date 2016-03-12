@@ -17,7 +17,7 @@ public class RadialSort {
 
 	public RadialSort(double qx, double qy, ArrayList<Point> points) {
 
-		this(new Point(qx, qy), points);
+		this(new Point(qx, qy, null), points);
 
 	}
 

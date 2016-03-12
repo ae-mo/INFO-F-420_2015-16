@@ -34,12 +34,12 @@ public class Key implements Comparable<Key>{
 
 	public Key(float bx, float by, Edge e) {
 
-		this(new Point(bx, by), e);
+		this(new Point(bx, by, null), e);
 	}
 
 	public Key(float bex, float bey, float ax, float ay, float bx, float by) {
 
-		this(new Point(bex, bey), new Edge(ax, ay, bx, by));
+		this(new Point(bex, bey, null), new Edge(ax, ay, bx, by));
 
 	}
 
@@ -93,9 +93,6 @@ public class Key implements Comparable<Key>{
 	public boolean equals(Object obj) {
 
 		if (obj == null) {
-			return false;
-		}
-		if (!Key.class.isAssignableFrom(obj.getClass())) {
 			return false;
 		}
 		final Key other = (Key) obj;

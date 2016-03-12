@@ -169,7 +169,7 @@ public class AttractionRegion {
 		System.out.println("Splitting using halfedge: " + p.h.target.x + ", " +  p.h.target.y+ "; "+ p.h.twin.target.x + ", " + p.h.twin.target.y);
 		System.out.println("ray vertex: " + rayVertex.x + ", " + rayVertex.y);
 
-		dcel.splitFace(p.h.face, p.h.prev, dcel.vertices.size()-1);
+		dcel.splitFace(p.h.face, p.h.prev, dcel.vertices.get(dcel.vertices.size()-1));
 
 	}
 
@@ -178,18 +178,18 @@ public class AttractionRegion {
 		Point prev = p.h.prev.prev.target;
 		Point next = p.h.target;
 
-		Action actionNext = decideAction(b, p, next);
-		Action actionPrev = decideAction(b, p, prev);
+		int actionNext = decideAction(b, p, next);
+		int actionPrev = decideAction(b, p, prev);
 
 
-		if(actionNext == Action.DELETE)
+		if(actionNext == 2)
 			this.deleteEdge(status, b, p, next);
-		if(actionPrev == Action.DELETE)
+		if(actionPrev == 2)
 			this.deleteEdge(status, b, p, prev);
 
-		if(actionNext == Action.ADD) 
+		if(actionNext == 1) 
 			this.addEdge(status, b, p, next);
-		if(actionPrev == Action.ADD) 
+		if(actionPrev == 1) 
 			this.addEdge(status, b, p, prev);
 
 
@@ -259,7 +259,7 @@ public class AttractionRegion {
 
 	}
 
-	private Action decideAction(Point b, Point p, Point q) {
+	private int decideAction(Point b, Point p, Point q) {
 
 		Turn bpq = new Turn(b, p, q);
 
@@ -268,16 +268,16 @@ public class AttractionRegion {
 
 		if(bpq.value > 0) {
 			System.out.println("added");
-			return Action.ADD;
+			return 1;
 		}
 
 		else if(bpq.value < 0) {
 			System.out.println("deleted");
-			return Action.DELETE;
+			return 2;
 		}
 
 
-		return Action.NOTHING;
+		return 0;
 
 	}
 
@@ -372,7 +372,7 @@ public class AttractionRegion {
 		x = xNum / den;
 		y = yNum / den;
 
-		return new Point(x, y);
+		return new Point(x, y, null);
 
 	}
 
@@ -381,7 +381,7 @@ public class AttractionRegion {
 		double x = a.x +t*(b.x-a.x);
 		double y = a.y +t*(b.y-a.y);
 
-		return new Point(x, y);
+		return new Point(x, y, null);
 
 	}
 

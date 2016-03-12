@@ -19,16 +19,5 @@ public class CrossProduct {
 
 	}
 
-	public CrossProduct(Point a1, Point a2, Edge b) {
-
-		this(a1, a2, b.a, b.b);
-
-	}
-
-	public CrossProduct(Edge a, Point b1, Point b2) {
-
-		this(a.a, a.b, b1, b2);
-
-	}
 
 }

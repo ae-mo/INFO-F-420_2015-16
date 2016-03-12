@@ -57,31 +57,7 @@ public class DCEL {
 		return (this.halfedges.size() - 2);
 
 	}
-	
-	public int[] splitFace(int face, Halfedge h, int vertex) {
 
-		Face f = this.faces.get(face);
-		Point v = this.vertices.get(vertex);
-		
-		return this.splitFace(f, h, v);
-		
-	}
-	
-	public int[] splitFace(int face, Halfedge h, Point v) {
-
-		Face f = this.faces.get(face);
-		
-		return this.splitFace(f, h, v);
-		
-	}
-	
-	public int[] splitFace(Face f, Halfedge h, int vertex) {
-
-		Point v = this.vertices.get(vertex);
-		
-		return this.splitFace(f, h, v);
-		
-	}
 
 	/**
 	 * Splits a face into two new faces, creating a new edge between two of its vertices.
@@ -275,7 +251,7 @@ public class DCEL {
 			he = this.addVertexAt(0, he, p2);
 		}
 
-		this.splitFace(0, this.halfedges.get(he), 0);
+		this.splitFace(this.faces.get(0), this.halfedges.get(he), this.vertices.get(0));
 		p1.h = p1.h.prev.twin;
 		
 		for(Point v: this.vertices)

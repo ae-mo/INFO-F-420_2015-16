@@ -16,7 +16,7 @@ public class Tests {
 
 	public static void main(String[] args) {
 
-		test23();
+		test20();
 
 	}
 
@@ -714,18 +714,15 @@ public class Tests {
 
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		points.add(new Point(525, 87));
-		points.add(new Point(645, 197));
-		points.add(new Point(476, 330));
-		points.add(new Point(511, 220));
-		points.add(new Point (369, 271));
-		points.add(new Point(460, 426));
-		points.add(new Point(687, 223));
-		points.add(new Point(581, 542));
-		points.add(new Point(258, 489));
-		points.add(new Point(319, 212));
+		points.add(new Point(314.94845, 284.82678));
+		  points.add(new Point(468.96991, 159.82386));
+		  points.add(new Point(703.35039, 393.46027));
+		  points.add(new Point(406.46845, 513.25474));
+		  points.add(new Point(329.82975, 420.99068));
+		  points.add(new Point(545.60861, 414.29409));
 
-		Point b = new Point (436, 210);
+
+		 Point b = new Point(433.25479, 287.80304);
 
 		AttractionRegion attr = new AttractionRegion(b, points);
 
