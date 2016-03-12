@@ -1,47 +1,262 @@
-ArrayList<Point> points;
-Point b, start, end;
-
+ArrayList<Point> points, beacons, defaultBeacons;
+Point start, end;
+Point target, previousTarget;
+AttractionRegion attr;
+boolean started, hint, hintShown, ready;
+float startMillis, currentMillis;
+int count, r, g, b, MAX_SECS;
+int strokePoly;
+int SHIFT_X, SHIFT_Y;
+int nextTarget; 
 void setup() {
 
   size(1068, 600);
+  MAX_SECS = 5;
+  SHIFT_X = 60;
+  SHIFT_Y = 100;
+  strokePoly = 3;
+  started = false;
+  hint = false;
+  hintShown = false;
+  ready = false;
+  nextTarget = 1;
+  
+  r= g = b= 255;
+  
+  background(r, g, b);
   
   points = new ArrayList<Point>();
-  points.add(new Point(314.94845, 284.82678, null));
-  points.add(new Point(468.96991, 159.82386, null));
-  points.add(new Point(703.35039, 393.46027, null));
-  points.add(new Point(406.46845, 513.25474, null));
-  points.add(new Point(329.82975, 420.99068, null));
-  points.add(new Point(545.60861, 414.29409, null));
+  defaultBeacons = new ArrayList<Point>();
+  beacons = new ArrayList<Point>();
   
-  b = new Point(433.25479, 287.80304, null);
-  drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, 5);
+  points.add(new Point(274, 15, null));
+  points.add(new Point(458, 188, null));
+  points.add(new Point(539, 114, null));
+  points.add(new Point(482, 38, null));
+  points.add(new Point(645, 123, null));
+  points.add(new Point(565, 150, null));
+  points.add(new Point(740, 242, null));
+  points.add(new Point(553, 208, null));
+  points.add(new Point(571, 327, null));
+  points.add(new Point(463, 234, null));
+  points.add(new Point(369, 272, null));
+  points.add(new Point(350, 389, null));
+  points.add(new Point(270, 222, null));
+  points.add(new Point(378, 177, null));
+  points.add(new Point(224, 148, null));
+  points.add(new Point(276, 126, null));
   
-  console.log("hey");
+  defaultBeacons.add(new Point(378, 177, null));
+  defaultBeacons.add(new Point(270, 222, null));
+  defaultBeacons.add(new Point(463, 234, null));
+  defaultBeacons.add(new Point(458, 188, null));
+  defaultBeacons.add(new Point(539, 114, null));
+  
+  
+  start = new Point(247, 144, null);
+  end = new Point(515, 63, null);
+  start.x = start.x + SHIFT_X;
+  start.y = start.y + SHIFT_Y;
+  end.x = end.x + SHIFT_X;
+  end.y = end.y + SHIFT_Y;
+  
+  for(Point p: points) {
+	  
+	  p.x = p.x + SHIFT_X;
+	  p.y = p.y + SHIFT_Y;
+	  
+  }
+  
+  
+  for(Point p: defaultBeacons) {
+	  
+	  p.x = p.x + SHIFT_X;
+	  p.y = p.y + SHIFT_Y;
+	  
+  }
+  
+  drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+  drawPoint(start, 255, 0, 0, 5);
+  drawPoint(end, 0, 255, 100, 5);
+  drawPoints(defaultBeacons, 127, 70, 44, 5);
   
 }
 
 void draw() {
 	
-	if(mouseClicked)
+	if(!hintShown && !ready && started) {
+		
+		if(mousePressed) {
+			
+			if(started) {
+		
+				if(!hint) {
+					
+					Point b = new Point(mouseX, mouseY, null);
+					beacons.add(b);
+					drawPoint(b, 0, 0, 255, 5);
+					
+				}
+				else {
+					
+					Point b = findNearest(mouseX, mouseY);
+					
+					if(b != null) {
+						
+						showHint(b);
+						startMillis = millis();
+						count = 0;
+						
+					}
+					
+				}
+			}	
+			
+		}
+		
+	}
+		
+	else if(hintShown) {
+		currentMillis = millis();
+		
+		float diff = currentMillis - startMillis;
+		if(diff > 1000*count) {
+			
+			background(r,g,b);
+			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+			showHint(null);
+			drawPoint(start, 255, 0, 0, 5);
+			drawPoint(end, 255, 255, 100, 5);
+			drawPoints(beacons, 0, 0, 255, 5);
+			showText( MAX_SECS-count, 100, 100, 255, 0, 0, 20);
+			count++;
 	
+		}
+		
+		if(count > MAX_SECS) {
+			
+			hintShown = false;
+			background(r,g,b);
+			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+			drawPoint(start, 255, 0, 0, 5);
+			drawPoint(end, 0, 255, 100, 5);
+			drawPoints(beacons, 0, 0, 255, 5);
+			
+		}
+					
+	}
+	else if (ready) {
+		
+		
+		AttractionRegion currentAttr = new AttractionRegion(target, points);
+		drawShapeFromFace(currentAttr.face, 0, 255, 0, 0, 200, 0, 0, 0);
+		
+		if(!currentAttr.face.contains(previousTarget)) {
+			
+			console.log("you looose");
+			started = false;
+			ready = false;
+			return;
+			
+		}
+		
+		if(nextTarget < beacons.size()) {
+			
+			previousTarget = target;
+			target = beacons.get(nextTarget);
+			nextTarget++;
+			
+		
+		}
+		else {
+			
+			console.log("you wiiin");
+			started = false;
+			ready = false;
+		}
+		
+	}
 }
 
 
-void showHint() {
+Point findNearest(float x, float y) {
+	
+	for(Point b: beacons) {
+		
+		if(Math.abs(b.x - x) < 15 && Math.abs(b.y - y) < 15)
+			return b;
+		
+	}
+	
+	return null;
+	
+}
 
-    AttractionRegion attr = new AttractionRegion(b, points);
+void showText(String inputText, float x, float y, int r1, int g1, int b1, int size) {
+	
+	fill(r1, g1, b1);
+	textSize(size);
+	text(inputText, x, y);
+	
+}
+
+void showHint(Point b) {
+	
+	hintShown = true;
+	hint = false;
+	
+	if(b != null)
+		attr = new AttractionRegion(b, points);
 
     drawShapeFromFace(attr.face, 0, 255, 0, 0, 200, 0, 0, 0);
 }
 
+void toggleHint() {
+	
+	hint = true;
+	
+}
 
-void drawShapeFromFace(Face f, int r1, int g1, int b1, int r2, int g2, int b2, int stroke) {
+void toggleReady() {
+	
+	ready = true;
+	previousTarget = start;
+	beacons.add(end);
+	target = beacons.get(0);
+}
+
+void toggleStart() {
+	
+	started = true;
+	background(r,g,b);
+	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+	drawPoint(start, 255, 0, 0, 5);
+	drawPoint(end, 0, 255, 100, 5);
+	
+}
+
+void drawPoints(ArrayList<Point> points, int r1, int g1, int b1, int size) {
+	
+	for(Point p: points)
+		drawPoint(p, r1, g1, b1, size);
+	
+}
+
+void drawPoint(Point p, int r1, int g1, int b1, int size) {
+	
+	strokeWeight(size);
+	stroke(r1, g1, b1);
+	point((float)p.x,(float)p.y);
+	strokeWeight(1);
+
+}
+
+void drawShapeFromFace(Face f, int r1, int g1, int b1, int r2, int g2, int b2, int strokeSize) {
 
   Halfedge h = f.h;
-  console.log("hey");
   fill(color(r1, g1, b1));
-
-  strokeWeight(stroke);
+  stroke(color(r2, g2, b2));
+  strokeWeight(strokeSize);
   
   beginShape();
 
@@ -60,10 +275,11 @@ void drawShapeFromFace(Face f, int r1, int g1, int b1, int r2, int g2, int b2, i
 
 }
 
-void drawShapeFromPoints(ArrayList<Point> points, int r1, int g1, int b1, int r2, int g2, int b2, int stroke) {
+void drawShapeFromPoints(ArrayList<Point> points, int r1, int g1, int b1, int r2, int g2, int b2, int strokeSize) {
 
   fill(color(r1, g1, b1));
-  strokeWeight(stroke);
+  stroke(color(r2, g2, b2));
+  strokeWeight(strokeSize);
   
   beginShape();
 

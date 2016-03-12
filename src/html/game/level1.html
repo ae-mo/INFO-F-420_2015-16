@@ -79,7 +79,42 @@
 
 				var id = "game";
 				var pjs = Processing.getInstanceById(id);
-				pjs.showHint();
+				pjs.toggleHint();
+
+
+			}
+
+		</script>
+		<script type="text/javascript">
+			
+			function start() {
+
+				var hint = document.getElementById("hint");
+				var ready = document.getElementById("ready");
+				var start = document.getElementById("start");
+				hint.disabled = false;
+				ready.disabled = false;
+				start.disabled = true;
+
+				var id = "game";
+				var pjs = Processing.getInstanceById(id);
+				pjs.toggleStart();
+
+			}
+
+		</script>
+
+		<script type="text/javascript">
+			
+			function ready() {
+
+				var ready = document.getElementById("ready");
+				hint.disabled = true;
+				ready.disabled = true;
+
+				var id = "game";
+				var pjs = Processing.getInstanceById(id);
+				pjs.toggleReady();
 
 
 			}
@@ -112,15 +147,15 @@
 						<div class="col-sm-4 col-sm-offset-3">
 							<div class="btn-group btn-group-justified" role="group">
 								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-primary"> Start
+									<button id="start" onclick="start()"  type="button" class="btn btn-primary"> Start
 									</button>
 								</div>
 								<div class="btn-group" role="group">
-									<button onclick="showHint()" type="button" class="btn btn-primary"> Hint
+									<button id="hint" disabled="true" onclick="showHint()" type="button" class="btn btn-primary"> Hint
 									</button>
 								</div>
 								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-primary"> Ready!
+									<button id="ready" onclick="ready()" disabled="true" type="button" class="btn btn-primary"> Ready!
 									</button>
 								</div>
 							</div>
