@@ -1,16 +1,21 @@
+/* @pjs font="/fonts/Charybdis.ttf"; */
+
 ArrayList<Point> points, beacons, defaultBeacons;
 Point start, end;
 Point target, previousTarget;
 AttractionRegion attr;
 boolean started, hint, hintShown, ready;
 float startMillis, currentMillis;
-int count, r, g, b, MAX_SECS;
+int count, r, g, b, MAX_SECS, MIN_BEACONS;
 int strokePoly;
 int SHIFT_X, SHIFT_Y;
 int nextTarget; 
 void setup() {
 
   size(1068, 600);
+  myFont = createFont("/fonts/Charybdis.ttf");
+  textFont(myFont);
+  MIN_BEACONS = 1
   MAX_SECS = 5;
   SHIFT_X = 60;
   SHIFT_Y = 100;
@@ -27,7 +32,6 @@ void setup() {
   
   points = new ArrayList<Point>();
   defaultBeacons = new ArrayList<Point>();
-  beacons = new ArrayList<Point>();
   
   points.add(new Point(274, 15, null));
   points.add(new Point(458, 188, null));
@@ -75,6 +79,7 @@ void setup() {
 	  
   }
   
+  showText("Can you do better?", 270, 70, 255, 0, 0, 64);
   drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
   drawPoint(start, 255, 0, 0, 5);
   drawPoint(end, 0, 255, 100, 5);
@@ -83,42 +88,10 @@ void setup() {
 }
 
 void draw() {
-	
-	if(!hintShown && !ready && started) {
+
 		
-		if(mousePressed) {
-			
-			if(started) {
-		
-				if(!hint) {
-					
-					Point b = new Point(mouseX, mouseY, null);
-					beacons.add(b);
-					drawPoint(b, 0, 0, 255, 5);
-					
-				}
-				else {
-					
-					Point b = findNearest(mouseX, mouseY);
-					
-					if(b != null) {
-						
-						showHint(b);
-						startMillis = millis();
-						count = 0;
-						
-					}
-					
-				}
-			}	
-			
-		}
-		
-	}
-		
-	else if(hintShown) {
+	if(hintShown && !ready) {
 		currentMillis = millis();
-		
 		float diff = currentMillis - startMillis;
 		if(diff > 1000*count) {
 			
@@ -128,7 +101,7 @@ void draw() {
 			drawPoint(start, 255, 0, 0, 5);
 			drawPoint(end, 255, 255, 100, 5);
 			drawPoints(beacons, 0, 0, 255, 5);
-			showText( MAX_SECS-count, 100, 100, 255, 0, 0, 20);
+			showText( MAX_SECS-count, 50, 70, 255, 0, 0, 64);
 			count++;
 	
 		}
@@ -147,37 +120,87 @@ void draw() {
 	}
 	else if (ready) {
 		
+		currentMillis = millis();
+		float diff = currentMillis - startMillis;
 		
-		AttractionRegion currentAttr = new AttractionRegion(target, points);
-		drawShapeFromFace(currentAttr.face, 0, 255, 0, 0, 200, 0, 0, 0);
-		
-		if(!currentAttr.face.contains(previousTarget)) {
+		if(diff > 2000*count) { 
+			AttractionRegion currentAttr = new AttractionRegion(target, points);
+			console.log("new target:" + target.x + ", " + target.y);
+			background(r,g,b);
+			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+			drawShapeFromFace(currentAttr.face, 100, 255, 100, 0, 200, 0, 0, 0);
+			drawPoint(previousTarget, 255, 0, 0, 5);
+			drawPoint(target, 255, 255, 100, 5);
 			
-			console.log("you looose");
-			started = false;
-			ready = false;
-			return;
+			if(!currentAttr.face.contains(previousTarget)) {
+				
+				console.log("you looose");
+				started = false;
+				ready = false;
+				return;
+				
+			}
 			
-		}
-		
-		if(nextTarget < beacons.size()) {
-			
-			previousTarget = target;
-			target = beacons.get(nextTarget);
-			nextTarget++;
-			
-		
-		}
-		else {
-			
-			console.log("you wiiin");
-			started = false;
-			ready = false;
+			if(nextTarget < beacons.size()) {
+				previousTarget = target;
+				target = beacons.get(nextTarget);
+				nextTarget++;
+			}
+			else {
+				
+				int beaconsUsed = beacons.size() - 1;
+				
+				if(beaconsUsed > defaultBeacons.size()) {
+					showText("YOU LOSE!", 150, 246, 255, 0, 0, 200);
+					int excess = beacons.size() - 1 - defaultBeacons.size();
+					showText("Beacons in excess: " + excess , 270, 300, 255, 0, 0, 64);
+				}
+				else if(beaconsUsed > defaultBeacons.size()/2)
+					showText("GOOD!", 315, 246, 0, 140, 0, 200);
+				else if(beaconsUsed <= defaultBeacons.size()/2 && beaconsUsed > MIN_BEACONS)
+					showText("VERY GOOD!", 110, 246, 0, 140, 0, 200);
+				else
+					showText("EXCELLENT!", 110, 246, 0, 140, 0, 200);
+					
+						
+				started = false;
+				ready = false;
+			}
+			count++;
 		}
 		
 	}
 }
 
+void mouseClicked() {
+	
+	if(!hintShown && !ready && started) {
+		
+				if(!hint) {
+					if(beacons.size() == 0 && getHints() > 0)
+						toggleHints();
+					Point b = new Point(mouseX, mouseY, null);
+					beacons.add(b);
+					console.log(beacons.size());
+					drawPoint(b, 0, 0, 255, 5);
+					
+				}
+				else {
+					
+					Point b = findNearest(mouseX, mouseY);
+					
+					if(b != null) {
+						
+						showHint(b);
+						startMillis = millis();
+						count = 0;
+						
+					}
+					
+				}
+			}	
+	
+}
 
 Point findNearest(float x, float y) {
 	
@@ -211,22 +234,32 @@ void showHint(Point b) {
     drawShapeFromFace(attr.face, 0, 255, 0, 0, 200, 0, 0, 0);
 }
 
+int getNumberOfHints() {
+	
+	return NR_HINTS;
+	
+}
+
 void toggleHint() {
 	
 	hint = true;
-	
+	showText("Click on a beacon!", 270, 70, 255, 0, 0, 64);
 }
 
 void toggleReady() {
 	
 	ready = true;
+	count = 1;
 	previousTarget = start;
+	nextTarget = 1;
 	beacons.add(end);
 	target = beacons.get(0);
+	startMillis = millis();
 }
 
 void toggleStart() {
 	
+	beacons = new ArrayList<Point>();
 	started = true;
 	background(r,g,b);
 	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);

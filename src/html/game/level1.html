@@ -10,8 +10,26 @@
 	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	  	<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.16/processing.min.js"></script>
 	  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	  	<script type="text/javascript" async
-  			src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		<script type="text/javascript">
+			
+			var currentLevel = 0;
+			var hints = [1, 1, 2, 3];
+			var restoredHints = [1, 1, 2, 3];
+
+			$(document).ready(function (){
+
+				var hint = document.getElementById("hint");
+				hint.innerHTML = "Hint (" + hints[0] + ")";
+				console.log("Hints for all!");
+
+			});
+
+			function getHints() {
+
+				return hints[currentLevel];
+
+			}
+
 		</script>
 		<script type="text/javascript">
 			
@@ -31,12 +49,23 @@
 			}
 		</script>
 		<script type="text/javascript">
+			
+			function toggleHints() {
+
+				var hint = document.getElementById("hint");
+				hint.disabled = !hint.disabled;
+
+			}
+		</script>
+		<script type="text/javascript">
 
 			var NR_OF_LEVELS = 3;
 			var level = 1;
 			function changeLevel(dir) {
 
 				level = level + dir;
+				currentLevel = currentLevel + dir;
+
 				var game = document.getElementById("game");
 				
 				processingInstances = Processing.instances.length;
@@ -81,6 +110,15 @@
 				var pjs = Processing.getInstanceById(id);
 				pjs.toggleHint();
 
+				hints[currentLevel]--;
+				var hint = document.getElementById("hint");
+				hint.innerHTML = "Hint (" + hints[currentLevel] + ")";
+
+				if(hints[currentLevel] == 0) {
+					hint.disabled = true;
+
+				}
+
 
 			}
 
@@ -89,16 +127,25 @@
 			
 			function start() {
 
-				var hint = document.getElementById("hint");
 				var ready = document.getElementById("ready");
 				var start = document.getElementById("start");
-				hint.disabled = false;
 				ready.disabled = false;
 				start.disabled = true;
 
 				var id = "game";
 				var pjs = Processing.getInstanceById(id);
 				pjs.toggleStart();
+
+			}
+
+			function restart() {
+
+				var ready = document.getElementById("ready");
+				var start = document.getElementById("start");
+				var start = document.getElementById("hint");
+				ready.disabled = false;
+				start.disabled = true;
+				hint.disabled = true;
 
 			}
 
@@ -109,6 +156,7 @@
 			function ready() {
 
 				var ready = document.getElementById("ready");
+				var hint = document.getElementById("hint");
 				hint.disabled = true;
 				ready.disabled = true;
 
@@ -134,7 +182,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 						    <div class="well">
-						    	<canvas id="game" data-processing-sources="../../processing/game/test/test.pde"></canvas>
+						    	<canvas id="game" on="initializeHints()" ="initializeHints()" data-processing-sources="../../processing/game/test/test.pde"></canvas>
 						    </div>
 						</div>						
 					</div>
