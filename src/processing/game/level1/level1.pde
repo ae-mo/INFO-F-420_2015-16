@@ -1,54 +1,319 @@
-import java.io.*;
-import java.util.*;
-import java.lang.Comparable;
+/* @pjs font="/fonts/Charybdis.ttf"; */
 
-int r, g, bl;
-ArrayList<Point> points;
-Point b;
-
+ArrayList<Point> points, beacons, defaultBeacons;
+Point start, end;
+Point target, previousTarget;
+AttractionRegion attr;
+boolean started, hint, hintShown, ready;
+float startMillis, currentMillis;
+int count, r, g, b, MAX_SECS, MIN_BEACONS;
+int strokePoly;
+int SHIFT_X, SHIFT_Y;
+int nextTarget; 
+PImage bg;
 void setup() {
 
   size(1068, 600);
+  myFont = createFont("/fonts/Charybdis.ttf");
+  textFont(myFont);
+  MIN_BEACONS = 1
+  MAX_SECS = 5;
+  SHIFT_X = 60;
+  SHIFT_Y = 100;
+  strokePoly = 3;
+  started = false;
+  hint = false;
+  hintShown = false;
+  ready = false;
+  nextTarget = 1;
+  lose = win = false;
+  noLoop();
   
-  r = 0;
-  g = 0;
-  bl = 0;
-
+  r= g = b= 255;
+  
+  bg = loadImage("/img/game/clouds.png");
   points = new ArrayList<Point>();
-  points.add(new Point(314.94845, 284.82678));
-  points.add(new Point(468.96991, 159.82386));
-  points.add(new Point(703.35039, 393.46027));
-  points.add(new Point(406.46845, 513.25474));
-  points.add(new Point(329.82975, 420.99068));
-  points.add(new Point(545.60861, 414.29409));
-  b = new Point(433.25479, 287.80304);
-   drawShape(points, 0, 0, 0, 0, 200, 0, 10);
+  defaultBeacons = new ArrayList<Point>();
   
-  console.log("hey");
+  points.add(new Point(274, 15, null));
+  points.add(new Point(458, 188, null));
+  points.add(new Point(539, 114, null));
+  points.add(new Point(482, 38, null));
+  points.add(new Point(645, 123, null));
+  points.add(new Point(565, 150, null));
+  points.add(new Point(740, 242, null));
+  points.add(new Point(553, 208, null));
+  points.add(new Point(571, 327, null));
+  points.add(new Point(463, 234, null));
+  points.add(new Point(369, 272, null));
+  points.add(new Point(350, 389, null));
+  points.add(new Point(270, 222, null));
+  points.add(new Point(378, 177, null));
+  points.add(new Point(224, 148, null));
+  points.add(new Point(276, 126, null));
+  
+  defaultBeacons.add(new Point(378, 177, null));
+  defaultBeacons.add(new Point(270, 222, null));
+  defaultBeacons.add(new Point(463, 234, null));
+  defaultBeacons.add(new Point(458, 188, null));
+  defaultBeacons.add(new Point(539, 114, null));
+  
+  
+  start = new Point(247, 144, null);
+  end = new Point(515, 63, null);
+  start.x = start.x + SHIFT_X;
+  start.y = start.y + SHIFT_Y;
+  end.x = end.x + SHIFT_X;
+  end.y = end.y + SHIFT_Y;
+  
+  for(Point p: points) {
+	  
+	  p.x = p.x + SHIFT_X;
+	  p.y = p.y + SHIFT_Y;
+	  
+  }
+  
+  
+  for(Point p: defaultBeacons) {
+	  
+	  p.x = p.x + SHIFT_X;
+	  p.y = p.y + SHIFT_Y;
+	  
+  }
+  
+  
   
 }
 
 void draw() {
 
- 
-  
+	if(!started) {
+		
+		background(59, 185, 255);
+		showText("Can you do better?", 270, 70, 255, 0, 0, 64);
+		drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+		drawPoint(start, 255, 0, 0, 5);
+		drawPoint(end, 0, 255, 100, 5);
+		drawPoints(defaultBeacons, 127, 70, 44, 5);
+		
+	}
+		
+	if(hintShown && !ready) {
+		currentMillis = millis();
+		float diff = currentMillis - startMillis;
+		if(diff > 1000*count) {
+			
+			background(59, 185, 255);
+			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+			showHint(null);
+			drawPoint(start, 255, 0, 0, 5);
+			drawPoint(end, 255, 255, 100, 5);
+			drawPoints(beacons, 0, 0, 255, 5);
+			showText( MAX_SECS-count, 50, 70, 255, 0, 0, 64);
+			count++;
+	
+		}
+		
+		if(count > MAX_SECS) {
+			
+			hintShown = false;
+			background(59, 185, 255);
+			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+			drawPoint(start, 255, 0, 0, 5);
+			drawPoint(end, 0, 255, 100, 5);
+			drawPoints(beacons, 0, 0, 255, 5);
+			
+		}
+					
+	}
+	else if (ready) {
+		
+		currentMillis = millis();
+		float diff = currentMillis - startMillis;
+		
+		if(diff > 2000*count) { 
+			AttractionRegion currentAttr = new AttractionRegion(target, points);
+			console.log("new target:" + target.x + ", " + target.y);
+			background(59, 185, 255);
+			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+			drawShapeFromFace(currentAttr.face, 100, 255, 100, 0, 200, 0, 0, 0);
+			drawPoint(previousTarget, 255, 0, 0, 5);
+			drawPoint(target, 255, 255, 100, 5);
+			
+			if(!currentAttr.face.contains(previousTarget)) {
+				
+				playLose();
+				showText("YOU LOSE!", 150, 246, 255, 0, 0, 200);
+				showText("Not routed!", 390, 300, 255, 0, 0, 64);
+				started = false;
+				ready = false;
+				restart();
+				noLoop();
+				return;
+				
+			}
+			
+			if(nextTarget < beacons.size()) {
+				previousTarget = target;
+				target = beacons.get(nextTarget);
+				nextTarget++;
+			}
+			else {
+				
+				int beaconsUsed = beacons.size() - 1;
+
+				if(beaconsUsed > defaultBeacons.size()) {
+					playLose();
+					showText("YOU LOSE!", 150, 246, 255, 0, 0, 200);
+					int excess = beacons.size() - 1 - defaultBeacons.size();
+					showText("Beacons in excess: " + excess , 270, 300, 255, 0, 0, 64);
+					
+				}
+				else {
+				
+					playWin();
+					if(beaconsUsed > defaultBeacons.size()/2)
+						showText("GOOD!", 315, 246, 0, 140, 0, 200);
+					else if(beaconsUsed <= defaultBeacons.size()/2 && beaconsUsed > MIN_BEACONS)
+						showText("VERY GOOD!", 110, 246, 0, 140, 0, 200);
+					else
+						showText("EXCELLENT!", 110, 246, 0, 140, 0, 200);
+						
+					enableNext();
+					
+				} 
+				
+				noLoop();
+				started = false;
+				ready = false;
+				restart();
+					
+			}
+			count++;
+		}
+		
+	}
 }
 
-void showHint() {
-
-    AttractionRegion attr = new AttractionRegion(b, points);
-
-    drawShape(attr.face, 0, 255, 0, 0, 200, 0, 0);
+void mouseClicked() {
+	
+	if(!hintShown && !ready && started) {
+		
+				if(!hint) {
+					if(beacons.size() == 0 && getHints() > 0)
+						toggleHints();
+					Point b = new Point(mouseX, mouseY, null);
+					beacons.add(b);
+					console.log(beacons.size());
+					drawPoint(b, 0, 0, 255, 5);
+					
+				}
+				else {
+					
+					Point b = findNearest(mouseX, mouseY);
+					
+					if(b != null) {
+						
+						showHint(b);
+						startMillis = millis();
+						count = 0;
+						
+					}
+					
+				}
+			}	
+	
 }
 
+Point findNearest(float x, float y) {
+	
+	for(Point b: beacons) {
+		
+		if(Math.abs(b.x - x) < 15 && Math.abs(b.y - y) < 15)
+			return b;
+		
+	}
+	
+	return null;
+	
+}
 
-void drawShape(Face f, int r1, int g1, int b1, int r2, int g2, int b2, int stroke) {
+void showText(String inputText, float x, float y, int r1, int g1, int b1, int size) {
+	
+	fill(r1, g1, b1);
+	textSize(size);
+	text(inputText, x, y);
+	
+}
+
+void showHint(Point b) {
+	
+	hintShown = true;
+	hint = false;
+	
+	if(b != null)
+		attr = new AttractionRegion(b, points);
+
+    drawShapeFromFace(attr.face, 0, 255, 0, 0, 200, 0, 0, 0);
+}
+
+int getNumberOfHints() {
+	
+	return NR_HINTS;
+	
+}
+
+void toggleHint() {
+	
+	hint = true;
+	showText("Click on a beacon!", 270, 70, 255, 0, 0, 64);
+}
+
+void toggleReady() {
+	
+	ready = true;
+	count = 1;
+	previousTarget = start;
+	nextTarget = 1;
+	beacons.add(end);
+	target = beacons.get(0);
+	startMillis = millis();
+}
+
+void toggleStart() {
+	
+	beacons = new ArrayList<Point>();
+	started = true;
+	background(59, 185, 255);
+	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+	drawPoint(start, 255, 0, 0, 5);
+	drawPoint(end, 0, 255, 100, 5);
+	loop();
+	
+}
+
+void drawPoints(ArrayList<Point> points, int r1, int g1, int b1, int size) {
+	
+	for(Point p: points)
+		drawPoint(p, r1, g1, b1, size);
+	
+}
+
+void drawPoint(Point p, int r1, int g1, int b1, int size) {
+	
+	strokeWeight(size);
+	stroke(r1, g1, b1);
+	point((float)p.x,(float)p.y);
+	strokeWeight(1);
+
+}
+
+void drawShapeFromFace(Face f, int r1, int g1, int b1, int r2, int g2, int b2, int strokeSize) {
 
   Halfedge h = f.h;
-  
   fill(color(r1, g1, b1));
-
-  strokeWeight(stroke);
+  stroke(color(r2, g2, b2));
+  strokeWeight(strokeSize);
   
   beginShape();
 
@@ -67,10 +332,11 @@ void drawShape(Face f, int r1, int g1, int b1, int r2, int g2, int b2, int strok
 
 }
 
-void drawShape(ArrayList<Point> points, int r1, int g1, int b1, int r2, int g2, int b2, int stroke) {
+void drawShapeFromPoints(ArrayList<Point> points, int r1, int g1, int b1, int r2, int g2, int b2, int strokeSize) {
 
   fill(color(r1, g1, b1));
-  strokeWeight(stroke);
+  stroke(color(r2, g2, b2));
+  strokeWeight(strokeSize);
   
   beginShape();
 
@@ -84,14 +350,11 @@ void drawShape(ArrayList<Point> points, int r1, int g1, int b1, int r2, int g2, 
   
 }
 
-void clear() {
-}
-
 /**
- * Attraction Region
- **/
- 
- class AttractionRegion {
+* Attraction Region
+**/
+
+class AttractionRegion {
 
   ArrayList<Point> points;
   public DCEL dcel;
@@ -168,7 +431,7 @@ void clear() {
       this.updateStatus(status, b, p, type);
 
       if(type > 0)  {
-        System.out.println("Split vertex found!: " + p.x + ", " + p.y);
+        console.log("Split vertex found!: " + p.x + ", " + p.y);
         this.computeRayVertex(status, dcel, b, p, type);
 
       }
@@ -189,7 +452,7 @@ void clear() {
     Point next = p.h.target;
     Point prev = p.h.prev.prev.target;
 
-    System.out.println("Size: " + status._size());
+    console.log("Size: " + status._size());
 
     Point p2;
     
@@ -231,24 +494,24 @@ void clear() {
 
     Key _new = this.createKey(b, rayVertex, p2, 1);
 
-    System.out.println();
-    System.out.println("UPDATING KEY");
+    console.log();
+    console.log("UPDATING KEY");
 
     status.delete(k2);
-    System.out.println("REPLACING WITH NEW KEY");
+    console.log("REPLACING WITH NEW KEY");
     status.put(_new, _new.e);
 
-    System.out.println("END OF UPDATE");
+    console.log("END OF UPDATE");
 
-    System.out.println("Halfedge to divide: " + old.b.h.target.x + ", " +  old.b.h.target.y+ "; "+ old.b.h.twin.target.x + ", " + old.b.h.twin.target.y);
+    console.log("Halfedge to divide: " + old.b.h.target.x + ", " +  old.b.h.target.y+ "; "+ old.b.h.twin.target.x + ", " + old.b.h.twin.target.y);
     int[] newH = dcel.splitEdge(p2.h.prev, rayVertex);
-    System.out.println("Ray vertex halfedge's NEW target: " + rayVertex.h.target.x + ", " + + rayVertex.h.target.y);
+    console.log("Ray vertex halfedge's NEW target: " + rayVertex.h.target.x + ", " + + rayVertex.h.target.y);
 
-    System.out.println();
-    System.out.println("Splitting using halfedge: " + p.h.target.x + ", " +  p.h.target.y+ "; "+ p.h.twin.target.x + ", " + p.h.twin.target.y);
-    System.out.println("ray vertex: " + rayVertex.x + ", " + rayVertex.y);
+    console.log();
+    console.log("Splitting using halfedge: " + p.h.target.x + ", " +  p.h.target.y+ "; "+ p.h.twin.target.x + ", " + p.h.twin.target.y);
+    console.log("ray vertex: " + rayVertex.x + ", " + rayVertex.y);
 
-    dcel.splitFace(p.h.face, p.h.prev, dcel.vertices.size()-1);
+    dcel.splitFace(p.h.face, p.h.prev, dcel.vertices.get(dcel.vertices.size()-1));
 
   }
 
@@ -290,14 +553,8 @@ void clear() {
     Halfedge h = p1.h;
     Edge e = h.getEdge();
 
-    System.out.println();
-    System.out.println("*******INITIALIZATION***********");
-
     do {
 
-      System.out.println();
-      System.out.println("Ray: " + b.x + ", " + b.y+ "; "+p1.x + ", " + p1.y);
-      System.out.println("Edge: " + e.a.x + ", " + e.a.y+ "; "+e.b.x + ", " + e.b.y);
 
       Point p2 = this.computePointOnLine(b,  p1, 1.1);
 
@@ -315,7 +572,7 @@ void clear() {
 
           Key k = new Key(b, new Edge(e.a, e.b));
           status.put(k, e);
-          System.out.println("Added");
+          console.log("Added");
 
         }
 
@@ -330,7 +587,7 @@ void clear() {
     int type = this.isSplitVertex(b, p1);
 
     if(type > 0)  {
-      System.out.println("Split vertex found!: " + p1.x + ", " + p1.y);
+      console.log("Split vertex found!: " + p1.x + ", " + p1.y);
       this.computeRayVertex(status, dcel, b, p1, type);
 
     }
@@ -342,16 +599,16 @@ void clear() {
 
     Turn bpq = new Turn(b, p, q);
 
-    System.out.println();
-    System.out.println("Deciding for Edge: " + p.x + ", " + p.y+ "; "+q.x + ", " + q.y);
+    console.log();
+    console.log("Deciding for Edge: " + p.x + ", " + p.y+ "; "+q.x + ", " + q.y);
 
     if(bpq.value > 0) {
-      System.out.println("added");
+      console.log("added");
       return 1;
     }
 
     else if(bpq.value < 0) {
-      System.out.println("deleted");
+      console.log("deleted");
       return 2;
     }
 
@@ -363,21 +620,21 @@ void clear() {
   private void addEdge(RedBlackBST<Key, Edge> status, Point b, Point p, Point q) {
 
     Key k = createKey(b, p, q, 1);
-    System.out.println();
-    System.out.println("ADDITION");
-    System.out.println("Size: " + status._size());
+    console.log();
+    console.log("ADDITION");
+    console.log("Size: " + status._size());
     status.put(k, new Edge(p, q));
-    System.out.println("Size: " + status._size());
+    console.log("Size: " + status._size());
 
   }
 
   private void deleteEdge(RedBlackBST<Key, Edge> status, Point b, Point p, Point q) {
 
     Key k = createKey(b, p, q, 2);
-    System.out.println("DELETION");
-    System.out.println("Size: " + status._size());
+    console.log("DELETION");
+    console.log("Size: " + status._size());
     status.delete(k);
-    System.out.println("Size: " + status._size());
+    console.log("Size: " + status._size());
 
   }
 
@@ -451,7 +708,7 @@ void clear() {
     x = xNum / den;
     y = yNum / den;
 
-    return new Point(x, y);
+    return new Point(x, y, null);
 
   }
 
@@ -460,7 +717,7 @@ void clear() {
     double x = a.x +t*(b.x-a.x);
     double y = a.y +t*(b.y-a.y);
 
-    return new Point(x, y);
+    return new Point(x, y, null);
 
   }
 
@@ -497,12 +754,12 @@ class Key implements Comparable<Key>{
 
   public Key(float bx, float by, Edge e) {
 
-    this(new Point(bx, by), e);
+    this(new Point(bx, by, null), e);
   }
 
   public Key(float bex, float bey, float ax, float ay, float bx, float by) {
 
-    this(new Point(bex, bey), new Edge(ax, ay, bx, by));
+    this(new Point(bex, bey, null), new Edge(ax, ay, bx, by));
 
   }
 
@@ -551,14 +808,10 @@ class Key implements Comparable<Key>{
 
     return result;
   }
-
   
   public boolean equals(Object obj) {
 
     if (obj == null) {
-      return false;
-    }
-    if (!Key.class.isAssignableFrom(obj.getClass())) {
       return false;
     }
     final Key other = (Key) obj;
@@ -573,152 +826,34 @@ class Key implements Comparable<Key>{
 }
 
 
-
 /**
- * Operations
- **/
+* Operations
+**/
 
 class Turn {
-
+  
   public double value;
   private final double EPSILON = 0.00000000001;
-
+  
   public Turn(Point a, Point b, Point c) {
-
+    
     double result = b.x*c.y - a.x*c.y + a.x*b.y - b.y*c.x + a.y*c.x - a.y*b.x;
-
-    if (result < EPSILON && result > -EPSILON)
+    
+    if(result < EPSILON && result > -EPSILON)
       result = 0;
-
+    
     this.value = result;
+    
   }
-
+  
   public Turn(Edge e, Point c) {
-
+    
     this.value = e.b.x*c.y - e.a.x*c.y + e.a.x*e.b.y - e.b.y*c.x + e.a.y*c.x - e.a.y*e.b.x;
+    
   }
+
 }
 
-
-class Triangulation {
-
-  public DCEL dcel;
-
-  public Triangulation(DCEL dcel) {
-
-    ArrayList<Point> reflexVertices= new ArrayList<Point>();
-    ArrayList<Point> convexVertices=new ArrayList<Point>();
-    ArrayList<Point> ears=new ArrayList<Point>();
-
-    for (Point p : dcel.vertices) {
-
-      Point next = p.h.prev.twin.target;
-      Point prev = p.h.target;
-
-      Turn t = new Turn(prev, p, next);
-      if (t.value < 0) reflexVertices.add(p);
-      else if (t.value > 0) {
-
-        convexVertices.add(p);
-      }
-    }
-
-    for (Point p : convexVertices) {
-
-      if (testEar(reflexVertices, p)) {
-
-        ears.add(p);
-      }
-    }
-
-    while (convexVertices.size() + reflexVertices.size() > 3) {
-
-      Point ear = ears.get(0);
-
-      Point prev = ear.h.prev.prev.target;
-      Point next = ear.h.target;
-      Halfedge h = ear.h.prev.prev;
-
-      int prevTest = testConvexity(prev);
-      int nextTest = testConvexity(next);
-
-      System.out.println("*****************************************");
-      System.out.println("current ear: " + ear.x + ", " + ear.y);
-      System.out.println("halfedge target: " + h.target.x + ", " + h.target.y);
-      System.out.println("split point: " + next.x + ", " + next.y);
-
-
-      dcel.splitFace(dcel.faces.size() -1, h, next);
-      ears.remove(0);
-      convexVertices.remove(0);
-
-      Halfedge h1 = dcel.halfedges.get(dcel.halfedges.size() - 2);
-      next = h1.target;
-      prev = h1.prev.target;
-      next.h = h1.next;
-      prev.h = h1;
-
-      int prevTest2 = testConvexity(prev);
-      int nextTest2 = testConvexity(next);
-
-      this.handleAdjacentVertex(reflexVertices, convexVertices, ears, next, nextTest, nextTest2);
-      this.handleAdjacentVertex(reflexVertices, convexVertices, ears, prev, prevTest, prevTest2);
-    }
-  }
-
-  private int testConvexity(Point p) {
-
-    Point prev = p.h.prev.prev.target;
-    Point next = p.h.target;
-
-    Turn t = new Turn(prev, p, next);
-
-    if (t.value>0) return 1;
-    else return -1;
-  }
-
-  private boolean testEar(ArrayList<Point> reflexVertices, Point p) {
-
-    Point next = p.h.target;
-    Point prev = p.h.prev.prev.target;
-
-    Triangle tr = new Triangle(prev, p, next);
-
-    boolean isEar = true;
-
-    for (Point p1 : reflexVertices) {
-
-      if (p1 != prev && p1 != next) {
-
-        if (tr.strictlyContains(p1)) {
-
-          isEar = false;
-          break;
-        }
-      }
-    }
-
-    return isEar;
-  }
-
-  private void handleAdjacentVertex(ArrayList<Point> reflexVertices, ArrayList<Point> convexVertices, ArrayList<Point> ears, Point p, int test1, int test2) {
-
-    if (test1 < 0 && test2 >0) {
-      reflexVertices.remove(p);
-      convexVertices.add(0, p);
-      if (testEar(reflexVertices, p)) {
-        ears.add(0, p);
-      }
-    } else if (test1 >0) {
-      if (!testEar(reflexVertices, p) && ears.contains(p)) {
-        ears.remove(p);
-      } else if (testEar(reflexVertices, p) && !ears.contains(p)) {
-
-        ears.add(0, p);
-      }
-    }
-  }
-}
 
 class RadialSort {
 
@@ -727,12 +862,14 @@ class RadialSort {
   public RadialSort(Point q, ArrayList<Point> points) {
 
     this.result = (ArrayList<Point>) cyclicOrder(q, points);
+
   }
 
 
   public RadialSort(double qx, double qy, ArrayList<Point> points) {
 
-    this(new Point(qx, qy), points);
+    this(new Point(qx, qy, null), points);
+
   }
 
   private List<Point> cyclicOrder(Point q, List<Point> arr) {
@@ -740,14 +877,14 @@ class RadialSort {
     if (!arr.isEmpty()) {
       Point pivot = arr.get(0); //This pivot can change to get faster results
 
-
+      
 
       List<Point> less = new ArrayList<Point>();
       List<Point> pivotList = new ArrayList<Point>();
       List<Point> more = new ArrayList<Point>();
 
       // Partition
-      for (Point i : arr) {
+      for (Point i: arr) {
         int comparison = compare(q, i, pivot);
         if (comparison > 0)
           less.add(i);
@@ -769,28 +906,31 @@ class RadialSort {
     return arr;
   }
 
-  public int compare(Point q, Point pivot, Point curr) {
+  public static int compare(Point q, Point pivot, Point curr) {
 
     int result = 0;
 
     Turn t = new Turn(q, pivot, curr);
-
-    if (t.value > 0) result = 1;
+    
+    if(t.value > 0) result = 1;
     else if (t.value < 0) result = -1;
     else result = comesBefore(q, pivot, curr);
 
     return result;
+
   }
 
-  private int comesBefore(Point q, Point a, Point b) {
+  private static int comesBefore(Point q, Point a, Point b) {
 
     double xDiff = b.x - a.x - q.x;
     double yDiff = b.y - a.y -q.y;
 
-    if (a.x == b.x && a.y == b.y) return 0;
-    else if ((xDiff > 0) || (xDiff == 0 && yDiff > 0)) return 1;
+    if(a.x == b.x && a.y == b.y) return 0;
+    else if((xDiff > 0) || (xDiff == 0 && yDiff > 0)) return 1;
     else  return -1;
+
   }
+
 }
 
 
@@ -802,195 +942,308 @@ class DotProduct {
   public DotProduct(Point a1, Point a2, Point b1, Point b2) {
 
     value = (a1.x - a2.x)*(b1.x - b2.x) + (a1.y - a2.y)*(b1.y - b2.y);
+
   }
 
   public DotProduct(Edge a, Edge b) {
 
     this(a.a, a.b, b.a, b.b);
+
   }
 
   public DotProduct(Point a1, Point a2, Edge b) {
 
     this(a1, a2, b.a, b.b);
+
   }
 
-  public DotProduct(Edge a, Point b1, Point b2) {
-
-    this(a.a, a.b, b1, b2);
-  }
 }
 
 
 class CrossProduct {
-
+  
   public double value;
 
 
   public CrossProduct(Point a1, Point a2, Point b1, Point b2) {
 
     value = (a2.x - a1.x)*(b2.y - b1.y) - (b2.x - b1.x)*(a2.y - a1.y);
+
   }
 
   public CrossProduct(Edge a, Edge b) {
 
     this(a.a, a.b, b.a, b.b);
+
   }
 
-  public CrossProduct(Point a1, Point a2, Edge b) {
 
-    this(a1, a2, b.a, b.b);
-  }
-
-  public CrossProduct(Edge a, Point b1, Point b2) {
-
-    this(a.a, a.b, b1, b2);
-  }
 }
 
 
 /**
- * Data Structures
- **/
+* Data Structures
+**/
 
-class Graph {
-  private final Map<String, Vertex> graph; // mapping of vertex names to Vertex objects, built from a set of Edges
+class DCEL {
 
-  /** One edge of the graph (only used by Graph constructor) */
-  public class Edge {
-    public final String v1, v2;
-    public final double dist;
-    public Edge(String v1, String v2, double dist) {
-      this.v1 = v1;
-      this.v2 = v2;
-      this.dist = dist;
-    }
+  public ArrayList<Face> faces;
+  public ArrayList<Point> vertices;
+  public ArrayList<Halfedge> halfedges;
+  public Face outer;
+  private boolean initialized;
+
+  public DCEL() {
+
+    this.initialized = false;
+    this.faces = new ArrayList<Face>();
+    this.vertices = new ArrayList<Point>();
+    this.halfedges = new ArrayList<Halfedge>();
+    outer = new Face();
+
+    this.faces.add(outer);
   }
 
-  /** One vertex of the graph, complete with mappings to neighbouring vertices */
-  public class Vertex implements Comparable<Vertex> {
-    public final String name;
-    public double dist = Double.MAX_VALUE; // MAX_VALUE assumed to be infinity
-    public Vertex previous = null;
-    public final Map<Vertex, Double> neighbours = new HashMap<Vertex, Double>();
+  /**
+   * Hooks a new vertex to the desired face.
+   * @param f
+   * @param h
+   * @param v
+   */
+  public int addVertexAt(int face, int halfedge, Point v) {
 
-    public Vertex(String name) {
-      this.name = name;
-    }
+    Face f = this.faces.get(face);
+    Halfedge h = this.halfedges.get(halfedge);
 
-    private void printPath() {
-      if (this == this.previous) {
-        System.out.printf("%s", this.name);
-      } else if (this.previous == null) {
-        System.out.printf("%s(unreached)", this.name);
-      } else {
-        this.previous.printPath();
-        System.out.printf(" -> %s(%d)", this.name, this.dist);
-      }
-    }
-    private ArrayList<String> getPath(ArrayList<String> path) {
-      if (this == this.previous) {
-        path.add(this.name);
-      } else if (this.previous == null) {
-        return null;
-      } else {
-        this.previous.getPath(path);
-        path.add(this.name);
-      }
+    Point u = h.target;
 
-      return path;
-    }
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
 
-    public int compareTo(Vertex other) {
-      return Double.compare(dist, other.dist);
-    }
+    v.h = h2;
+    h1.twin = h2;
+    h2.twin = h1;
+    h1.target = v;
+    h2.target = u;
+    h1.face = f;
+    h2.face = f;
+    h1.next = h2;
+    h2.next = h.next;
+    h1.prev = h;
+    h2.prev = h1;
+    h.next = h1;
+    h2.next.prev = h2;
+
+    this.vertices.add(v);
+    this.halfedges.add(h1);
+    this.halfedges.add(h2);
+
+    return (this.halfedges.size() - 2);
+
   }
 
-  /** Builds a graph from a set of edges */
-  public Graph(Edge[] edges) {
-    graph = new HashMap<String, Vertex>(edges.length);
 
-    //one pass to find all vertices
-    for (Edge e : edges) {
-      if (!graph.containsKey(e.v1)) graph.put(e.v1, new Vertex(e.v1));
-      if (!graph.containsKey(e.v2)) graph.put(e.v2, new Vertex(e.v2));
+  /**
+   * Splits a face into two new faces, creating a new edge between two of its vertices.
+   * @param f
+   * @param h
+   * @param v
+   * @return
+   */
+  public int[] splitFace(Face f, Halfedge h, Point v) {
+
+    int[] newFaces = new int[2];
+
+    Point u = h.target;
+
+    Face f1 = new Face();
+    Face f2 = new Face();
+
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
+
+    f1.h = h1;
+    f2.h = h2;
+    h1.twin = h2;
+    h2.twin = h1;
+    h1.target = v;
+    h2.target = u;
+    h2.next = h.next;
+    h2.next.prev = h2;
+    h1.prev = h;
+    h.next = h1;
+
+    Halfedge i = h2;
+    i.face = f2;
+
+    while (!i.target.equals(v)) {
+
+      i = i.next;
+      i.face = f2;
     }
 
-    //another pass to set neighbouring vertices
-    for (Edge e : edges) {
-      graph.get(e.v1).neighbours.put(graph.get(e.v2), e.dist);
-      //graph.get(e.v2).neighbours.put(graph.get(e.v1), e.dist); // also do this for an undirected graph
-    }
+    
+    h1.next = i.next;
+    h1.next.prev = h1;
+    i.next = h2;
+    h2.prev = i;
+    i = h1;
+
+    do {
+
+      i.face = f1;
+      i = i.next;
+    } while (!i.target.equals(u));
+
+    
+  
+    this.faces.remove(f);
+    
+    this.faces.add(f2);
+    this.faces.add(f1);
+    newFaces[0] = this.faces.size() - 1;
+    newFaces[1] = this.faces.size() - 2;
+
+    this.halfedges.add(h1);
+    this.halfedges.add(h2);
+
+    return newFaces;
+  }
+  
+  /**
+   * Splits and edge, represented by a halfedge, into two new edges, incident to a given point.
+   * @param halfedge
+   * @param w
+   * @return
+   */
+  public int[] splitEdge(Halfedge h, Point w) {
+    
+    int[] halfedges = new int[2];
+
+    Face f1 = h.face;
+    Face f2 = h.twin.face;
+    
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
+    
+    Halfedge k1 = new Halfedge();
+    Halfedge k2 = new Halfedge();
+    
+    h1.face = f1;
+    h1.next = h2;
+    h1.prev = h.prev;
+    h1.twin = k2;
+    h1.target = w;
+    
+    h2.face = f1;
+    h2.next = h.next;
+    h2.prev = h1;
+    h2.twin = k1;
+    h2.target = h.target;
+    
+    k1.face = f2;
+    k1.next = k2;
+    k1.prev = h.twin.prev;
+    k1.twin = h2;
+    k1.target = w;
+
+    k2.face = f2;
+    k2.next = h.twin.next;
+    k2.prev = k1;
+    k2.twin = h1;
+    k2.target = h.twin.target;
+    
+    h1.prev.next = h1;
+    k1.prev.next = k1;
+    
+    h2.next.prev = h2;
+    k2.next.prev = k2;
+
+    w.h = h2;
+    
+    // copy k2 into h.twin
+    h.twin.next = k2.next;
+    h.twin.prev = k2.prev;
+    h.twin.twin = k2.twin;
+    h.twin.target = k2.target;
+    
+    // copy h1 into h
+    h.next = h2.next;
+    h.prev = h2.prev;
+    h.twin = h2.twin;
+    h.target = h2.target;
+    
+    this.halfedges.add(h1);
+    this.halfedges.add(k1);
+    
+    int size = this.halfedges.size();
+    
+    halfedges[0] = size - 2;
+    halfedges[1] = size - 1;
+    
+    this.vertices.add(w);
+    
+    return halfedges;
+    
   }
 
-  /** Runs dijkstra using a specified source vertex */
-  public void dijkstra(String startName) {
-    if (!graph.containsKey(startName)) {
-      System.err.printf("Graph doesn't contain start vertex \"%s\"\n", startName);
-      return;
-    }
-    final Vertex source = graph.get(startName);
-    NavigableSet<Vertex> q = new TreeSet<Vertex>();
+  /**
+   * Initializes the dcel with a single edge.
+   * @param p1
+   * @param p2
+   * @return
+   */
+  public void initialize(ArrayList<Point> points) {
+    
+    if(initialized) return;
+    if(points.size() < 3) throw new IllegalArgumentException("Provide at least 3 vertices!");
+    
+    Point p1 = points.get(0);
+    Point p2 = points.get(1);
 
-    // set-up vertices
-    for (Vertex v : graph.values()) {
-      v.previous = v == source ? source : null;
-      v.dist = v == source ? 0 : Double.MAX_VALUE;
-      q.add(v);
-    }
+    Halfedge h1 = new Halfedge();
+    Halfedge h2 = new Halfedge();
+    Face f = this.outer;
 
-    dijkstra(q);
-  }
+    p1.h = h1;
+    p2.h = h2;
 
-  /** Implementation of dijkstra's algorithm using a binary heap. */
-  private void dijkstra(final NavigableSet<Vertex> q) {      
-    Vertex u, v;
-    while (!q.isEmpty()) {
+    h1.target = p2;
+    h1.face = f;
+    h1.twin = h2;
+    h1.next = h2;
+    h1.prev = h2;
 
-      u = q.pollFirst(); // vertex with shortest distance (first iteration will return source)
-      if (u.dist == Double.MAX_VALUE) break; // we can ignore u (and any other remaining vertices) since they are unreachable
+    h2.target = p1;
+    h2.face = f;
+    h2.twin = h1;
+    h2.next = h1;
+    h2.prev = h1;
 
-      //look at distances to each neighbour
-      for (Map.Entry<Vertex, Double> a : u.neighbours.entrySet()) {
-        v = a.getKey(); //the neighbour in this iteration
+    f.h = h1;
+    
+    this.vertices.add(p1);
+    this.vertices.add(p2);
+    this.halfedges.add(h1);
+    this.halfedges.add(h2);
+    
+    int he = this.halfedges.size() - 2;
 
-        final double alternateDist = u.dist + a.getValue();
-        if (alternateDist < v.dist) { // shorter path to neighbour found
-          q.remove(v);
-          v.dist = alternateDist;
-          v.previous = u;
-          q.add(v);
-        }
-      }
-    }
-  }
+    for(int i = 2; i < points.size(); i++) {
 
-  /** Prints a path from the source to the specified vertex */
-  public void printPath(String endName) {
-    if (!graph.containsKey(endName)) {
-      System.err.printf("Graph doesn't contain end vertex \"%s\"\n", endName);
-      return;
-    }
-
-    graph.get(endName).printPath();
-    System.out.println();
-  }
-
-  /** Returns a path from the source to the specified vertex */
-  public ArrayList<String> getPath(String endName, ArrayList<String> path) {
-    if (!graph.containsKey(endName)) {
-      System.err.printf("Graph doesn't contain end vertex \"%s\"\n", endName);
-      return null;
+      p2 =  points.get(i);
+      he = this.addVertexAt(0, he, p2);
     }
 
-    return graph.get(endName).getPath(path);
-  }
+    this.splitFace(this.faces.get(0), this.halfedges.get(he), this.vertices.get(0));
+    p1.h = p1.h.prev.twin;
+    
+    for(Point v: this.vertices)
+      v.h = v.h.prev.twin;
+    
+    this.initialized = true;
 
-  /** Prints the path from the source to every vertex (output order is not guaranteed) */
-  public void printAllPaths() {
-    for (Vertex v : graph.values()) {
-      v.printPath();
-      System.out.println();
-    }
+
   }
 }
 
@@ -1005,11 +1258,13 @@ class Triangle {
     this.a = a;
     this.b = b;
     this.c = c;
+
   }
 
   public Triangle(float ax, float ay, float bx, float by, float cx, float cy) {
 
-    this(new Point(ax, ay), new Point(bx, by), new Point(cx, cy));
+    this(new Point(ax, ay, null), new Point(bx, by, null), new Point(cx, cy, null));
+
   }
 
   public boolean contains(Point q) {
@@ -1019,14 +1274,16 @@ class Triangle {
     Turn turnBQA = new Turn(this.b, q, this.a);
 
     if ((turnAQC.value >= 0 && turnCQB.value >= 0 && turnBQA.value >= 0) ||
-      (turnAQC.value <= 0 && turnCQB.value <= 0 && turnBQA.value <= 0))
+        (turnAQC.value <= 0 && turnCQB.value <= 0 && turnBQA.value <= 0))
       return true;
     else return false;
+
   }
 
   public boolean contains(float qx, float qy) {
 
-    return contains(new Point(qx, qy));
+    return contains(new Point(qx, qy, null));
+
   }
 
   public boolean strictlyContains(Point q) {
@@ -1036,17 +1293,257 @@ class Triangle {
     Turn turnBQA = new Turn(this.b, q, this.a);
 
     if ((turnAQC.value > 0 && turnCQB.value > 0 && turnBQA.value > 0) ||
-      (turnAQC.value < 0 && turnCQB.value < 0 && turnBQA.value < 0))
+        (turnAQC.value < 0 && turnCQB.value < 0 && turnBQA.value < 0))
       return true;
     else return false;
+
+
   }
 
   public boolean strictlyContains(float qx, float qy) {
 
-    return strictlyContains(new Point(qx, qy));
+    return strictlyContains(new Point(qx, qy, null));
+
+  }
+
+}
+
+
+class Edge {
+
+  public Point a;
+  public Point b;
+  public Point helper;
+
+  public Edge(Point a, Point b) {
+
+    this.a = a;
+    this.b = b;
+
+  }
+
+  public Edge(double x, double y, double d, double e) {
+
+    this.a = new Point(x, y, null);
+    this.b = new Point(d, e, null);
+
+  }
+  
+  public boolean intersectsLine(Edge e) {
+    
+    Turn ea = new Turn(e, this.a);
+    Turn eb = new Turn(e, this.b);
+    
+    if((eb.value >= 0 && ea.value <= 0) ||
+        (eb.value <= 0 && ea.value >= 0)) 
+      return true;
+    return false;
+    
+  }
+
+  public boolean intersectsRay(Edge e) {
+
+    Turn ea = new Turn(e, this.a);
+    Turn eb = new Turn(e, this.b);
+
+    if((eb.value >= 0 && ea.value <= 0) ||
+        (eb.value <= 0 && ea.value >= 0)) {
+      
+      CrossProduct aEaB = new CrossProduct(this.a, this.b, this.a, e.a);
+      DotProduct EaEbP = new DotProduct(this.a, this.b, new Point(0, 0, null), new Point(-(e.b.y-e.a.y), (e.b.x-e.a.x), null));
+      
+      double t1 = aEaB.value/EaEbP.value;
+      
+      if(t1 >= 0) return true;
+      
+//      Triangle abEb = new Triangle(a, b, e.b);
+//
+//      boolean strictlyContains = abEb.strictlyContains(e.a);
+//
+//      if(strictlyContains) return false;
+//      else return true;
+
+    }
+
+    return false;
+  }
+
+  public boolean intersectsRay(Point a, Point b) {
+
+    return this.intersectsRay(new Edge(a, b));
+  }
+
+  public boolean intersectsRay(float ax, float ay, float bx, float by) {
+
+    return this.intersectsRay(new Point(ax, ay, null), new Point(bx, by, null));
+  }
+  
+  public void flip() {
+    
+    Point temp = this.a;
+    this.a = this.b;
+    this.b = temp;
+    
+  }
+  
+  public boolean equals(Object obj) {
+    
+    if (obj == null) {
+          return false;
+      }
+      final Edge other = (Edge) obj;
+      
+     if((this.a.equals(other.a) && this.b.equals(other.b)) ||
+         (this.a.equals(other.b) && this.b.equals(other.a)))
+       return true;
+     
+     return false;
+  }
+
+
+}
+
+class Face {
+
+  public Point n;
+  public Halfedge h;
+
+  public Face(Halfedge h) {
+
+    this.h = h;
+  }
+
+
+  Face() {
+  }
+
+  public boolean contains(Point p) {
+
+    Halfedge h = this.h;
+    int count = 0;
+    boolean intersectsPrevious = false;
+    do {
+
+      Edge e = h.getEdge();
+
+      if(e.intersectsRay(new Edge(p.x, p.y, p.x+1, p.y))) {
+        
+        if(!intersectsPrevious) {
+          intersectsPrevious = true;
+          count++;
+        }
+        else {
+          
+          Turn pP1eA = new Turn(p, new Point(p.x+1, p.y, null), e.a);
+          if(pP1eA.value != 0)
+            count++;
+          
+        }
+          
+
+      }
+      else if(intersectsPrevious)
+        intersectsPrevious = false;
+
+      h = h.next;
+
+    } while(h.target != this.h.target);
+
+    if(count % 2 == 0) return false;
+    return true;
+
   }
 }
 
+
+
+class Halfedge {
+
+  public Point target;
+  public Face face;
+  public Halfedge twin;
+  public Halfedge next;
+  public Halfedge prev;
+
+  public Point helper;
+  
+  public Halfedge(Point target, Face face, Halfedge twin, Halfedge next, Halfedge prev) {
+
+    this.target = target;
+    this.face = face;
+    this.twin = twin;
+    this.next = next;
+    this.prev = prev;
+  }
+
+  public Halfedge() {
+  }
+
+  public Edge getEdge() {
+    
+    Point a = new Point(this.twin.target.x, this.twin.target.y, this.twin.target.h);
+    Point b = new Point(this.target.x, this.target.y, this.target.h);
+
+    Edge e= new Edge(a, b);
+    
+    e.helper = this.helper;
+    
+    return e;
+
+  }
+
+  public boolean equals(Object obj) {
+
+    if (obj == null) {
+      return false;
+    }
+    final Halfedge other = (Halfedge) obj;
+
+    if(this.target.equals(other.target) && this.getEdge().equals(other.getEdge()))
+      return true;
+    
+    return false;
+  }
+
+
+}
+
+
+class Point implements Cloneable{
+
+  public static final double EPSILON = 0.00000000001;
+  public double x;
+  public double y;
+  public Halfedge h;
+
+  public Point(double x, double y, Halfedge h) {
+    this.x = x;
+    this.y = y;
+    this.h = h;
+  }
+
+  public boolean equals(Object obj) {
+
+    if (obj == null) {
+      return false;
+    }
+    final Point other = (Point) obj;
+
+    if ((Math.abs(this.x - other.x) > Point.EPSILON) || Math.abs(this.y - other.y) > Point.EPSILON) {
+      return false;
+    }
+    return true;
+
+  }
+  
+  public Object clone() throws CloneNotSupportedException {
+    
+    return super.clone();
+    
+  }
+
+
+}
 
 class RedBlackBST<Key extends Comparable<Key>, Value> {
 
@@ -1133,7 +1630,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
   private Value getValue(Node x, Key _key) {
     while (x != null) {
       int cmp = _key.compareTo(x._key);
-      System.out.println("Comparison: " + cmp);
+      console.log("Comparison: " + cmp);
       if      (cmp < 0) x = x.left;
       else if (cmp > 0) x = x.right;
       else              return x.val;
@@ -1184,10 +1681,11 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
 
       this.lastInserted = new Node(_key, val, RED, 1);
       return lastInserted;
+
     }
 
     int cmp = _key.compareTo(h._key);
-    if      (cmp < 0) h.left  = put(h.left, _key, val); 
+    if      (cmp < 0) h.left  = put(h.left,  _key, val); 
     else if (cmp > 0) h.right = put(h.right, _key, val); 
     else              h.val   = val;
 
@@ -1275,7 +1773,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
   public void delete(Key _key) { 
     if (_key == null) throw new NullPointerException("argument to delete() is null");
     if (!contains(_key)) return;
-    System.out.println("ohyes");
+    console.log("ohyes");
     // if both children of root are black, set root to red
     if (!isRed(root.left) && !isRed(root.right))
       root.colored = RED;
@@ -1289,11 +1787,12 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
   private Node delete(Node h, Key _key) { 
     // assert getValue(h, key) != null;
 
-    if (_key.compareTo(h._key) < 0) {
+    if (_key.compareTo(h._key) < 0)  {
       if (!isRed(h.left) && !isRed(h.left.left))
         h = moveRedLeft(h);
       h.left = delete(h.left, _key);
-    } else {
+    }
+    else {
       if (isRed(h.left))
         h = rotateRight(h);
       if (_key.compareTo(h._key) == 0 && (h.right == null))
@@ -1307,7 +1806,8 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
         // h.val = getValue(h.right, _min(h.right)._key);
         // h._key = _min(h.right)._key;
         h.right = deleteMin(h.right);
-      } else h.right = delete(h.right, _key);
+      }
+      else h.right = delete(h.right, _key);
     }
     return balance(h);
   }
@@ -1428,7 +1928,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
   public Node _min(Node x) { 
     // assert x != null;
     if (x.left == null) return x; 
-    else                return _min(x.left);
+    else                return _min(x.left); 
   } 
 
   /**
@@ -1445,7 +1945,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
   private Node _max(Node x) { 
     // assert x != null;
     if (x.right == null) return x; 
-    else                 return _max(x.right);
+    else                 return _max(x.right); 
   } 
 
 
@@ -1487,7 +1987,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
     if (isEmpty()) throw new NoSuchElementException("called ceiling() with empty symbol table");
     Node x = ceiling(root, _key);
     if (x == null) return null;
-    else           return x._key;
+    else           return x._key;  
   }
 
   // the smallest key in the subtree rooted at x greater than or equal to the given key
@@ -1519,9 +2019,9 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
     // assert x != null;
     // assert k >= 0 && k < _size(x);
     int t = _size(x.left); 
-    if      (t > k) return select(x.left, k); 
+    if      (t > k) return select(x.left,  k); 
     else if (t < k) return select(x.right, k-t-1); 
-    else            return x;
+    else            return x; 
   } 
 
   /**
@@ -1541,7 +2041,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
     int cmp = _key.compareTo(x._key); 
     if      (cmp < 0) return rank(_key, x.left); 
     else if (cmp > 0) return 1 + _size(x.left) + rank(_key, x.right); 
-    else              return _size(x.left);
+    else              return _size(x.left); 
   } 
 
   /***************************************************************************
@@ -1585,7 +2085,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
     int cmphi = hi.compareTo(x._key); 
     if (cmplo < 0) _keys(x.left, queue, lo, hi); 
     if (cmplo <= 0 && cmphi >= 0) queue.add(x._key); 
-    if (cmphi > 0) _keys(x.right, queue, lo, hi);
+    if (cmphi > 0) _keys(x.right, queue, lo, hi); 
   } 
 
   /**
@@ -1609,11 +2109,11 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
    *  Check integrity of red-black tree data structure.
    ***************************************************************************/
   private boolean check() {
-    if (!isBST())            System.out.println("Not in symmetric order");
-    if (!isSizeConsistent()) System.out.println("Subtree counts not consistent");
-    if (!isRankConsistent()) System.out.println("Ranks not consistent");
-    if (!is23())             System.out.println("Not a 2-3 tree");
-    if (!isBalanced())       System.out.println("Not balanced");
+    if (!isBST())            console.log("Not in symmetric order");
+    if (!isSizeConsistent()) console.log("Subtree counts not consistent");
+    if (!isRankConsistent()) console.log("Ranks not consistent");
+    if (!is23())             console.log("Not a 2-3 tree");
+    if (!isBalanced())       console.log("Not balanced");
     return isBST() && isSizeConsistent() && isRankConsistent() && is23() && isBalanced();
   }
 
@@ -1634,9 +2134,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
   } 
 
   // are the _size fields correct?
-  private boolean isSizeConsistent() { 
-    return isSizeConsistent(root);
-  }
+  private boolean isSizeConsistent() { return isSizeConsistent(root); }
   private boolean isSizeConsistent(Node x) {
     if (x == null) return true;
     if (x.N != _size(x.left) + _size(x.right) + 1) return false;
@@ -1654,9 +2152,7 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
 
   // Does the tree have no red right links, and at most one (left)
   // red links in a row on any path?
-  private boolean is23() { 
-    return is23(root);
-  }
+  private boolean is23() { return is23(root); }
   private boolean is23(Node x) {
     if (x == null) return true;
     if (isRed(x.right)) return false;
@@ -1681,544 +2177,6 @@ class RedBlackBST<Key extends Comparable<Key>, Value> {
     if (x == null) return black == 0;
     if (!isRed(x)) black--;
     return isBalanced(x.left, black) && isBalanced(x.right, black);
-  }
-}
-
-class DCEL {
-
-  public ArrayList<Face> faces;
-  public ArrayList<Point> vertices;
-  public ArrayList<Halfedge> halfedges;
-  public Face outer;
-  private boolean initialized;
-
-  public DCEL() {
-
-    this.initialized = false;
-    this.faces = new ArrayList<Face>();
-    this.vertices = new ArrayList<Point>();
-    this.halfedges = new ArrayList<Halfedge>();
-    outer = new Face();
-
-    this.faces.add(outer);
-  }
-
-  /**
-   * Hooks a new vertex to the desired face.
-   * @param f
-   * @param h
-   * @param v
-   */
-  public int addVertexAt(int face, int halfedge, Point v) {
-
-    Face f = this.faces.get(face);
-    Halfedge h = this.halfedges.get(halfedge);
-
-    Point u = h.target;
-
-    Halfedge h1 = new Halfedge();
-    Halfedge h2 = new Halfedge();
-
-    v.h = h2;
-    h1.twin = h2;
-    h2.twin = h1;
-    h1.target = v;
-    h2.target = u;
-    h1.face = f;
-    h2.face = f;
-    h1.next = h2;
-    h2.next = h.next;
-    h1.prev = h;
-    h2.prev = h1;
-    h.next = h1;
-    h2.next.prev = h2;
-
-    this.vertices.add(v);
-    this.halfedges.add(h1);
-    this.halfedges.add(h2);
-
-    return (this.halfedges.size() - 2);
-  }
-
-  public int[] splitFace(int face, Halfedge h, int vertex) {
-
-    Face f = this.faces.get(face);
-    Point v = this.vertices.get(vertex);
-
-    return this.splitFace(f, h, v);
-  }
-
-  public int[] splitFace(int face, Halfedge h, Point v) {
-
-    Face f = this.faces.get(face);
-
-    return this.splitFace(f, h, v);
-  }
-
-  public int[] splitFace(Face f, Halfedge h, int vertex) {
-
-    Point v = this.vertices.get(vertex);
-
-    return this.splitFace(f, h, v);
-  }
-
-  /**
-   * Splits a face into two new faces, creating a new edge between two of its vertices.
-   * @param f
-   * @param h
-   * @param v
-   * @return
-   */
-  public int[] splitFace(Face f, Halfedge h, Point v) {
-
-    int[] newFaces = new int[2];
-
-    Point u = h.target;
-
-    Face f1 = new Face();
-    Face f2 = new Face();
-
-    Halfedge h1 = new Halfedge();
-    Halfedge h2 = new Halfedge();
-
-    f1.h = h1;
-    f2.h = h2;
-    h1.twin = h2;
-    h2.twin = h1;
-    h1.target = v;
-    h2.target = u;
-    h2.next = h.next;
-    h2.next.prev = h2;
-    h1.prev = h;
-    h.next = h1;
-
-    Halfedge i = h2;
-    i.face = f2;
-
-    while (!i.target.equals(v)) {
-
-      i = i.next;
-      i.face = f2;
-    }
-
-
-    h1.next = i.next;
-    h1.next.prev = h1;
-    i.next = h2;
-    h2.prev = i;
-    i = h1;
-
-    do {
-
-      i.face = f1;
-      i = i.next;
-    } while (!i.target.equals(u));
-
-
-
-    this.faces.remove(f);
-
-    this.faces.add(f2);
-    this.faces.add(f1);
-    newFaces[0] = this.faces.size() - 1;
-    newFaces[1] = this.faces.size() - 2;
-
-    this.halfedges.add(h1);
-    this.halfedges.add(h2);
-
-    return newFaces;
-  }
-
-  /**
-   * Splits and edge, represented by a halfedge, into two new edges, incident to a given point.
-   * @param halfedge
-   * @param w
-   * @return
-   */
-  public int[] splitEdge(Halfedge h, Point w) {
-
-    int[] halfedges = new int[2];
-
-    Face f1 = h.face;
-    Face f2 = h.twin.face;
-
-    Halfedge h1 = new Halfedge();
-    Halfedge h2 = new Halfedge();
-
-    Halfedge k1 = new Halfedge();
-    Halfedge k2 = new Halfedge();
-
-    h1.face = f1;
-    h1.next = h2;
-    h1.prev = h.prev;
-    h1.twin = k2;
-    h1.target = w;
-
-    h2.face = f1;
-    h2.next = h.next;
-    h2.prev = h1;
-    h2.twin = k1;
-    h2.target = h.target;
-
-    k1.face = f2;
-    k1.next = k2;
-    k1.prev = h.twin.prev;
-    k1.twin = h2;
-    k1.target = w;
-
-    k2.face = f2;
-    k2.next = h.twin.next;
-    k2.prev = k1;
-    k2.twin = h1;
-    k2.target = h.twin.target;
-
-    h1.prev.next = h1;
-    k1.prev.next = k1;
-
-    h2.next.prev = h2;
-    k2.next.prev = k2;
-
-    w.h = h2;
-
-    // copy k2 into h.twin
-    h.twin.next = k2.next;
-    h.twin.prev = k2.prev;
-    h.twin.twin = k2.twin;
-    h.twin.target = k2.target;
-
-    // copy h1 into h
-    h.next = h2.next;
-    h.prev = h2.prev;
-    h.twin = h2.twin;
-    h.target = h2.target;
-
-    this.halfedges.add(h1);
-    this.halfedges.add(k1);
-
-    int size = this.halfedges.size();
-
-    halfedges[0] = size - 2;
-    halfedges[1] = size - 1;
-
-    this.vertices.add(w);
-
-    return halfedges;
-  }
-
-  /**
-   * Initializes the dcel with a single edge.
-   * @param p1
-   * @param p2
-   * @return
-   */
-  public void initialize(ArrayList<Point> points) {
-
-    if (initialized) return;
-    if (points.size() < 3) throw new IllegalArgumentException("Provide at least 3 vertices!");
-
-    Point p1 = points.get(0);
-    Point p2 = points.get(1);
-
-    Halfedge h1 = new Halfedge();
-    Halfedge h2 = new Halfedge();
-    Face f = this.outer;
-
-    p1.h = h1;
-    p2.h = h2;
-
-    h1.target = p2;
-    h1.face = f;
-    h1.twin = h2;
-    h1.next = h2;
-    h1.prev = h2;
-
-    h2.target = p1;
-    h2.face = f;
-    h2.twin = h1;
-    h2.next = h1;
-    h2.prev = h1;
-
-    f.h = h1;
-
-    this.vertices.add(p1);
-    this.vertices.add(p2);
-    this.halfedges.add(h1);
-    this.halfedges.add(h2);
-
-    int he = this.halfedges.size() - 2;
-
-    for (int i = 2; i < points.size(); i++) {
-
-      p2 =  points.get(i);
-      he = this.addVertexAt(0, he, p2);
-    }
-
-    this.splitFace(0, this.halfedges.get(he), 0);
-    p1.h = p1.h.prev.twin;
-
-    for (Point v : this.vertices)
-      v.h = v.h.prev.twin;
-
-    this.initialized = true;
-  }
-}
-
-
-class Edge {
-
-  public Point a;
-  public Point b;
-  public Point helper;
-
-  public Edge(Point a, Point b) {
-
-    this.a = a;
-    this.b = b;
-
-  }
-
-  public Edge(double x, double y, double d, double e) {
-
-    this.a = new Point(x, y);
-    this.b = new Point(d, e);
-
-  }
-  
-  public boolean intersectsLine(Edge e) {
-    
-    Turn ea = new Turn(e, this.a);
-    Turn eb = new Turn(e, this.b);
-    
-    if((eb.value >= 0 && ea.value <= 0) ||
-        (eb.value <= 0 && ea.value >= 0)) 
-      return true;
-    return false;
-    
-  }
-
-  public boolean intersectsRay(Edge e) {
-
-    Turn ea = new Turn(e, this.a);
-    Turn eb = new Turn(e, this.b);
-
-    if((eb.value >= 0 && ea.value <= 0) ||
-        (eb.value <= 0 && ea.value >= 0)) {
-      
-      CrossProduct aEaB = new CrossProduct(this.a, this.b, this.a, e.a);
-      DotProduct EaEbP = new DotProduct(this.a, this.b, new Point(0, 0), new Point(-(e.b.y-e.a.y), (e.b.x-e.a.x)));
-      
-      double t1 = aEaB.value/EaEbP.value;
-      
-      if(t1 >= 0) return true;
-      
-//      Triangle abEb = new Triangle(a, b, e.b);
-//
-//      boolean strictlyContains = abEb.strictlyContains(e.a);
-//
-//      if(strictlyContains) return false;
-//      else return true;
-
-    }
-
-    return false;
-  }
-
-  public boolean intersectsRay(Point a, Point b) {
-
-    return this.intersectsRay(new Edge(a, b));
-  }
-
-  public boolean intersectsRay(float ax, float ay, float bx, float by) {
-
-    return this.intersectsRay(new Point(ax, ay), new Point(bx, by));
-  }
-  
-  public void flip() {
-    
-    Point temp = this.a;
-    this.a = this.b;
-    this.b = temp;
-    
-  }
-  
-  public boolean equals(Object obj) {
-    
-    if (obj == null) {
-          return false;
-      }
-      final Edge other = (Edge) obj;
-      
-     if((this.a.equals(other.a) && this.b.equals(other.b)) ||
-         (this.a.equals(other.b) && this.b.equals(other.a)))
-       return true;
-     
-     return false;
-  }
-
-
-}
-
-class Face {
-
-  public Point n;
-  public Halfedge h;
-
-  public Face(Halfedge h) {
-
-    this.h = h;
-  }
-
-
-  Face() {
-  }
-
-  public boolean contains(Point p) {
-
-    Halfedge h = this.h;
-    int count = 0;
-    boolean intersectsPrevious = false;
-    do {
-
-      Edge e = h.getEdge();
-
-      if (e.intersectsRay(new Edge(p.x, p.y, p.x+1, p.y))) {
-
-        if (!intersectsPrevious) {
-          intersectsPrevious = true;
-          count++;
-        } else {
-
-          Turn pP1eA = new Turn(p, new Point(p.x+1, p.y), e.a);
-          if (pP1eA.value != 0)
-            count++;
-        }
-      } else if (intersectsPrevious)
-        intersectsPrevious = false;
-
-      h = h.next;
-    } while (h.target != this.h.target);
-
-    if (count % 2 == 0) return false;
-    return true;
-  }
-}
-
-
-
-class Halfedge {
-
-  public Point target;
-  public Face face;
-  public Halfedge twin;
-  public Halfedge next;
-  public Halfedge prev;
-
-  public Point helper;
-  
-  public Halfedge(Point target, Face face, Halfedge twin, Halfedge next, Halfedge prev) {
-
-    this.target = target;
-    this.face = face;
-    this.twin = twin;
-    this.next = next;
-    this.prev = prev;
-  }
-
-  public Halfedge() {
-  }
-
-  public Edge getEdge() {
-    
-    Point a = new Point(this.twin.target.x, this.twin.target.y, this.twin.target.h);
-    Point b = new Point(this.target.x, this.target.y, this.target.h);
-
-    Edge e= new Edge(a, b);
-    
-    e.helper = this.helper;
-    
-    return e;
-
-  }
-
-  public boolean equals(Object obj) {
-
-    if (obj == null) {
-      return false;
-    }
-    final Halfedge other = (Halfedge) obj;
-
-    if(this.target.equals(other.target) && this.getEdge().equals(other.getEdge()))
-      return true;
-    
-    return false;
-  }
-
-
-}
-
-
-
-class Point implements Cloneable{
-
-  public static final double EPSILON = 0.00000000001;
-  public double x;
-  public double y;
-  public double z;
-  public Halfedge h;
-
-  public Point(double x, double y) {
-    this.x = x;
-    this.y = y;
-    this.z = 0;
-  }
-
-
-  public Point(double x, double y, double z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
-
-  public Point(Point a) {
-
-    this.x = a.x;
-    this.y = a.y;
-    this.z = a.z;
-  }
-
-  public Point(double x, double y, Halfedge h) {
-    this.x = x;
-    this.y = y;
-    this.h = h;
-  }
-
-  public Point(Point a, Halfedge h) {
-
-    this.x = a.x;
-    this.y = a.y;
-    this.h = h;
-  }
-
-
-  public boolean equals(Object obj) {
-
-    if (obj == null) {
-      return false;
-    }
-    final Point other = (Point) obj;
-
-    if ((Math.abs(this.x - other.x) > Point.EPSILON) || Math.abs(this.y - other.y) > Point.EPSILON) {
-      return false;
-    }
-    return true;
-
-  }
-  
-  public Object clone() throws CloneNotSupportedException {
-    
-    return super.clone();
-    
-  }
-
+  } 
 
 }

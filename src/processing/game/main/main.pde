@@ -1,4 +1,5 @@
 /* @pjs font="/fonts/Charybdis.ttf"; */
+/* @pjs preload="/img/game/clouds.png"; */
 
 ArrayList<Point> points, beacons, defaultBeacons;
 Point start, end;
@@ -16,7 +17,7 @@ void setup() {
   size(1068, 600);
   myFont = createFont("/fonts/Charybdis.ttf");
   textFont(myFont);
-  MIN_BEACONS = 6;
+  MIN_BEACONS = 1
   MAX_SECS = 5;
   SHIFT_X = 60;
   SHIFT_Y = 100;
@@ -31,37 +32,36 @@ void setup() {
   
   r= g = b= 255;
   
+  bg = loadImage("/img/game/clouds.png");
   points = new ArrayList<Point>();
   defaultBeacons = new ArrayList<Point>();
   
-  points.add(new Point(186, 223, null));
-  points.add(new Point(311, 42, null));
-  points.add(new Point(241, 213, null));
-  points.add(new Point(372, 43, null));
-  points.add(new Point(294, 211, null));
-  points.add(new Point(428, 45, null));
-  points.add(new Point(357, 214, null));
-  points.add(new Point(664, 57, null));
-  points.add(new Point(540, 232, null));
-  points.add(new Point(651, 355, null));
-  points.add(new Point(319, 203, null));
-  points.add(new Point(435, 326, null));
-  points.add(new Point(261, 204, null));
-  points.add(new Point(333, 320, null));
-  points.add(new Point(215, 205, null));
-  points.add(new Point(274, 329, null));
+  points.add(new Point(274, 15, null));
+  points.add(new Point(458, 188, null));
+  points.add(new Point(539, 114, null));
+  points.add(new Point(482, 38, null));
+  points.add(new Point(645, 123, null));
+  points.add(new Point(565, 150, null));
+  points.add(new Point(740, 242, null));
+  points.add(new Point(553, 208, null));
+  points.add(new Point(571, 327, null));
+  points.add(new Point(463, 234, null));
+  points.add(new Point(369, 272, null));
+  points.add(new Point(350, 389, null));
+  points.add(new Point(270, 222, null));
+  points.add(new Point(378, 177, null));
+  points.add(new Point(224, 148, null));
+  points.add(new Point(276, 126, null));
   
-  defaultBeacons.add(new Point(186, 223, null));
-  defaultBeacons.add(new Point(215, 205, null));
-  defaultBeacons.add(new Point(241, 213, null));
-  defaultBeacons.add(new Point(261, 204, null));
-  defaultBeacons.add(new Point(294, 211, null));
-  defaultBeacons.add(new Point(319, 203, null));
-  defaultBeacons.add(new Point(357, 214, null));
+  defaultBeacons.add(new Point(378, 177, null));
+  defaultBeacons.add(new Point(270, 222, null));
+  defaultBeacons.add(new Point(463, 234, null));
+  defaultBeacons.add(new Point(458, 188, null));
+  defaultBeacons.add(new Point(539, 114, null));
   
   
-  start = new Point(255, 300, null);
-  end = new Point(597, 103, null);
+  start = new Point(247, 144, null);
+  end = new Point(515, 63, null);
   start.x = start.x + SHIFT_X;
   start.y = start.y + SHIFT_Y;
   end.x = end.x + SHIFT_X;
@@ -90,7 +90,7 @@ void draw() {
 
 	if(!started) {
 		
-		background(59, 185, 255);
+		//background(bg);
 		showText("Can you do better?", 270, 70, 255, 0, 0, 64);
 		drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 		drawPoint(start, 255, 0, 0, 5);
@@ -104,7 +104,7 @@ void draw() {
 		float diff = currentMillis - startMillis;
 		if(diff > 1000*count) {
 			
-			background(59, 185, 255);
+			background(bg);
 			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 			showHint(null);
 			drawPoint(start, 255, 0, 0, 5);
@@ -118,7 +118,7 @@ void draw() {
 		if(count > MAX_SECS) {
 			
 			hintShown = false;
-			background(59, 185, 255);
+			background(bg);
 			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 			drawPoint(start, 255, 0, 0, 5);
 			drawPoint(end, 0, 255, 100, 5);
@@ -135,7 +135,7 @@ void draw() {
 		if(diff > 2000*count) { 
 			AttractionRegion currentAttr = new AttractionRegion(target, points);
 			console.log("new target:" + target.x + ", " + target.y);
-			background(59, 185, 255);
+			background(bg);
 			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 			drawShapeFromFace(currentAttr.face, 100, 255, 100, 0, 200, 0, 0, 0);
 			drawPoint(previousTarget, 255, 0, 0, 5);
@@ -180,7 +180,7 @@ void draw() {
 					else
 						showText("EXCELLENT!", 110, 246, 0, 140, 0, 200);
 						
-					enableNext();
+					toggleNext();
 					
 				} 
 				
@@ -285,7 +285,7 @@ void toggleStart() {
 	
 	beacons = new ArrayList<Point>();
 	started = true;
-	background(59, 185, 255);
+	background(bg);
 	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 	drawPoint(start, 255, 0, 0, 5);
 	drawPoint(end, 0, 255, 100, 5);

@@ -10,12 +10,13 @@ int count, r, g, b, MAX_SECS, MIN_BEACONS;
 int strokePoly;
 int SHIFT_X, SHIFT_Y;
 int nextTarget; 
+PImage bg;
 void setup() {
 
   size(1068, 600);
   myFont = createFont("/fonts/Charybdis.ttf");
   textFont(myFont);
-  MIN_BEACONS = 1
+  MIN_BEACONS = 14;
   MAX_SECS = 5;
   SHIFT_X = 60;
   SHIFT_Y = 100;
@@ -25,40 +26,315 @@ void setup() {
   hintShown = false;
   ready = false;
   nextTarget = 1;
+  lose = win = false;
+  noLoop();
   
   r= g = b= 255;
-  
-  background(r, g, b);
   
   points = new ArrayList<Point>();
   defaultBeacons = new ArrayList<Point>();
   
-  points.add(new Point(274, 15, null));
-  points.add(new Point(458, 188, null));
-  points.add(new Point(539, 114, null));
-  points.add(new Point(482, 38, null));
-  points.add(new Point(645, 123, null));
-  points.add(new Point(565, 150, null));
-  points.add(new Point(740, 242, null));
-  points.add(new Point(553, 208, null));
-  points.add(new Point(571, 327, null));
-  points.add(new Point(463, 234, null));
-  points.add(new Point(369, 272, null));
-  points.add(new Point(350, 389, null));
-  points.add(new Point(270, 222, null));
-  points.add(new Point(378, 177, null));
-  points.add(new Point(224, 148, null));
-  points.add(new Point(276, 126, null));
+      points.add(new Point(323, 30, null));
+    points.add(new Point(391, 27, null));
+    points.add(new Point(397, 55, null));
+    points.add(new Point(347, 52, null));
+    points.add(new Point(351, 173, null));
+    points.add(new Point(463, 174, null));
+    points.add(new Point(459, 144, null));
+    points.add(new Point(378, 149, null));
+    points.add(new Point(370, 65, null));
+    points.add(new Point(395, 69, null));
+    points.add(new Point(399, 116, null));
+    points.add(new Point(412, 108, null));
+    points.add(new Point(408, 26, null));
+    points.add(new Point(434, 28, null));
+    points.add(new Point(441, 121, null));
+    points.add(new Point(460, 116, null));
+    points.add(new Point(462, 22, null));
+    points.add(new Point(483, 25, null));
+    points.add(new Point(476, 140, null));
+    points.add(new Point(531, 138, null));
+    points.add(new Point(526, 175, null));
+    points.add(new Point(479, 166, null));
+    points.add(new Point(479, 197, null));
+    points.add(new Point(324, 202, null));
+    points.add(new Point(323, 114, null));
+    points.add(new Point(253, 116, null));
+    points.add(new Point(251, 254, null));
+    points.add(new Point(373, 255, null));
+    points.add(new Point(369, 234, null));
+    points.add(new Point(273, 227, null));
+    points.add(new Point(274, 145, null));
+    points.add(new Point(308, 136, null));
+    points.add(new Point(306, 220, null));
+    points.add(new Point(411, 222, null));
+    points.add(new Point(402, 275, null));
+    points.add(new Point(211, 274, null));
+    points.add(new Point(212, 143, null));
+    points.add(new Point(172, 131, null));
+    points.add(new Point(171, 101, null));
+    points.add(new Point(220, 106, null));
+    points.add(new Point(220, 81, null));
+    points.add(new Point(317, 89, null));
+    points.add(new Point(318, 67, null));
+    points.add(new Point(200, 61, null));
+    points.add(new Point(198, 83, null));
+    points.add(new Point(150, 83, null));
+    points.add(new Point(152, 159, null));
+    points.add(new Point(196, 161, null));
+    points.add(new Point(188, 299, null));
+	    points.add(new Point(311, 302, null));
+    points.add(new Point(321, 371, null));
+    points.add(new Point(384, 366, null));
+    points.add(new Point(374, 324, null));
+    points.add(new Point(330, 327, null));
+    points.add(new Point(329, 297, null));
+    points.add(new Point(407, 295, null));
+    points.add(new Point(408, 360, null));
+    points.add(new Point(437, 352, null));
+    points.add(new Point(428, 215, null));
+    points.add(new Point(497, 221, null));
+    points.add(new Point(495, 186, null));
+    points.add(new Point(558, 182, null));
+    points.add(new Point(554, 113, null));
+    points.add(new Point(720, 105, null));
+    points.add(new Point(711, 82, null));
+    points.add(new Point(492, 96, null));
+    points.add(new Point(498, 67, null));
+    points.add(new Point(712, 61, null));
+    points.add(new Point(706, 47, null));
+    points.add(new Point(502, 39, null));
+    points.add(new Point(500, 23, null));
+    points.add(new Point(749, 25, null));
+    points.add(new Point(743, 102, null));
+    points.add(new Point(857, 100, null));
+    points.add(new Point(857, 59, null));
+    points.add(new Point(846, 62, null));
+    points.add(new Point(843, 83, null));
+    points.add(new Point(769, 78, null));
+    points.add(new Point(767, 58, null));
+    points.add(new Point(827, 58, null));
+    points.add(new Point(827, 42, null));
+    points.add(new Point(767, 42, null));
+    points.add(new Point(768, 23, null));
+    points.add(new Point(858, 24, null));
+    points.add(new Point(858, 45, null));
+    points.add(new Point(915, 45, null));
+    points.add(new Point(911, 25, null));
+    points.add(new Point(954, 28, null));
+    points.add(new Point(954, 55, null));
+    points.add(new Point(933, 57, null));
+    points.add(new Point(930, 79, null));
+    points.add(new Point(887, 71, null));
+    points.add(new Point(883, 130, null));
+    points.add(new Point(742, 134, null));
+    points.add(new Point(746, 258, null));
+    points.add(new Point(649, 267, null));
+    points.add(new Point(644, 389, null));
+    points.add(new Point(809, 357, null));
+    points.add(new Point(802, 235, null));
+	    points.add(new Point(832, 237, null));
+    points.add(new Point(839, 419, null));
+    points.add(new Point(803, 418, null));
+    points.add(new Point(810, 378, null));
+    points.add(new Point(779, 387, null));
+    points.add(new Point(781, 440, null));
+    points.add(new Point(863, 430, null));
+    points.add(new Point(857, 328, null));
+    points.add(new Point(902, 329, null));
+    points.add(new Point(893, 294, null));
+    points.add(new Point(856, 293, null));
+    points.add(new Point(846, 201, null));
+    points.add(new Point(790, 207, null));
+    points.add(new Point(787, 343, null));
+    points.add(new Point(664, 354, null));
+    points.add(new Point(671, 289, null));
+    points.add(new Point(693, 287, null));
+    points.add(new Point(690, 325, null));
+    points.add(new Point(745, 323, null));
+    points.add(new Point(746, 300, null));
+    points.add(new Point(708, 300, null));
+    points.add(new Point(708, 280, null));
+    points.add(new Point(761, 278, null));
+    points.add(new Point(762, 315, null));
+    points.add(new Point(771, 313, null));
+    points.add(new Point(769, 152, null));
+    points.add(new Point(798, 152, null));
+    points.add(new Point(799, 182, null));
+    points.add(new Point(820, 174, null));
+    points.add(new Point(821, 152, null));
+    points.add(new Point(905, 151, null));
+    points.add(new Point(909, 93, null));
+    points.add(new Point(926, 95, null));
+    points.add(new Point(922, 151, null));
+    points.add(new Point(940, 147, null));
+    points.add(new Point(938, 85, null));
+    points.add(new Point(955, 85, null));
+    points.add(new Point(947, 217, null));
+    points.add(new Point(916, 209, null));
+    points.add(new Point(915, 180, null));
+    points.add(new Point(873, 178, null));
+    points.add(new Point(878, 264, null));
+    points.add(new Point(891, 261, null));
+    points.add(new Point(889, 203, null));
+    points.add(new Point(904, 198, null));
+    points.add(new Point(926, 352, null));
+    points.add(new Point(879, 353, null));
+    points.add(new Point(884, 398, null));
+    points.add(new Point(923, 401, null));
+    points.add(new Point(924, 466, null));
+	points.add(new Point(746, 460, null));
+    points.add(new Point(755, 405, null));
+    points.add(new Point(620, 411, null));
+    points.add(new Point(621, 431, null));
+    points.add(new Point(722, 432, null));
+    points.add(new Point(716, 469, null));
+    points.add(new Point(580, 457, null));
+    points.add(new Point(579, 390, null));
+    points.add(new Point(623, 387, null));
+    points.add(new Point(626, 316, null));
+    points.add(new Point(527, 314, null));
+    points.add(new Point(530, 347, null));
+    points.add(new Point(604, 345, null));
+    points.add(new Point(599, 365, null));
+    points.add(new Point(522, 365, null));
+    points.add(new Point(514, 393, null));
+    points.add(new Point(557, 396, null));
+    points.add(new Point(561, 458, null));
+    points.add(new Point(381, 468, null));
+    points.add(new Point(383, 441, null));
+    points.add(new Point(536, 427, null));
+    points.add(new Point(536, 412, null));
+    points.add(new Point(481, 402, null));
+    points.add(new Point(472, 366, null));
+    points.add(new Point(494, 367, null));
+    points.add(new Point(502, 286, null));
+    points.add(new Point(627, 294, null));
+    points.add(new Point(627, 248, null));
+    points.add(new Point(729, 239, null));
+    points.add(new Point(722, 140, null));
+    points.add(new Point(598, 142, null));
+    points.add(new Point(598, 182, null));
+    points.add(new Point(681, 175, null));
+    points.add(new Point(679, 164, null));
+    points.add(new Point(616, 162, null));
+    points.add(new Point(614, 149, null));
+    points.add(new Point(710, 150, null));
+    points.add(new Point(706, 191, null));
+    points.add(new Point(656, 196, null));
+    points.add(new Point(656, 205, null));
+    points.add(new Point(702, 205, null));
+    points.add(new Point(700, 227, null));
+    points.add(new Point(628, 228, null));
+    points.add(new Point(629, 199, null));
+    points.add(new Point(599, 197, null));
+    points.add(new Point(601, 278, null));
+    points.add(new Point(563, 270, null));
+    points.add(new Point(570, 192, null));
+    points.add(new Point(510, 202, null));
+    points.add(new Point(514, 244, null));
+	points.add(new Point(534, 240, null));
+    points.add(new Point(532, 213, null));
+    points.add(new Point(552, 211, null));
+    points.add(new Point(539, 267, null));
+    points.add(new Point(486, 262, null));
+    points.add(new Point(471, 240, null));
+    points.add(new Point(458, 242, null));
+    points.add(new Point(473, 340, null));
+    points.add(new Point(444, 370, null));
+    points.add(new Point(454, 407, null));
+    points.add(new Point(407, 414, null));
+    points.add(new Point(403, 383, null));
+    points.add(new Point(356, 394, null));
+    points.add(new Point(357, 463, null));
+    points.add(new Point(179, 471, null));
+    points.add(new Point(183, 377, null));
+    points.add(new Point(85, 356, null));
+    points.add(new Point(84, 234, null));
+    points.add(new Point(45, 229, null));
+    points.add(new Point(49, 368, null));
+    points.add(new Point(149, 394, null));
+    points.add(new Point(158, 464, null));
+    points.add(new Point(18, 459, null));
+    points.add(new Point(24, 425, null));
+    points.add(new Point(114, 434, null));
+    points.add(new Point(115, 405, null));
+    points.add(new Point(21, 386, null));
+    points.add(new Point(21, 185, null));
+    points.add(new Point(115, 205, null));
+    points.add(new Point(117, 336, null));
+    points.add(new Point(205, 351, null));
+    points.add(new Point(216, 444, null));
+    points.add(new Point(320, 437, null));
+    points.add(new Point(313, 412, null));
+    points.add(new Point(229, 414, null));
+    points.add(new Point(228, 386, null));
+    points.add(new Point(310, 391, null));
+    points.add(new Point(290, 342, null));
+    points.add(new Point(263, 341, null));
+    points.add(new Point(265, 372, null));
+    points.add(new Point(228, 369, null));
+    points.add(new Point(231, 323, null));
+    points.add(new Point(152, 317, null));
+    points.add(new Point(155, 184, null));
+    points.add(new Point(44, 138, null));
+    points.add(new Point(44, 24, null));
+    points.add(new Point(68, 22, null));
+    points.add(new Point(69, 116, null));
+    points.add(new Point(123, 136, null));
+    points.add(new Point(120, 90, null));
+	points.add(new Point(83, 79, null));
+    points.add(new Point(87, 22, null));
+    points.add(new Point(119, 19, null));
+    points.add(new Point(113, 61, null));
+    points.add(new Point(163, 56, null));
+    points.add(new Point(157, 28, null));
+    points.add(new Point(183, 26, null));
+    points.add(new Point(188, 48, null));
+    points.add(new Point(316, 47, null));
+
+   defaultBeacons.add(new Point(323, 30, null));
+   defaultBeacons.add(new Point(318, 67, null));
+   defaultBeacons.add(new Point(163, 56, null));
+   defaultBeacons.add(new Point(200, 61, null));
+   defaultBeacons.add(new Point(150, 83, null));
+   defaultBeacons.add(new Point(152, 159, null));
+   defaultBeacons.add(new Point(188, 299, null));
+   defaultBeacons.add(new Point(290, 342, null));
+   defaultBeacons.add(new Point(311, 302, null));
+   defaultBeacons.add(new Point(321, 371, null));
+   defaultBeacons.add(new Point(444, 370, null));
+   defaultBeacons.add(new Point(437, 352, null));
+   defaultBeacons.add(new Point(428, 215, null));
+   defaultBeacons.add(new Point(539, 267, null));
+   defaultBeacons.add(new Point(514, 244, null));
+   defaultBeacons.add(new Point(497, 221, null));
+   defaultBeacons.add(new Point(495, 186, null));
+   defaultBeacons.add(new Point(598, 182, null));
+   defaultBeacons.add(new Point(558, 182, null));
+   defaultBeacons.add(new Point(554, 113, null));
+   defaultBeacons.add(new Point(742, 134, null));
+   defaultBeacons.add(new Point(746, 258, null));
+   defaultBeacons.add(new Point(649, 267, null));
+   defaultBeacons.add(new Point(620, 411, null));
+   defaultBeacons.add(new Point(644, 389, null));
+   defaultBeacons.add(new Point(779, 387, null));
+   defaultBeacons.add(new Point(781, 440, null));
+   defaultBeacons.add(new Point(863, 430, null));
+   defaultBeacons.add(new Point(857, 328, null));
+   defaultBeacons.add(new Point(902, 329, null));
+   defaultBeacons.add(new Point(893, 294, null));
+   defaultBeacons.add(new Point(846, 201, null));
+   defaultBeacons.add(new Point(790, 207, null));
+   defaultBeacons.add(new Point(787, 343, null));
+   defaultBeacons.add(new Point(746, 300, null));
+   defaultBeacons.add(new Point(787, 343, null));
+   defaultBeacons.add(new Point(664, 354, null));
+
   
-  defaultBeacons.add(new Point(378, 177, null));
-  defaultBeacons.add(new Point(270, 222, null));
-  defaultBeacons.add(new Point(463, 234, null));
-  defaultBeacons.add(new Point(458, 188, null));
-  defaultBeacons.add(new Point(539, 114, null));
   
-  
-  start = new Point(247, 144, null);
-  end = new Point(515, 63, null);
+  start = new Point(380, 38, null);
+  end = new Point(677, 299, null);
   start.x = start.x + SHIFT_X;
   start.y = start.y + SHIFT_Y;
   end.x = end.x + SHIFT_X;
@@ -79,23 +355,29 @@ void setup() {
 	  
   }
   
-  showText("Can you do better?", 270, 70, 255, 0, 0, 64);
-  drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
-  drawPoint(start, 255, 0, 0, 5);
-  drawPoint(end, 0, 255, 100, 5);
-  drawPoints(defaultBeacons, 127, 70, 44, 5);
+  
   
 }
 
 void draw() {
 
+	if(!started) {
+		
+		background(59, 185, 255);
+		showText("Can you do better?", 270, 70, 255, 0, 0, 64);
+		drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+		drawPoint(start, 255, 0, 0, 5);
+		drawPoint(end, 0, 255, 100, 5);
+		drawPoints(defaultBeacons, 127, 70, 44, 5);
+		
+	}
 		
 	if(hintShown && !ready) {
 		currentMillis = millis();
 		float diff = currentMillis - startMillis;
 		if(diff > 1000*count) {
 			
-			background(r,g,b);
+			background(59, 185, 255);
 			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 			showHint(null);
 			drawPoint(start, 255, 0, 0, 5);
@@ -109,7 +391,7 @@ void draw() {
 		if(count > MAX_SECS) {
 			
 			hintShown = false;
-			background(r,g,b);
+			background(59, 185, 255);
 			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 			drawPoint(start, 255, 0, 0, 5);
 			drawPoint(end, 0, 255, 100, 5);
@@ -126,7 +408,7 @@ void draw() {
 		if(diff > 2000*count) { 
 			AttractionRegion currentAttr = new AttractionRegion(target, points);
 			console.log("new target:" + target.x + ", " + target.y);
-			background(r,g,b);
+			background(59, 185, 255);
 			drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 			drawShapeFromFace(currentAttr.face, 100, 255, 100, 0, 200, 0, 0, 0);
 			drawPoint(previousTarget, 255, 0, 0, 5);
@@ -134,9 +416,13 @@ void draw() {
 			
 			if(!currentAttr.face.contains(previousTarget)) {
 				
-				console.log("you looose");
+				playLose();
+				showText("YOU LOSE!", 150, 246, 255, 0, 0, 200);
+				showText("Not routed!", 390, 300, 255, 0, 0, 64);
 				started = false;
 				ready = false;
+				restart();
+				noLoop();
 				return;
 				
 			}
@@ -149,22 +435,33 @@ void draw() {
 			else {
 				
 				int beaconsUsed = beacons.size() - 1;
-				
+
 				if(beaconsUsed > defaultBeacons.size()) {
+					playLose();
 					showText("YOU LOSE!", 150, 246, 255, 0, 0, 200);
 					int excess = beacons.size() - 1 - defaultBeacons.size();
 					showText("Beacons in excess: " + excess , 270, 300, 255, 0, 0, 64);
-				}
-				else if(beaconsUsed > defaultBeacons.size()/2)
-					showText("GOOD!", 315, 246, 0, 140, 0, 200);
-				else if(beaconsUsed <= defaultBeacons.size()/2 && beaconsUsed > MIN_BEACONS)
-					showText("VERY GOOD!", 110, 246, 0, 140, 0, 200);
-				else
-					showText("EXCELLENT!", 110, 246, 0, 140, 0, 200);
 					
+				}
+				else {
+				
+					playWin();
+					if(beaconsUsed > defaultBeacons.size()/2)
+						showText("GOOD!", 315, 246, 0, 140, 0, 200);
+					else if(beaconsUsed <= defaultBeacons.size()/2 && beaconsUsed > MIN_BEACONS)
+						showText("VERY GOOD!", 110, 246, 0, 140, 0, 200);
+					else
+						showText("EXCELLENT!", 110, 246, 0, 140, 0, 200);
 						
+					enableNext();
+					
+				} 
+				
+				noLoop();
 				started = false;
 				ready = false;
+				restart();
+					
 			}
 			count++;
 		}
@@ -261,10 +558,11 @@ void toggleStart() {
 	
 	beacons = new ArrayList<Point>();
 	started = true;
-	background(r,g,b);
+	background(59, 185, 255);
 	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
 	drawPoint(start, 255, 0, 0, 5);
 	drawPoint(end, 0, 255, 100, 5);
+	loop();
 	
 }
 

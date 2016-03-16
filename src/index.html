@@ -2502,20 +2502,20 @@
 						            <a class="Label" name="Algorithm-1"> </a>
 						            <div class="algorithm">
 						                <div class="listing">
-<pre class="listing"><span class="number-left">1</span>procedure AttractionRegion(P, b)
-<span class="number-left">2</span>	Sort the vertices by angle about b, and keep in an ordered event list L=(p1, p2, ..., pn)
-<span class="number-left">3</span>	Find the order of intersection of edges from p1 along the ray bp1 and store as status S
-<span class="number-left">4</span>	for the next vertex pi in L do
-<span class="number-left">5</span>		Update S as necessary
-<span class="number-left">6</span>		if pi is a split vertex with respect to b then
-<span class="number-left">7</span>			Find qi, the ray-vertex of pi with respect to b
-<span class="number-left">8</span>			Add qi to the arrangement of P
-<span class="number-left">9</span>			Add edge (pi, qi) to the arrangement of P
-<span class="number-left">10</span>		end if
-<span class="number-left">11</span>	end for
-<span class="number-left">12</span>	return the arrangement of P
-<span class="number-left">13</span>end procedure
-</pre>
+											<pre class="listing"><span class="number-left">1</span>procedure AttractionRegion(P, b)
+											<span class="number-left">2</span>	Sort the vertices by angle about b, and keep in an ordered event list L=(p1, p2, ..., pn)
+											<span class="number-left">3</span>	Find the order of intersection of edges from p1 along the ray bp1 and store as status S
+											<span class="number-left">4</span>	for the next vertex pi in L do
+											<span class="number-left">5</span>		Update S as necessary
+											<span class="number-left">6</span>		if pi is a split vertex with respect to b then
+											<span class="number-left">7</span>			Find qi, the ray-vertex of pi with respect to b
+											<span class="number-left">8</span>			Add qi to the arrangement of P
+											<span class="number-left">9</span>			Add edge (pi, qi) to the arrangement of P
+											<span class="number-left">10</span>		end if
+											<span class="number-left">11</span>	end for
+											<span class="number-left">12</span>	return the arrangement of P
+											<span class="number-left">13</span>end procedure
+											</pre>
 						                </div>
 						                <div class="caption">
 						                    Algorithm 1 
@@ -2926,24 +2926,24 @@
 						            <div class="algorithm">
 						                <div class="listing">
 						                    <pre class="listing"><span class="number-left">1</span>procedure InverseAttractionRegion(P, p)
-<span class="number-left">2</span>	Initialize Ap = ∅
-<span class="number-left">3</span>	for each edge e in P do
-<span class="number-left">4</span>		Add line e to Ap
-<span class="number-left">5</span>	end for
-<span class="number-left">6</span>	for each reflex vertex r in P do
-<span class="number-left">7</span>		Add line rp to Ap
-<span class="number-left">8</span>		Add the lines r1 and r2 through r and perpendicular to the edges incident on r to Ap
-<span class="number-left">9</span>	end for
-<span class="number-left">10</span>	Initialize IA(p) = ∅
-<span class="number-left">11</span>	for each face F of Ap do
-<span class="number-left">12</span>		Choose an arbitrary point bF of F and compute A(bF)
-<span class="number-left">13</span>		if p ∈ A(bF ) then
-<span class="number-left">14</span>			Add F to IA(p)
-<span class="number-left">15</span>		end if
-<span class="number-left">16</span>	end for
-<span class="number-left">17</span>	return IA(p), the inverse attraction region of p
-<span class="number-left">18</span>end procedure
-</pre>
+											<span class="number-left">2</span>	Initialize Ap = ∅
+											<span class="number-left">3</span>	for each edge e in P do
+											<span class="number-left">4</span>		Add line e to Ap
+											<span class="number-left">5</span>	end for
+											<span class="number-left">6</span>	for each reflex vertex r in P do
+											<span class="number-left">7</span>		Add line rp to Ap
+											<span class="number-left">8</span>		Add the lines r1 and r2 through r and perpendicular to the edges incident on r to Ap
+											<span class="number-left">9</span>	end for
+											<span class="number-left">10</span>	Initialize IA(p) = ∅
+											<span class="number-left">11</span>	for each face F of Ap do
+											<span class="number-left">12</span>		Choose an arbitrary point bF of F and compute A(bF)
+											<span class="number-left">13</span>		if p ∈ A(bF ) then
+											<span class="number-left">14</span>			Add F to IA(p)
+											<span class="number-left">15</span>		end if
+											<span class="number-left">16</span>	end for
+											<span class="number-left">17</span>	return IA(p), the inverse attraction region of p
+											<span class="number-left">18</span>end procedure
+											</pre>
 						                </div>
 						                <div class="caption">
 						                    Algorithm 2 
@@ -3100,24 +3100,24 @@
 						            <div class="algorithm">
 						                <div class="listing">
 						                    <pre class="listing"><span class="number-left">1</span>procedure Minimum Beacon Path with Candidates(P,M, s, t)
-<span class="number-left">2</span>	Compute a triangulation T of P 
-<span class="number-left">3</span>	C = M ∪ s ∪ t 
-<span class="number-left">4</span>	Initialize directed graph G = (C, ∅) 
-<span class="number-left">5</span>	for each c ∈ C do 
-<span class="number-left">6</span>		Compute A(c) 
-<span class="number-left">7</span>		for each triangle t ∈ T do 
-<span class="number-left">8</span>			Record the subset of t that is attractable to c 
-<span class="number-left">9</span>			for each d ∈ M ∩ t do 
-<span class="number-left">10</span>				if d ∈ A(c) then 
-<span class="number-left">11</span>					Add directed edge dc to G 
-<span class="number-left">12</span>				end if 
-<span class="number-left">13</span>			end for 
-<span class="number-left">14</span>		end for 
-<span class="number-left">15</span>	end for 
-<span class="number-left">16</span>	Find a shortest path p from s to t in G 
-<span class="number-left">17</span>	return the sequence of beacons in p 
-<span class="number-left">18</span>end procedure
-</pre>
+											<span class="number-left">2</span>	Compute a triangulation T of P 
+											<span class="number-left">3</span>	C = M ∪ s ∪ t 
+											<span class="number-left">4</span>	Initialize directed graph G = (C, ∅) 
+											<span class="number-left">5</span>	for each c ∈ C do 
+											<span class="number-left">6</span>		Compute A(c) 
+											<span class="number-left">7</span>		for each triangle t ∈ T do 
+											<span class="number-left">8</span>			Record the subset of t that is attractable to c 
+											<span class="number-left">9</span>			for each d ∈ M ∩ t do 
+											<span class="number-left">10</span>				if d ∈ A(c) then 
+											<span class="number-left">11</span>					Add directed edge dc to G 
+											<span class="number-left">12</span>				end if 
+											<span class="number-left">13</span>			end for 
+											<span class="number-left">14</span>		end for 
+											<span class="number-left">15</span>	end for 
+											<span class="number-left">16</span>	Find a shortest path p from s to t in G 
+											<span class="number-left">17</span>	return the sequence of beacons in p 
+											<span class="number-left">18</span>end procedure
+											</pre>
 						                </div>
 						                <div class="caption">
 						                    Algorithm 3 
@@ -3154,6 +3154,14 @@
 						            <span class="entry">[<a class="biblioentry" name="biblio-2"><span class="bib-index">2</span></a>] </span> <span class="bib-authors">Michael Biro</span>. <span class="bib-title">Beacon-based routing and guarding</span>. <span class="bib-year">2013</span>.
 						        </p>
 						    </div>
+						</div>
+					</div>
+				</div>
+				<div id="game" class="container-fluid tab-pane fade">
+					<div class="row">
+						<div class="col-md-12">
+							<p>Explanation/Tutorial here!</p>
+							<a href="html/game/level1.html" class="btn btn-default">PLAY!</a>
 						</div>
 					</div>
 				</div>
