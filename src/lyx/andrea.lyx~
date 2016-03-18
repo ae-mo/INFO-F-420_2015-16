@@ -167,7 +167,7 @@ reference "sec:Algorithms-for-Beacon-Based"
 
 \end_inset
 
- contains two algorithm that route an object from a point 
+ contains two algorithms that route an object from a point 
 \begin_inset Formula $s$
 \end_inset
 
@@ -177,7 +177,7 @@ reference "sec:Algorithms-for-Beacon-Based"
 
 .
  One requires a set of candidate intermediate beacons, the other is a polynomial
--time approximation of the optimal route.
+-time approximation of the optimal routing path.
 \end_layout
 
 \begin_layout Section
@@ -192,6 +192,25 @@ name "sec:Setting-and-Terminology"
 \end_layout
 
 \begin_layout Standard
+All the terminology and mathematical statements in this Section are taken
+ from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
 We consider a 
 \emph on
 polygon
@@ -287,7 +306,7 @@ When
 \begin_inset Formula $\partial P$
 \end_inset
 
- provided that its distance from 
+, provided that its distance from 
 \begin_inset Formula $b$
 \end_inset
 
@@ -389,6 +408,7 @@ dead point
 \begin_inset Formula $D\left(b\right)$
 \end_inset
 
+.
  If an object starting at 
 \begin_inset Formula $p$
 \end_inset
@@ -466,7 +486,15 @@ of beacon points that, if activated in the right sequence, can route an
 \begin_inset Formula $t$
 \end_inset
 
-.i
+.
+ See Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:routed"
+
+\end_inset
+
+ for an example.
 \begin_inset Float figure
 wide false
 sideways false
@@ -486,6 +514,13 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:routed"
+
+\end_inset
+
+
 \begin_inset Formula $s$
 \end_inset
 
@@ -698,7 +733,184 @@ depending on whether an object placed at them moves unconstrained or along
 \end_inset
 
 .
- It can be easily seen that all dead points are even boundary points.
+ Can we characterize even and odd boundary points in some other way? Yes,
+ as the following proposition states.
+ This characterization will be useful later.
+\end_layout
+
+\begin_layout Proposition
+Given a poligon 
+\begin_inset Formula $P$
+\end_inset
+
+, a point 
+\begin_inset Formula $p\in\partial P$
+\end_inset
+
+ and a beacon 
+\begin_inset Formula $b\in P$
+\end_inset
+
+, 
+\begin_inset Formula $p$
+\end_inset
+
+ is an odd (even) boundary point with respect to 
+\begin_inset Formula $b$
+\end_inset
+
+ if and only if the line segment 
+\begin_inset Formula $\overline{bp}$
+\end_inset
+
+ crosses 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ an odd (even) number of times.
+\end_layout
+
+\begin_layout Proof
+Let us consider the line segment 
+\begin_inset Formula $\overline{bp}$
+\end_inset
+
+ .
+ Let us assume it crosses 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ 
+\begin_inset Formula $k$
+\end_inset
+
+ times.
+ We have that the crossings divide 
+\begin_inset Formula $\overline{bp}$
+\end_inset
+
+ into 
+\begin_inset Formula $k+1$
+\end_inset
+
+ segments.
+ The first one lies of course entirely in 
+\begin_inset Formula $P$
+\end_inset
+
+, and the same holds for all odd numbered segments.
+ Conversely, all even numbered segments lie outside 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ Now, if 
+\begin_inset Formula $\overline{bp}$
+\end_inset
+
+ crosses 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ an even number of times, counting 
+\begin_inset Formula $p$
+\end_inset
+
+ as a crossing, the final segment before 
+\begin_inset Formula $p$
+\end_inset
+
+ lies outside 
+\begin_inset Formula $P$
+\end_inset
+
+, thus an object at 
+\begin_inset Formula $p$
+\end_inset
+
+ cannot move along 
+\begin_inset Formula $\overline{bp}$
+\end_inset
+
+ because it is constrained by the edge(s) containing 
+\begin_inset Formula $p$
+\end_inset
+
+, making 
+\begin_inset Formula $p$
+\end_inset
+
+ an even boundary point.
+ On the other hand, if 
+\begin_inset Formula $\overline{bp}$
+\end_inset
+
+ crosses 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ an odd number of times, the last segment is inside 
+\begin_inset Formula $P$
+\end_inset
+
+, making 
+\begin_inset Formula $p$
+\end_inset
+
+ an odd boundary point.
+\end_layout
+
+\begin_layout --Separator--
+From the previous proposition we get the following Corollary.
+\end_layout
+
+\begin_layout Corollary
+Given a dead point 
+\begin_inset Formula $d$
+\end_inset
+
+ with respect to a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+ in a polygon 
+\begin_inset Formula $P$
+\end_inset
+
+, the line segment 
+\begin_inset Formula $\overline{bd}$
+\end_inset
+
+ intersects 
+\begin_inset Formula $\partial P$
+\end_inset
+
+ an even number of times.
+\end_layout
+
+\begin_layout Standard
+Another useful Theorem (see REF for its proof) bounds the number of dead
+ points that can be found on an edge.
+\end_layout
+
+\begin_layout Theorem
+Given an edge 
+\begin_inset Formula $e$
+\end_inset
+
+ of 
+\begin_inset Formula $\partial P$
+\end_inset
+
+, 
+\begin_inset Formula $e$
+\end_inset
+
+ contains at most 
+\begin_inset Formula $1$
+\end_inset
+
+ dead point.
 \end_layout
 
 \begin_layout Section
@@ -710,6 +922,25 @@ name "sec:The-Attraction-Region"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+All the terminology and mathematical statements in this Section are taken
+ from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -853,6 +1084,14 @@ If
 \end_inset
 
  dead point, so the given upper bound holds.
+ See Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:dead-bound"
+
+\end_inset
+
+ for an example.
 \end_layout
 
 \begin_layout Standard
@@ -881,6 +1120,13 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:dead-bound"
+
+\end_inset
+
+
 \begin_inset Formula $P$
 \end_inset
 
@@ -911,7 +1157,7 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/9.png
-	scale 50
+	scale 49
 
 \end_inset
 
@@ -922,6 +1168,13 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:dead-holes"
+
+\end_inset
+
+
 \begin_inset Formula $P$
 \end_inset
 
@@ -1030,7 +1283,56 @@ th hole, then
 \end_inset
 
 .
- To be continued with figures
+ Now consider a hole 
+\begin_inset Formula $i$
+\end_inset
+
+, with 
+\begin_inset Formula $n_{i}$
+\end_inset
+
+ vertices, and 
+\begin_inset Formula $b$
+\end_inset
+
+ alone.
+ At least one edge of 
+\begin_inset Formula $i$
+\end_inset
+
+ is visible to 
+\begin_inset Formula $b$
+\end_inset
+
+, thus 
+\begin_inset Formula $i$
+\end_inset
+
+ can have at most 
+\begin_inset Formula $n_{i}-1$
+\end_inset
+
+dead points on its boundary.
+ The same holds for the other holes.
+ By summing up the individual contributions, we get 
+\begin_inset Formula $\sum_{i}\left(n_{i}-1\right)=\left(\sum_{i}n_{i}\right)-h$
+\end_inset
+
+.
+ If we combine this result with the one for the ploygon without holes we
+ get 
+\begin_inset Formula $n-\sum_{i}n_{i}-3+\sum_{i}n_{i}-h=n-h-3$
+\end_inset
+
+ dead points.
+ See figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:dead-holes"
+
+\end_inset
+
+ for an example.
 \end_layout
 
 \begin_layout Standard
@@ -2442,12 +2744,12 @@ different sides of
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/25.png
-	height 12cm
+	height 10.3cm
 
 \end_inset
 
@@ -2541,7 +2843,7 @@ Now we can define a concrete strategy for obtaining the attraction region
  In case of a polygon with holes this is not enough; we also need to discard
  the edges that we meet twice when walking along the boundaries of the regions.
  By doing this we will obtain a set of regions, namely the dead regions,
- each containing a different dead point, and the atracion region.
+ each containing a different dead point, and the attraction region.
 \begin_inset Newline newline
 \end_inset
 
@@ -2669,6 +2971,10 @@ n region of a beacon
 \begin_inset Formula $b$
 \end_inset
 
+ in a polygon 
+\begin_inset Formula $P$
+\end_inset
+
 .
  There are four algorithms in total.
  We will describe in detail only the first one, which is the one that we
@@ -2695,21 +3001,14 @@ This algorithm exploits the idea that we mentioned in Subsection REF.
  In the end it will yeld the partition induced by the beacon.
  For a polygon with holes, we have to be careful excluding edges contained
  in a region, as we mentioned in Subsection REF.
- We now give the pseudocode of the algorithm (taken from 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "biro2013beacon"
-
-\end_inset
-
-).
+ We now give the pseudocode of the algorithm.
 \end_layout
 
 \begin_layout Paragraph*
 \begin_inset Float algorithm
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset listings
@@ -2796,7 +3095,14 @@ end procedure
 \begin_inset Formula $O(n\log n)$
 \end_inset
 
- running-time algorithm in simple polygons
+ running-time algorithm in simple polygons (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+)
 \end_layout
 
 \end_inset
@@ -3121,6 +3427,13 @@ Given a polygon
 
 \begin_layout Subsection
 Algorithm for the Inverse Attraction Region of a Point
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Algorithm-Inverse"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3143,8 +3456,8 @@ In order to obtain the inverse attraction region of a point, we can consider
 \begin_inset Newline newline
 \end_inset
 
-This arrangement has some interesting properties that give ideas for an
- algorithm.
+The author of REF claims some properties interesting properties for this
+ arrangement that give ideas for an algorithm.
 \end_layout
 
 \begin_layout Lemma
@@ -3230,14 +3543,27 @@ Given two points
 \begin_layout Standard
 This is a great simplification, because it's telling us that we can just
  test a single point in a face of the considered arrangement.
- We now give the presudocode of the algorithm (taken from 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "biro2013beacon"
-
+ Unfortunately the arrangement 
+\begin_inset Formula $\mathit{A_{p}}$
 \end_inset
 
-).
+ doesn't identify correctly identify the regions attracting 
+\begin_inset Formula $b$
+\end_inset
+
+, as discovered by the authors of REF.
+ There it is noted that we need to add the segments of the Shortest Path
+ Tree of of a point 
+\begin_inset Formula $p$
+\end_inset
+
+ (
+\begin_inset Formula $\textrm{SPT}\left(p\right)$
+\end_inset
+
+) to the arrangement in order to make the algorithm work properly (see REF
+ for details).
+ We now give the pseudocode of the algorithm.
 \end_layout
 
 \begin_layout Paragraph*
@@ -3359,7 +3685,14 @@ running-time algorithm for
 \begin_inset Formula $IA(p)$
 \end_inset
 
+ (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
 
+\end_inset
+
+)
 \end_layout
 
 \end_inset
@@ -3490,8 +3823,15 @@ Algorithm for Routing with Candidate Beacons
 
 \begin_layout Standard
 This algorithm's main task consists in building a directed graph, that has
- the candidate beacons, the starting point and the destination as nodes,
- and edges of the type 
+ the candidate beacons, the starting point 
+\begin_inset Formula $s$
+\end_inset
+
+ and the destination 
+\begin_inset Formula $t$
+\end_inset
+
+ as nodes, and edges of the type 
 \begin_inset Formula $\overrightarrow{\left(u,v\right)}$
 \end_inset
 
@@ -3502,14 +3842,7 @@ This algorithm's main task consists in building a directed graph, that has
 .
  Once the graph is computed, the routing path is simply a shortest path
  between the starting point and the destination.
- We now give the pseudocode of the algorithm (taken from 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "biro2013beacon"
-
-\end_inset
-
-).
+ We now give the pseudocode of the algorithm
 \end_layout
 
 \begin_layout Paragraph*
@@ -3626,7 +3959,14 @@ end procedure
 \begin_inset Formula $O(m(n+m))$
 \end_inset
 
-running-time algorithm in simple polygons
+running-time algorithm in simple polygons (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+)
 \end_layout
 
 \end_inset
@@ -3643,8 +3983,69 @@ running-time algorithm in simple polygons
 Complexity Analysis
 \end_layout
 
+\begin_layout Standard
+In a simple polygon, the main contribution to the time complexity is given
+ by the for loop.
+ There are 
+\begin_inset Formula $m+2$
+\end_inset
+
+ point in 
+\begin_inset Formula $C$
+\end_inset
+
+, and for each of them we spend 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+ time computing its attraction region and 
+\begin_inset Formula $O\left(n+m\right)$
+\end_inset
+
+ time to determine the edges o include in 
+\begin_inset Formula $G$
+\end_inset
+
+, yelding a total running time of 
+\begin_inset Formula $O\left(m\left(n+m\right)\right)$
+\end_inset
+
+.
+ In a polygon with holes, the triangulation now takes 
+\begin_inset Formula $O\left(n+h\log^{1+\epsilon}h\right)$
+\end_inset
+
+ time.
+ As before we spend 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+ for each attraction region, but 
+\begin_inset Formula $O\left(n+m\log h\right)$
+\end_inset
+
+ to identify the candidate beacons in the triangles.
+ Thus the total running time is 
+\begin_inset Formula $O\left(mn+m^{2}\log h+h\log^{1+\epsilon}h\right)$
+\end_inset
+
+.
+ The space complexity is dominated by the attraction regions and it's 
+\begin_inset Formula $O\left(mn\right)$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Paragraph*
 Implementation
+\end_layout
+
+\begin_layout Standard
+When it came to implementing the algorithm, it didn't seem necessary to
+ compute a triangulation and to examine each of the resulting triangles.
+ Indeed, simply checking each ordered pair of beacons is enough, and it
+ doesn't increase the time complexity.
 \end_layout
 
 \begin_layout Subsection
@@ -3652,8 +4053,138 @@ Approximation Algorithm
 \end_layout
 
 \begin_layout Standard
-This algorithm stars from a triangulation of a given polygon, then it builds
- a 
+This algorithm starts from a triangulation of a given polygon, then it builds
+ a directed graph in the following way: the nodes are the triangles in the
+ triangulation, and if a triangle 
+\begin_inset Formula $b$
+\end_inset
+
+ intersect the inverse attraction region of another triangle 
+\begin_inset Formula $a$
+\end_inset
+
+, add the directed edge 
+\begin_inset Formula $\overrightarrow{ba}$
+\end_inset
+
+ to the graph (see REF for the computation of the inverse attraction region
+ of a region).
+ To find a sequence of beacons routing 
+\begin_inset Formula $s$
+\end_inset
+
+ to 
+\begin_inset Formula $t$
+\end_inset
+
+ find a shortest path from between the triangles containing the two points
+ using the graph, and finally take a beacon for each triangle, using the
+ information on the inverse attraction regions.
+ The pseudocode of this algorithm follows.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $O\left(n^{3}\right)$
+\end_inset
+
+running-time algorithm (taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+We can compare the length of the path obtained with this algorithm thanks
+ to the following lemma.
+\end_layout
+
+\begin_layout Lemma
+The shortest path from the triangle containing 
+\begin_inset Formula $s$
+\end_inset
+
+ to that containing 
+\begin_inset Formula $t$
+\end_inset
+
+ in the graph described above is at most that of a minimum beacon path from
+ 
+\begin_inset Formula $s$
+\end_inset
+
+ to 
+\begin_inset Formula $t$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Since the beacon path obtained by the algorithm uses two beacons for each
+ triangle, we have an amount of beacons that is at most two times the necessary
+ beacons.
+ If we iteratively compute the inverse attraction region for each triangle,
+ (
+\begin_inset Formula $\textrm{IA\left(...\textrm{IA}\left(a\right)\right)}$
+\end_inset
+
+), we obtain a beacon path that has at most 
+\begin_inset Formula $k+1$
+\end_inset
+
+ beacons every 
+\begin_inset Formula $k$
+\end_inset
+
+ beacons in the optimal path.
+ This gives us a polynomial time approximation of the minimum beacon path
+ (see REF).
+\end_layout
+
+\begin_layout Paragraph*
+Complexity Analysis
+\end_layout
+
+\begin_layout Standard
+The running time is determined by the computations of the inverse attraction
+ regions of the triangles.
+ As explained in REF, this takes 
+\begin_inset Formula $O\left(n^{2}\right)$
+\end_inset
+
+ time.
+ Since we do this for each triangle, the total running time is 
+\begin_inset Formula $O\left(n^{3}\right)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard

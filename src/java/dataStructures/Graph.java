@@ -27,7 +27,7 @@ import java.util.*;
 //}
 
 public class Graph {
-	private final Map<String, Vertex> graph; // mapping of vertex names to Vertex objects, built from a set of Edges
+	public Map<String, Vertex> graph; // mapping of vertex names to Vertex objects, built from a set of Edges
 
 	/** One edge of the graph (only used by Graph constructor) */
 	public class Edge {
@@ -58,7 +58,7 @@ public class Graph {
 				System.out.printf("%s(unreached)", this.name);
 			} else {
 				this.previous.printPath();
-				System.out.printf(" -> %s(%d)", this.name, this.dist);
+				System.out.printf(" -> %s(%f)", this.name, this.dist);
 			}
 		}
 		private ArrayList<String> getPath(ArrayList<String> path) {
@@ -78,9 +78,10 @@ public class Graph {
 			return Double.compare(dist, other.dist);
 		}
 	}
-
+	
+	public Graph() {}
 	/** Builds a graph from a set of edges */
-	public Graph(Edge[] edges) {
+	public void addEdges(Edge[] edges) {
 		graph = new HashMap<String, Vertex>(edges.length);
 
 		//one pass to find all vertices

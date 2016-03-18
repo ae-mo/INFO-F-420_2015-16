@@ -1,10 +1,13 @@
 package routing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import attractionRegion.AttractionRegion;
 import dataStructures.Face;
 import dataStructures.Graph;
+import dataStructures.Graph.Edge;
+import dataStructures.Graph.Vertex;
 import dataStructures.Point;
 
 public class MinimumBeaconPath {
@@ -14,12 +17,14 @@ public class MinimumBeaconPath {
 	public ArrayList<Point> candidateBeacons;
 	public Point start;
 	public Point end;
+	public Graph g;
 
 
 
 	public MinimumBeaconPath(ArrayList<Point> points, ArrayList<Point> candidateBeacons,
 			Point start, Point end) {
-
+		
+		g = new Graph();
 		this.points = points;
 		this.beacons = new ArrayList<Point>();
 		this.candidateBeacons = candidateBeacons;
@@ -67,7 +72,7 @@ public class MinimumBeaconPath {
 
 						b2 = beacons.get(c);
 						dist = Math.sqrt(Math.pow(b2.x-b.x, 2) + Math.pow(b2.y-b.y, 2));
-						edges.add(new Graph.Edge(String.valueOf(d), String.valueOf(c), dist));
+						edges.add(g.new Edge(String.valueOf(d), String.valueOf(c), dist));
 
 					}
 
@@ -78,7 +83,7 @@ public class MinimumBeaconPath {
 		}
 
 		Graph.Edge[] graph = new Graph.Edge[1];
-		Graph g = new Graph(edges.toArray(graph));
+		g.addEdges(edges.toArray(graph));
 		int start = beacons.size() - 2;
 		int end = beacons.size() - 1;
 		g.dijkstra(String.valueOf(start));

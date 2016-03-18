@@ -77,6 +77,34 @@ public class Edge {
 		return this.intersectsRay(new Point(ax, ay, null), new Point(bx, by, null));
 	}
 	
+	public boolean intersectsEdge(Edge e) {
+		
+		Turn a1b1b2 = new Turn(this.a, this.b, e.b);
+		Turn a1b1a2 = new Turn(this.a, this.b, e.a);
+		Turn a2b2a1 = new Turn(e.a, e.b, this.a);
+		Turn a2b2b1 = new Turn(e.a, e.b, this.b);
+		
+		if(((a1b1b2.value >= 0 && a1b1a2.value <= 0)||(a1b1b2.value <= 0 && a1b1a2.value >= 0))
+				&&((a2b2a1.value >= 0 && a2b2b1.value <= 0)||(a2b2a1.value <= 0 && a2b2b1.value >= 0)))
+			return true;
+		
+		return false;
+	}
+	
+public boolean strictlyIntersectsEdge(Edge e) {
+		
+	Turn a1b1b2 = new Turn(this.a, this.b, e.b);
+	Turn a1b1a2 = new Turn(this.a, this.b, e.a);
+	Turn a2b2a1 = new Turn(e.a, e.b, this.a);
+	Turn a2b2b1 = new Turn(e.a, e.b, this.b);
+	
+	if(((a1b1b2.value > 0 && a1b1a2.value < 0)||(a1b1b2.value < 0 && a1b1a2.value > 0))
+			&&((a2b2a1.value > 0 && a2b2b1.value < 0)||(a2b2a1.value < 0 && a2b2b1.value > 0)))
+		return true;
+	
+	return false;
+	}
+	
 	public void flip() {
 		
 		Point temp = this.a;

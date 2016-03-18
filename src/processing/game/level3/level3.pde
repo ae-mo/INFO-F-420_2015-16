@@ -18,8 +18,8 @@ void setup() {
   textFont(myFont);
   MIN_BEACONS = 8;
   MAX_SECS = 5;
-  SHIFT_X = 60;
-  SHIFT_Y = 100;
+  SHIFT_X = 0;
+  SHIFT_Y = 0;
   strokePoly = 3;
   started = false;
   hint = false;
@@ -34,8 +34,8 @@ void setup() {
   points = new ArrayList<Point>();
   defaultBeacons = new ArrayList<Point>();
   
-  points.add(new Point(204, 127, null));
   points.add(new Point(259, 87, null));
+  points.add(new Point(204, 127, null));
   points.add(new Point(311, 112, null));
   points.add(new Point(307, 64, null));
   points.add(new Point(346, 113, null));
@@ -312,7 +312,7 @@ void mouseClicked() {
 						toggleHints();
 					Point b = new Point(mouseX, mouseY, null);
 					beacons.add(b);
-					console.log(beacons.size());
+					console.log(b.x + ", " + b.y);
 					drawPoint(b, 0, 0, 255, 5);
 					
 				}

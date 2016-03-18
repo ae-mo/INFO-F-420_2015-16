@@ -205,7 +205,7 @@ void mouseClicked() {
 						toggleHints();
 					Point b = new Point(mouseX, mouseY, null);
 					beacons.add(b);
-					console.log(beacons.size());
+					console.log(b.x + ", " + b.y);
 					drawPoint(b, 0, 0, 255, 5);
 					
 				}

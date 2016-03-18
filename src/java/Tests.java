@@ -9,720 +9,134 @@ import dataStructures.Halfedge;
 import dataStructures.Point;
 import dataStructures.RedBlackBST;
 import operations.RadialSort;
-import operations.Triangulation;
+import operations.SPT;
 import routing.MinimumBeaconPath;
 
 public class Tests {
 
 	public static void main(String[] args) {
 
-		test20();
+		test21();
 
 	}
 
-	public static void test1() {
-
-		Point q = new Point(2.64f, 3.1f);
-		Point q1 = new Point(7.12f, 3.22f);
-		Point q2 = new Point(5f, 6f);
-
-		System.out.println(RadialSort.compare(q, q1, q2));
-
-	}
-
-	public static void test2() {
-
-		Point q = new Point(1f, 2f);
-		Point q1 = new Point(3f, 2f);
-		Point q2 = new Point(5f, 2f);
-
-		System.out.println(RadialSort.compare(q, q1, q1));
-
-	}
-
-	public static void test3() {
-
-		Point q = new Point(2.64f, 3.1f);
-
-		ArrayList<Point> points = new ArrayList<Point>();
-
-		points.add(new Point(3.08f, 0.74f));
-		points.add(new Point(-9.13f, 8.7f));
-		points.add(new Point(5f, 6f));
-		points.add(new Point(-1.418f, 1.12f));
-		points.add(new Point(0.98f, 5.27f));
-		points.add(new Point(7.12f, 3.22f));
-		points.add(new Point(-1.31f, 1.18f));
-		points.add(new Point(-4.49f, 4.1f));
-
-		RadialSort sort = new RadialSort(q, points);
-
-
-		System.out.println();
-		for(Point p: sort.result)
-			System.out.println(p.x + ", " + p.y);
-
-
-	}
-
-	public static void test4() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(20.7262, 4.1076);
-		Edge q = new Edge(new Point(20.7262, 4.1076), new Point(22.34652, -7.47921));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test5() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(17.36328, -7.66264);
-		Edge q = new Edge(p1, new Point(15.74296, 3.03758));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-
-	public static void test6() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(22.49938, -1.97624);
-		Edge q = new Edge(p1, new Point(25.4343, -0.99793));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test7() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(22.49938, -1.97624);
-		Edge q = new Edge(new Point(25.4343, -0.99793), p1);
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test8() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(24.07306, -0.19516);
-		Edge q = new Edge(p1, new Point(25.28144, 3.92417));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test9() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(26.16803, -8.94667);
-		Edge q = new Edge(p1, new Point(25.49545, -3.35198));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test10() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(18.37215, -2.3431);
-		Edge q = new Edge(p1, new Point(18.00529, -1.15079));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test11() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(12.77747, -8.51866);
-		Edge q = new Edge(p1, new Point(14.09206, -2.95455));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test12() {
-
-		Point b = new Point(9.82928, -2.23581);
-
-		Point p = new Point(19.47275, -5.43088);
-		Edge e = new Edge(new Point(19.47275, -5.43088), new Point(19.28932, 1.57012));
-		Point p1 = new Point(14.18378, -0.75336);
-		Edge q = new Edge(p1, new Point(11.15571, 3.27396));
-
-		Key key = new Key(b, p, e);
-		Key key2 = new Key(b, p1, q);
-
-		System.out.println(key.compareTo(key2));
-
-	}
-
-	public static void test13() {
-
-		RedBlackBST<Key, Edge> status = new RedBlackBST<Key, Edge>();
-
-		Point beacon = new Point(6.82772, 7.07683);
-		Point a = new Point(10.89538, 5.94496);
-		Point b = new Point(11.99188, 12.66544);
-
-		Point a1 = new Point(15.63509, 1.77119);
-		Point b1 = new Point(18.95995, 10.86152);
-
-		Point a2 = new Point(23.69966, 1.59434);
-		Point b2 = new Point(26.10488, 13.6912);
-
-		Edge e = new Edge(a, b);
-		Key k = new Key(beacon, a, e);
-
-		Edge e1 = new Edge(a1, b1);
-		Key k1 = new Key(beacon, a1, e1);
-
-		Edge e2 = new Edge(a2, b2);
-		Key k2 = new Key(beacon, a2, e2);
-
-		status.put(k, e);
-		status.put(k1, e1);
-		status.put(k2, e2);
-
-		Key k11 = status._max();
-		System.out.println(k11.e.a.x + ", " + k11.e.a.y + "; " + k11.e.b.x + ", " + k11.e.b.y);
-
-		for(Key key: status._keys())
-			System.out.println(key.e.a.x + ", " + key.e.a.y + "; " + key.e.b.x + ", " + key.e.b.y);
-
-	}
-
-	public static void test14() {
-
-		RedBlackBST<Key, Edge> status = new RedBlackBST<Key, Edge>();
-
-		Point beacon = new Point(22.14334, 11.39209);
-		Point a = new Point(18.95995, 10.86152);
-		Point b = new Point(15.63509, 1.77119);
-
-		Point a1 = new Point(11.99188, 12.66544);
-		Point b1 = new Point(10.89538, 5.94496);
-
-		Point a2 = new Point(3.53823, 11.03838);
-		Point b2 = new Point(5.48363, 2.08953);
-
-		Edge e = new Edge(a, b);
-		Key k = new Key(beacon, a, e);
-
-		Edge e1 = new Edge(a1, b1);
-		Key k1 = new Key(beacon, a1, e1);
-
-		Edge e2 = new Edge(a2, b2);
-		Key k2 = new Key(beacon, a2, e2);
-
-		status.put(k, e);
-		status.put(k1, e1);
-		status.put(k2, e2);
-
-		Key k11 = status._max();
-		System.out.println(k11.e.a.x + ", " + k11.e.a.y + "; " + k11.e.b.x + ", " + k11.e.b.y);
-
-		System.out.println();
-
-		for(Key key: status._keys())
-			System.out.println(key.e.a.x + ", " + key.e.a.y + "; " + key.e.b.x + ", " + key.e.b.y);
-
-	}
-
-	//	public static void test15() {
-	//
-	//		DCEL dcel = new DCEL();
-	//		ArrayList<Point> points = new ArrayList<Point>();
-	//
-	//		Point p1 = new Point(5.48363, 2.08953);
-	//		Point p2 = new Point(10.89538, 5.94496);
-	//
-	//		int he = dcel.initialize(p1, p2);
-	//
-	//		Halfedge h = dcel.halfedges.get(he);
-	//
-	//		System.out.println("Halfedge");
-	//		System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//		System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//		System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//		System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//		points.add(new Point(11.99188, 12.66544));
-	//		points.add(new Point(18.88921, 10.82615));
-	//		points.add(new Point(15.63509, 1.77119));
-	//		points.add(new Point(23.66429, 1.59434));
-	//		points.add(new Point(25.60969, 15.81345));
-	//		points.add(new Point(10.04648, 18.39553));
-	//		points.add(new Point(3.50286, 11.07375));
-	//
-	//		for(Point p: points) {
-	//
-	//			p2 =  p;
-	//			he = dcel.addVertexAt(0, he, p2);
-	//			h = dcel.halfedges.get(he);
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//		}
-	//
-	//		Point v = dcel.vertices.get(0);
-	//		Halfedge vh = dcel.halfedges.get(he);
-	//
-	//		System.out.println();
-	//
-	//		System.out.println();
-	//		System.out.println("point: " + v.x + ", " + v.y);
-	//		System.out.println(" hook halfedge");
-	//		System.out.println("target: " + vh.target.x + ", " + vh.target.y);
-	//		System.out.println("twin target: " + vh.twin.target.x + ", " + vh.twin.target.y);
-	//		System.out.println("next target: " + vh.next.target.x + ", " + vh.next.target.y);
-	//		System.out.println("prev target: " + vh.prev.target.x + ", " + vh.prev.target.y);
-	//
-	//		dcel.splitFace(0, he, 0);
-	//
-	//		p1.h = p1.h.prev.twin;
-	//		h = p1.h;
-	//
-	//		while(!h.target.equals(p1)) {
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge after split");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//			h =h.next;
-	//		}
-	//
-	//		for(Point p: dcel.vertices) {
-	//
-	//			Halfedge hp = p.h;
-	//
-	//			System.out.println();
-	//			System.out.println("vertex:" + p.x + ", " + p.y);
-	//			System.out.println("Halfedge");
-	//			System.out.println("target: " + hp.target.x + ", " + hp.target.y);
-	//			System.out.println("twin target: " + hp.twin.target.x + ", " + hp.twin.target.y);
-	//			System.out.println("next target: " + hp.next.target.x + ", " + hp.next.target.y);
-	//			System.out.println("prev target: " + hp.prev.target.x + ", " + hp.prev.target.y);
-	//		}
-	//
-	//	}
-
-	//	public static void test16() {
-	//
-	//		DCEL dcel = new DCEL();
-	//		ArrayList<Point> points = new ArrayList<Point>();
-	//
-	//		Point p1 = new Point(5.48363, 2.08953);
-	//		Point p2 = new Point(10.89538, 5.94496);
-	//
-	//		int he = dcel.initialize(p1, p2);
-	//
-	//		Halfedge h = dcel.halfedges.get(he);
-	//
-	//		points.add(new Point(11.99188, 12.66544));
-	//		points.add(new Point(18.88921, 10.82615));
-	//		points.add(new Point(15.63509, 1.77119));
-	//		points.add(new Point(23.66429, 1.59434));
-	//		points.add(new Point(25.60969, 15.81345));
-	//		points.add(new Point(10.04648, 18.39553));
-	//		points.add(new Point(3.50286, 11.07375));
-	//
-	//
-	//
-	//		for(Point p: points) {
-	//
-	//			p2 =  p;
-	//			he = dcel.addVertexAt(0, he, p2);
-	//
-	//
-	//			h = dcel.halfedges.get(he);
-	//
-	//
-	//		}
-	//
-	//
-	//
-	//		dcel.splitFace(0, he, 0);
-	//		p1.h = p1.h.prev.twin;
-	//
-	//		h = dcel.halfedges.get(dcel.halfedges.size() - 2);
-	//
-	//		Point b = new Point(18.60624, 3.07992);
-	//
-	//		AttractionRegionSimple attr = new AttractionRegionSimple(b, dcel);
-	//
-	//		System.out.println();
-	//		System.out.println("Ray vertices");
-	//
-	//		for(Point p: attr.rayVertices)
-	//			System.out.println(p.x + ", " + p.y);
-	//
-	//
-	//	}
-
-	//	public static void test17() {
-	//
-	//		DCEL dcel = new DCEL();
-	//		ArrayList<Point> points = new ArrayList<Point>();
-	//
-	//		Point p1 = new Point(5.48363, 2.08953);
-	//		Point p2 = new Point(10.89538, 5.94496);
-	//
-	//		int he = dcel.initialize(p1, p2);
-	//
-	//		Halfedge h = dcel.halfedges.get(he);
-	//
-	//		System.out.println("Halfedge");
-	//		System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//		System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//		System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//		System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//		points.add(new Point(11.99188, 12.66544));
-	//		points.add(new Point(18.88921, 10.82615));
-	//		points.add(new Point(15.63509, 1.77119));
-	//		points.add(new Point(23.66429, 1.59434));
-	//		points.add(new Point(25.60969, 15.81345));
-	//		points.add(new Point(10.04648, 18.39553));
-	//		points.add(new Point(3.50286, 11.07375));
-	//
-	//		int toSplit = 0;
-	//
-	//		for(Point p: points) {
-	//
-	//			p2 =  p;
-	//			he = dcel.addVertexAt(0, he, p2);
-	//			if(p2.equals(new Point(3.50286, 11.07375)))
-	//				toSplit = he;
-	//			h = dcel.halfedges.get(he);
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//		}
-	//
-	//		Point v = dcel.vertices.get(0);
-	//		Halfedge vh = dcel.halfedges.get(he);
-	//
-	//		System.out.println();
-	//
-	//		System.out.println();
-	//		System.out.println("point: " + v.x + ", " + v.y);
-	//		System.out.println(" hook halfedge");
-	//		System.out.println("target: " + vh.target.x + ", " + vh.target.y);
-	//		System.out.println("twin target: " + vh.twin.target.x + ", " + vh.twin.target.y);
-	//		System.out.println("next target: " + vh.next.target.x + ", " + vh.next.target.y);
-	//		System.out.println("prev target: " + vh.prev.target.x + ", " + vh.prev.target.y);
-	//
-	//		dcel.splitFace(0, he, 0);
-	//
-	//		p1.h = p1.h.prev.twin;
-	//		h = p1.h;
-	//
-	//		dcel.splitEdge(dcel.halfedges.get(toSplit).twin, new Point(8.913035115839046, 17.127297113012066));
-	//
-	//		while(!h.target.equals(p1)) {
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge after split");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//			h =h.next;
-	//		}
-	//
-	//		//		for(Point p: dcel.vertices) {
-	//		//			
-	//		//			Halfedge hp = p.h;
-	//		//			
-	//		//			System.out.println();
-	//		//			System.out.println("vertex:" + p.x + ", " + p.y);
-	//		//			System.out.println("Halfedge");
-	//		//			System.out.println("target: " + hp.target.x + ", " + hp.target.y);
-	//		//			System.out.println("twin target: " + hp.twin.target.x + ", " + hp.twin.target.y);
-	//		//			System.out.println("next target: " + hp.next.target.x + ", " + hp.next.target.y);
-	//		//			System.out.println("prev target: " + hp.prev.target.x + ", " + hp.prev.target.y);
-	//		//		}
-	//
-	//	}
-	//
-	//	public static void test18() {
-	//
-	//		DCEL dcel = new DCEL();
-	//		ArrayList<Point> points = new ArrayList<Point>();
-	//
-	//		Point p1 = new Point(5.48363, 2.08953);
-	//		Point p2 = new Point(10.89538, 5.94496);
-	//
-	//		int he = dcel.initialize(p1, p2);
-	//		int splitH = he;
-	//
-	//		Halfedge h = dcel.halfedges.get(he);
-	//
-	//		System.out.println("Halfedge");
-	//		System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//		System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//		System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//		System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//		points.add(new Point(11.99188, 12.66544));
-	//		points.add(new Point(18.88921, 10.82615));
-	//		points.add(new Point(15.63509, 1.77119));
-	//		points.add(new Point(23.66429, 1.59434));
-	//		points.add(new Point(25.60969, 15.81345));
-	//		points.add(new Point(10.04648, 18.39553));
-	//		points.add(new Point(3.50286, 11.07375));
-	//
-	//		int toSplit = 0;
-	//
-	//		for(Point p: points) {
-	//
-	//			p2 =  p;
-	//			he = dcel.addVertexAt(0, he, p2);
-	//			if(p2.equals(new Point(3.50286, 11.07375)))
-	//				toSplit = he;
-	//			h = dcel.halfedges.get(he);
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//		}
-	//
-	//		Point v = dcel.vertices.get(0);
-	//		Halfedge vh = dcel.halfedges.get(he);
-	//
-	//		System.out.println();
-	//
-	//		System.out.println();
-	//		System.out.println("point: " + v.x + ", " + v.y);
-	//		System.out.println(" hook halfedge");
-	//		System.out.println("target: " + vh.target.x + ", " + vh.target.y);
-	//		System.out.println("twin target: " + vh.twin.target.x + ", " + vh.twin.target.y);
-	//		System.out.println("next target: " + vh.next.target.x + ", " + vh.next.target.y);
-	//		System.out.println("prev target: " + vh.prev.target.x + ", " + vh.prev.target.y);
-	//
-	//		int[] newFaces = dcel.splitFace(0, he, 0);
-	//
-	//		p1.h = p1.h.prev.twin;
-	//		h = p1.h;
-	//
-	//		dcel.splitEdge(dcel.halfedges.get(toSplit).twin, new Point(8.913035115839046, 17.127297113012066));
-	//
-	//		while(!h.target.equals(p1)) {
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge after split");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//			h =h.next;
-	//		}
-	//
-	//
-	//		int[] newFaces2 = dcel.splitFace(newFaces[0], splitH, dcel.vertices.size() - 1);
-	//
-	//		h = dcel.faces.get(newFaces2[0]).h; 
-	//
-	//		Point pp = h.target;
-	//
-	//		for(int i = 0; i < 5; i++) {
-	//
-	//			System.out.println();
-	//			System.out.println("Halfedge after SECOND split");
-	//			System.out.println("target: " + h.target.x + ", " + h.target.y);
-	//			System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-	//			System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-	//			System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-	//
-	//			h =h.next;
-	//		}
-	//
-	//	}
-
-	public static void test19() {
-
-		DCEL dcel = new DCEL();
-		ArrayList<Point> points = new ArrayList<Point>();
-
-		Point p1 = new Point(5.48363, 2.08953);
-		Point p2 = new Point(10.89538, 5.94496);
-
-		int he = dcel.initialize(p1, p2);
-
-		Halfedge h = dcel.halfedges.get(he);
-
-		points.add(new Point(11.99188, 12.66544));
-		points.add(new Point(18.88921, 10.82615));
-		points.add(new Point(15.63509, 1.77119));
-		points.add(new Point(23.66429, 1.59434));
-		points.add(new Point(25.60969, 15.81345));
-		points.add(new Point(10.04648, 18.39553));
-		points.add(new Point(3.50286, 11.07375));
-
-
-
-		for(Point p: points) {
-
-			p2 =  p;
-			he = dcel.addVertexAt(0, he, p2);
-
-
-			h = dcel.halfedges.get(he);
-
-
-		}
-
-
-
-		dcel.splitFace(0, dcel.halfedges.get(he), 0);
-		p1.h = p1.h.prev.twin;
-
-		for(int i = 0; i < dcel.faces.size(); i++) {
-
-			Face f = dcel.faces.get(i);
-
-			System.out.println();
-			System.out.println("****FACE #" + i +"****"); 
-
-			h = f.h;
-			Point pp = h.target;
-
-			for(int j = 0; j < 10; j++) {
-
-				System.out.println();
-				System.out.println("Halfedge");
-				System.out.println("target: " + h.target.x + ", " + h.target.y);
-				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-
-				h =h.next;
-			}
-
-
-		}
-
-		Point b = new Point(18.60624, 3.07992);
-
-		AttractionRegion attr = new AttractionRegion(b, dcel);
-
-		System.out.println();
-		System.out.println("****FACES OF THE ARRANGEMENT****");
-
-		for(int i = 0; i < dcel.faces.size(); i++) {
-
-			Face f = dcel.faces.get(i);
-
-			System.out.println();
-			System.out.println("****FACE #" + i +"****"); 
-
-			h = f.h;
-			Point pp = h.target;
-
-			for(int j = 0; j < 10; j++) {
-
-				System.out.println();
-				System.out.println("Halfedge");
-				System.out.println("target: " + h.target.x + ", " + h.target.y);
-				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-
-				h =h.next;
-			}
-
-
-		}
-
-
-	}
 
 	public static void test20() {
 
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		points.add(new Point(314.94845, 284.82678));
-		  points.add(new Point(468.96991, 159.82386));
-		  points.add(new Point(703.35039, 393.46027));
-		  points.add(new Point(406.46845, 513.25474));
-		  points.add(new Point(329.82975, 420.99068));
-		  points.add(new Point(545.60861, 414.29409));
+		points.add(new Point(259, 87, null));
+		points.add(new Point(204, 127, null));
+		points.add(new Point(311, 112, null));
+		points.add(new Point(307, 64, null));
+		points.add(new Point(346, 113, null));
+		points.add(new Point(380, 110, null));
+		points.add(new Point(345, 68, null));
+		points.add(new Point(423, 120, null));
+		points.add(new Point(452, 102, null));
+		points.add(new Point(453, 117, null));
+		points.add(new Point(504, 76, null));
+		points.add(new Point(470, 35, null));
+		points.add(new Point(561, 94, null));
+		points.add(new Point(473, 134, null));
+		points.add(new Point(591, 102, null));
+		points.add(new Point(538, 141, null));
+		points.add(new Point(657, 115, null));
+		points.add(new Point(623, 49, null));
+		points.add(new Point(693, 117, null));
+		points.add(new Point(732, 81, null));
+		points.add(new Point(747, 39, null));
+		points.add(new Point(757, 121, null));
+		points.add(new Point(719, 129, null));
+		points.add(new Point(748, 167, null));
+		points.add(new Point(818, 152, null));
+		points.add(new Point(792, 69, null));
+		points.add(new Point(855, 162, null));
+		points.add(new Point(793, 197, null));
+		points.add(new Point(827, 238, null));
+		points.add(new Point(740, 191, null));
+		points.add(new Point(763, 249, null));
+		points.add(new Point(693, 154, null));
+		points.add(new Point(694, 234, null));
+		points.add(new Point(669, 136, null));
+		points.add(new Point(647, 224, null));
+		points.add(new Point(624, 149, null));
+		points.add(new Point(613, 224, null));
+		points.add(new Point(583, 161, null));
+		points.add(new Point(560, 207, null));
+		points.add(new Point(536, 157, null));
+		points.add(new Point(490, 196, null));
+		points.add(new Point(514, 142, null));
+		points.add(new Point(436, 176, null));
+		points.add(new Point(447, 133, null));
+		points.add(new Point(384, 156, null));
+		points.add(new Point(428, 222, null));
+		points.add(new Point(458, 195, null));
+		points.add(new Point(486, 223, null));
+		points.add(new Point(464, 269, null));
+		points.add(new Point(382, 268, null));
+		points.add(new Point(421, 246, null));
+		points.add(new Point(376, 207, null));
+		points.add(new Point(314, 200, null));
+		points.add(new Point(353, 163, null));
+		points.add(new Point(313, 152, null));
+		points.add(new Point(261, 217, null));
+		points.add(new Point(278, 261, null));
+		points.add(new Point(305, 217, null));
+		points.add(new Point(368, 226, null));
+		points.add(new Point(318, 263, null));
+		points.add(new Point(386, 243, null));
+		points.add(new Point(334, 299, null));
+		points.add(new Point(409, 298, null));
+		points.add(new Point(424, 283, null));
+		points.add(new Point(462, 313, null));
+		points.add(new Point(527, 300, null));
+		points.add(new Point(505, 251, null));
+		points.add(new Point(579, 303, null));
+		points.add(new Point(528, 207, null));
+		points.add(new Point(614, 292, null));
+		points.add(new Point(645, 244, null));
+		points.add(new Point(641, 292, null));
+		points.add(new Point(675, 210, null));
+		points.add(new Point(674, 300, null));
+		points.add(new Point(709, 205, null));
+		points.add(new Point(720, 320, null));
+		points.add(new Point(789, 282, null));
+		points.add(new Point(754, 206, null));
+		points.add(new Point(826, 257, null));
+		points.add(new Point(857, 227, null));
+		points.add(new Point(825, 199, null));
+		points.add(new Point(881, 178, null));
+		points.add(new Point(901, 258, null));
+		points.add(new Point(806, 282, null));
+		points.add(new Point(879, 346, null));
+		points.add(new Point(767, 319, null));
+		points.add(new Point(818, 382, null));
+		points.add(new Point(715, 348, null));
+		points.add(new Point(772, 395, null));
+		points.add(new Point(669, 360, null));
+		points.add(new Point(699, 315, null));
+		points.add(new Point(611, 328, null));
+		points.add(new Point(665, 395, null));
+		points.add(new Point(562, 375, null));
+		points.add(new Point(593, 349, null));
+		points.add(new Point(544, 320, null));
+		points.add(new Point(494, 331, null));
+		points.add(new Point(553, 403, null));
+		points.add(new Point(431, 329, null));
+		points.add(new Point(421, 395, null));
+		points.add(new Point(344, 322, null));
+		points.add(new Point(351, 377, null));
+		points.add(new Point(296, 277, null));
+		points.add(new Point(243, 311, null));
+		points.add(new Point(235, 249, null));
+		points.add(new Point(232, 180, null));
+		points.add(new Point(138, 211, null));
+		points.add(new Point(154, 351, null));
+		points.add(new Point(105, 181, null));
 
 
-		 Point b = new Point(433.25479, 287.80304);
+		Point b = new Point(349, 133, null);
 
 		AttractionRegion attr = new AttractionRegion(b, points);
 
@@ -752,259 +166,47 @@ public class Tests {
 
 		}
 
+		System.out.println();
+		System.out.println("****ATTRACTION REGION****");
+
+		h = attr.face.h;
+		Point pp = h.target;
+
+		for(int j = 0; j < 30; j++) {
+
+			System.out.println();
+			System.out.println("Halfedge");
+			System.out.println("target: " + h.target.x + ", " + h.target.y);
+
+			h =h.next;
+		}
+
 
 	}
 
 	public static void test21() {
 
-		DCEL dcel = new DCEL();
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		Point p1 = new Point(6.76, 4.3);
-		Point p2 = new Point(3.24, 5.52);
-
-		int he = dcel.initialize(p1, p2);
-
-		Halfedge h = dcel.halfedges.get(he);
-
-		points.add(new Point(1.8, 1.54));
-		points.add(new Point(6.46, 0.4));
-
-
-		for(Point p: points) {
-
-			p2 =  p;
-			he = dcel.addVertexAt(0, he, p2);
-
-
-			h = dcel.halfedges.get(he);
-
-
-		}
-
-
-
-		dcel.splitFace(0, dcel.halfedges.get(he), 0);
-		p1.h = p1.h.prev.twin;
-
-		for(int i = 0; i < dcel.faces.size(); i++) {
-
-			Face f = dcel.faces.get(i);
-
-			System.out.println();
-			System.out.println("****FACE #" + i +"****"); 
-
-			h = f.h;
-			Point pp = h.target;
-
-			for(int j = 0; j < 15; j++) {
-
-				System.out.println();
-				System.out.println("Halfedge");
-				System.out.println("target: " + h.target.x + ", " + h.target.y);
-				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-
-				h =h.next;
-			}
-
-
-		}
-
-
-		Triangulation tr = new Triangulation(dcel);
-
-		System.out.println();
-		System.out.println("****FACES OF THE ARRANGEMENT****");
-
-		for(int i = 0; i < dcel.faces.size(); i++) {
-
-			Face f = dcel.faces.get(i);
-
-			System.out.println();
-			System.out.println("****FACE #" + i +"****"); 
-
-			h = f.h;
-			Point pp = h.target;
-
-			for(int j = 0; j < 15; j++) {
-
-				System.out.println();
-				System.out.println("Halfedge");
-				System.out.println("target: " + h.target.x + ", " + h.target.y);
-				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-
-				h =h.next;
-			}
-
-
-		}
-
-
-	}
-
-	public static void test22() {
-
-		DCEL dcel = new DCEL();
-		ArrayList<Point> points = new ArrayList<Point>();
-
-		Point p1 = new Point(87.0655, 323.47837);
-		Point p2 = new Point (23.66695, 338.79016);
-
-		int he = dcel.initialize(p1, p2);
-
-		Halfedge h = dcel.halfedges.get(he);
-
-		points.add(new Point(62.58054, 220.8894));
-		points.add(new Point(15.79678, 211.70233));
-		points.add(new Point(26.72757, 95.33276));
-		points.add(new Point(125.54187, 187.20347));
-		points.add(new Point(80.50703, 76.95861));
-		points.add(new Point(204.68076, 70.8339));
-		points.add(new Point(262.3953, 167.29815));
-		points.add(new Point(149.5896, 236.20119));
-		points.add(new Point(208.61584, 276.01183));
-
-
-		for(Point p: points) {
-
-			p2 =  p;
-			he = dcel.addVertexAt(0, he, p2);
-
-			h = dcel.halfedges.get(he);
-
-
-		}
-
-		dcel.splitFace(0, dcel.halfedges.get(he), 0);
-		System.out.println("p1 target:" + p1.h.target.x + ", " + p1.h.target.y);
-		p1.h = p1.h.prev.twin;
-		System.out.println("p1 target:" + p1.h.target.x + ", " + p1.h.target.y);
-
-
-
-
-		//		for(int i = 0; i < dcel.faces.size(); i++) {
-		//
-		//			Face f = dcel.faces.get(i);
-		//
-		//			System.out.println();
-		//			System.out.println("****FACE #" + i +"****"); 
-		//
-		//			h = f.h;
-		//			Point pp = h.target;
-		//
-		//			for(int j = 0; j < 15; j++) {
-		//
-		//				System.out.println();
-		//				System.out.println("Halfedge");
-		//				System.out.println("target: " + h.target.x + ", " + h.target.y);
-		//				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-		//				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-		//				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-		//
-		//				h =h.next;
-		//			}
-		//
-		//
-		//		}
-
-
-		Triangulation tr = new Triangulation(dcel);
-
-		System.out.println();
-		System.out.println("****FACES OF THE ARRANGEMENT****");
-
-		for(int i = 1; i < dcel.faces.size(); i++) {
-
-			Face f = dcel.faces.get(i);
-
-			System.out.println();
-			System.out.println("****FACE #" + i +"****"); 
-
-			h = f.h;
-			Point pp = h.target;
-
-			for(int j = 0; j < 3; j++) {
-
-				System.out.println();
-				System.out.println("Halfedge");
-				System.out.println("target: " + h.target.x + ", " + h.target.y);
-				System.out.println("twin target: " + h.twin.target.x + ", " + h.twin.target.y);
-				System.out.println("next target: " + h.next.target.x + ", " + h.next.target.y);
-				System.out.println("prev target: " + h.prev.target.x + ", " + h.prev.target.y);
-
-
-				h =h.next;
-			}
-
-
-		}
-
-
-	}
-
-	public static void test23() {
-
-		ArrayList<Point> points = new ArrayList<Point>();
-		ArrayList<Point> m = new ArrayList<Point>();
-		points.add(new Point(160.0, 171.0));
-		points.add(new Point(313.0, 47.0));
-		points.add(new Point(520.0, 109.0));
-		points.add(new Point(413.0, 216.0));
-		points.add(new Point(320.0, 74.0));
-		points.add(new Point(274.0, 180.0));
-		points.add(new Point(448.0, 350.0));
-		points.add(new Point(723.0, 198.0));
-		points.add(new Point(552.0, 189.0));
-		points.add(new Point(632.0, 31.0));
-		points.add(new Point(460.0, 36.0));
-		points.add(new Point(557.0, 14.0));
-		points.add(new Point(726.0, 25.0));
-		points.add(new Point(689.0, 107.0));
-		points.add(new Point(627.0, 122.0));
-		points.add(new Point(755.0, 165.0));
-		points.add(new Point(719.0, 306.0));
-		points.add(new Point(558.0, 350.0));
-		points.add(new Point(557.0, 455.0));
-		points.add(new Point(716.0, 394.0));
-		points.add(new Point(649.0, 522.0));
-		points.add(new Point(475.0, 509.0));
-		points.add(new Point(522.0, 375.0));
-		points.add(new Point(564.0, 321.0));
-		points.add(new Point(472.0, 366.0));
-		points.add(new Point(315.0, 383.0));
-		points.add(new Point(278.0, 295.0));
-		points.add(new Point(324.0, 301.0));
-		points.add(new Point(273.0, 234.0));
-		points.add(new Point(151.0, 209.0));
-
+		points.add(new Point(7, 9.44, null));
+		points.add(new Point(2.72, 10.02, null));
+		points.add(new Point(0.56, 8.92, null));
+		points.add(new Point(0.84, 6.98, null));
+		points.add(new Point(3.16, 7.56, null));
+		points.add(new Point(2.12, 8.46, null));
+		points.add(new Point(3.54, 9.02, null));
+		points.add(new Point(4.7, 7.12, null));
+		points.add(new Point(2.96, 5.82, null));
+		points.add(new Point(4.32, 4.54, null));
+		points.add(new Point(6.8, 5.76, null));
+		points.add(new Point(5, 6, null));
+		points.add(new Point(6.4, 7.28, null));
+		points.add(new Point(4.74, 8.62, null));
+		points.add(new Point(7.04, 8.5, null));
+
+		Point p = new Point(1.56, 7.96, null);
 		
-		Point start = new Point(557.0, 24.0);
-
-		m.add(new Point(688.0, 30.0));
-		m.add(new Point(631.0, 158.0));
-		m.add(new Point(600.0, 177.0));
-		m.add(new Point(729.0, 215.0));
-		m.add(new Point(607.0, 301.0));
-		m.add(new Point(616.0, 484.0));
-		m.add(new Point(358.0, 306.0));
-		m.add(new Point(267.0, 113.0));
-		m.add(new Point(320.0, 68.0));
-		
-		Point end = new Point(421.0, 109.0);
-
-		MinimumBeaconPath mbp = new MinimumBeaconPath(points, m, start, end);
-		
-
-		System.out.println("*********BEACONS*************");
-		for(Point p: mbp.beacons)
-			System.out.println(p.x + ", " + p.y);
-
+		SPT spt = new SPT(p, points);
 	}
-
 
 }
