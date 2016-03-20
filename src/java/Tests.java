@@ -188,9 +188,9 @@ public class Tests {
 
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		points.add(new Point(7, 9.44, null));
-		points.add(new Point(2.72, 10.02, null));
-		points.add(new Point(0.56, 8.92, null));
+		points.add(new Point(9.56, 9.02, null));
+		points.add(new Point(6.06, 10.84, null));
+		points.add(new Point(0.58, 9.02, null));
 		points.add(new Point(0.84, 6.98, null));
 		points.add(new Point(3.16, 7.56, null));
 		points.add(new Point(2.12, 8.46, null));
@@ -200,13 +200,45 @@ public class Tests {
 		points.add(new Point(4.32, 4.54, null));
 		points.add(new Point(6.8, 5.76, null));
 		points.add(new Point(5, 6, null));
-		points.add(new Point(6.4, 7.28, null));
-		points.add(new Point(4.74, 8.62, null));
-		points.add(new Point(7.04, 8.5, null));
+		points.add(new Point(6.4, 7.12, null));
+		points.add(new Point(4.86, 9.02, null));
+		points.add(new Point(7.52, 9.02, null));
 
-		Point p = new Point(1.56, 7.96, null);
+		Point p = new Point(1.76, 9.02, null);
 		
 		SPT spt = new SPT(p, points);
+	}
+	
+	public static void test22() {
+
+		ArrayList<Point> points = new ArrayList<Point>();
+
+		points.add(new Point(8.64, 10.84, null));
+		points.add(new Point(6.06, 10.84, null));
+		points.add(new Point(0.58, 9.02, null));
+		points.add(new Point(0.84, 6.98, null));
+		points.add(new Point(3.16, 7.56, null));
+		points.add(new Point(2.12, 8.46, null));
+		points.add(new Point(3.54, 9.02, null));
+		points.add(new Point(4.7, 7.12, null));
+		points.add(new Point(2.96, 5.82, null));
+		points.add(new Point(4.32, 4.54, null));
+		points.add(new Point(6.8, 5.76, null));
+		points.add(new Point(5, 6, null));
+		points.add(new Point(6.4, 7.12, null));
+		points.add(new Point(4.86, 9.02, null));
+		points.add(new Point(7.52, 9.02, null));
+		
+		DCEL dcel = new DCEL();
+		
+		dcel.initialize(points);
+
+		Point p = new Point(1.76, 9.02, null);
+		
+		Face f = dcel.faces.get(1);
+		
+		System.out.println(f.contains(p));
+		
 	}
 
 }

@@ -13,11 +13,13 @@ public class SPT {
 	
 	public DCEL polygon;
 	public Graph graph;
+	public ArrayList<Edge> edges;
 	
 	public SPT(Point p, ArrayList<Point> points) {
 		
 		graph = new Graph();
 		polygon = new DCEL();
+		edges = new ArrayList<Edge>();
 		polygon.initialize(points);
 		this.computeSPT(p, polygon);
 		
@@ -38,16 +40,6 @@ public class SPT {
 				if(v2.equals(v1))
 					continue;
 				
-				Point next1 = v1.h.target;
-				Point prev1 = v1.h.prev.twin.target;
-				Point next2 = v2.h.target;
-				Point prev2 = v2.h.prev.twin.target;
-				
-				Turn v1v2n2 = new Turn(v1, v2, next2);
-				Turn v1v2p2 = new Turn(v1, v2, prev2);
-				Turn v2v1n1 = new Turn(v2, v1, next1);
-				Turn v2v1p1 = new Turn(v2, v1, prev1);
-				
 				if(v1.h.target.equals(v2) || v1.h.prev.twin.target.equals(v2)) {
 					
 					dist = computeDistance(v1, v2);
@@ -55,9 +47,7 @@ public class SPT {
 					continue;
 					
 				}
-				if(!((v1v2n2.value >= 0 && v1v2p2.value <= 0) || (v2v1n1.value >= 0 && v2v1p1.value <= 0) || 
-						((v1v2n2.value >= 0 && v1v2p2.value >= 0) && (v2v1n1.value >= 0 && v2v1p1.value >= 0)) || 
-						((v1v2n2.value <= 0 && v1v2p2.value <= 0) && (v2v1n1.value <= 0 && v2v1p1.value <= 0))))
+				if(isExterior(new Edge(v1, v2)))
 					continue;
 				
 				else {
@@ -91,9 +81,23 @@ public class SPT {
 		
 		graph.addEdges(edges.toArray(edgesArray));
 		graph.dijkstra(String.valueOf(polygon.vertices.size()));
-		ArrayList<String> path = new ArrayList<String>();
+		ArrayList<String> path;
 		
-		graph.printAllPaths();
+		for(int i = 0; i < polygon.vertices.size(); i++) {
+			path = new ArrayList<String>();
+			path = graph.getPath(String.valueOf(i), path);
+			
+			Point a = p;
+			Point b;
+			for(int j=1; j<path.size(); j++) {
+				String s = path.get(j);
+				b = polygon.vertices.get(Integer.valueOf(s));
+				this.edges.add(new Edge(a, b));
+				
+				a = b;
+			}
+			
+		}
 
 	}
 	
@@ -151,6 +155,43 @@ public class SPT {
 		} while(h.target != f.h.target);
 		
 		return intersects;
+		
+	}
+	
+	private boolean isExterior(Edge e) {
+		
+		Point prevA = e.a.h.prev.twin.target;
+		Point prevB = e.b.h.prev.twin.target;
+		Point nextA = e.a.h.target;
+		Point nextB = e.b.h.target;
+		
+		CrossProduct a = new CrossProduct(e.a, prevA, e.a, nextA);
+		CrossProduct b = new CrossProduct(e.b, prevB, e.b, nextB);
+		
+		Edge pAnA = new Edge(prevA, nextA);
+		Edge pBnB = new Edge(prevB, nextB);
+		
+		if(a.value > 0 && !e.intersectsEdge(pAnA))
+			return false;
+		if(b.value > 0 && !e.intersectsEdge(pBnB))
+			return false;
+		if(a.value < 0 && e.intersectsEdge(pAnA))
+			return false;
+		if(b.value < 0 && e.intersectsEdge(pBnB))
+			return false;
+		
+		Turn pAAnA = new Turn(prevA, e.a, nextA);
+		Turn pBBnB = new Turn(prevB, e.b, nextB);
+		Turn pAAB = new Turn(prevA, e.a, e.b);
+		Turn pBBA = new Turn(prevB, e.b, e.a);
+		
+		if(pAAnA.value == 0 && pAAB.value > 0)
+			return false;
+		
+		if(pBBnB.value == 0 && pBBA.value > 0)
+			return false;
+		
+		return true;
 		
 	}
 }

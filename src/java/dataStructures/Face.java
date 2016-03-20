@@ -1,9 +1,14 @@
 package dataStructures;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import operations.Turn;
 
 public class Face {
 
+	public double SCREEN_X = 1608;
 	public Point n;
 	public Halfedge h;
 
@@ -16,41 +21,67 @@ public class Face {
 	Face() {
 	}
 
-	public boolean contains(Point p) {
+	public boolean contains(Point point)
+	{
 
+		Edge ray = new Edge(point, new Point(SCREEN_X + 10, point.y, null));
+		int intersection = 0;
+
+		ArrayList<Edge> edges = new ArrayList<Edge>();
 		Halfedge h = this.h;
-		int count = 0;
-		boolean intersectsPrevious = false;
+		Edge e;
+		Turn t;
+		
 		do {
-
-			Edge e = h.getEdge();
-
-			if(e.intersectsRay(new Edge(p.x, p.y, p.x+1, p.y))) {
-				
-				if(!intersectsPrevious) {
-					intersectsPrevious = true;
-					count++;
-				}
-				else {
-					
-					Turn pP1eA = new Turn(p, new Point(p.x+1, p.y, null), e.a);
-					if(pP1eA.value != 0)
-						count++;
-					
-				}
-					
-
-			}
-			else if(intersectsPrevious)
-				intersectsPrevious = false;
-
+			
+			e = new Edge(h.twin.target, h.target);
+			t = new Turn(point, e.a, e.b);
+			if(t.value != 0)
+				edges.add(e);
+			
 			h = h.next;
-
+			
 		} while(h.target != this.h.target);
+		
+		h = this.h;
+		
+		for(int i = 0; i < edges.size(); i++) {
+			
+			e = edges.get(i);
+			
+			if(ray.strictlyIntersectsEdge(e))
+				intersection++;
+			
+			else if(ray.intersectsEdge(e) && e.a.y == point.y)
+				continue;
+			
+			else if(ray.intersectsEdge(e) && e.b.y == point.y) {
+				
+				Edge e1 = edges.get((i+1)% edges.size());
+				
+				Turn peBeA = new Turn(point, e.b, e.a);
+				Turn pe1Ae1B = new Turn(point, e1.a, e1.b);
+				
+				if((peBeA.value > 0 && pe1Ae1B.value < 0) || 
+						(peBeA.value < 0 && pe1Ae1B.value > 0))
+					intersection++;
+				
+			}
+			
+		}
 
-		if(count % 2 == 0) return false;
-		return true;
+		/*
+		 * If the number of intersections is odd, then the point is inside the polygon
+		 */
+		if (intersection % 2 != 0)
+		{
+			return true;
+		}
 
+		return false;
 	}
+
+
+
 }
 
