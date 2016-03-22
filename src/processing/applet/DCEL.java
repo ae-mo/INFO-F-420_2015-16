@@ -1,4 +1,3 @@
-package dataStructures;
 import java.util.ArrayList;
 
 public class DCEL {
@@ -236,9 +235,9 @@ public class DCEL {
 		
 		f1.h = h2;
 		f2.h = k2;
-
-		this.halfedges.remove(h.twin);
+		
 		this.halfedges.remove(h);
+		this.halfedges.remove(h.twin);
 		
 		this.halfedges.add(h2);
 		this.halfedges.add(k2);

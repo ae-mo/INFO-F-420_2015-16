@@ -1,7 +1,4 @@
-package dataStructures;
-import operations.Turn;
-import operations.CrossProduct;
-import operations.DotProduct;
+
 
 /*
  * Represents a polygon's edge.

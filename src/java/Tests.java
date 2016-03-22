@@ -6,17 +6,20 @@ import dataStructures.DCEL;
 import dataStructures.Edge;
 import dataStructures.Face;
 import dataStructures.Halfedge;
+import dataStructures.LineArrangement;
 import dataStructures.Point;
 import dataStructures.RedBlackBST;
+import inverseAttractionRegion.InverseAttractionRegion;
 import operations.RadialSort;
 import operations.SPT;
+import operations.Turn;
 import routing.MinimumBeaconPath;
 
 public class Tests {
 
 	public static void main(String[] args) {
 
-		test21();
+		test24();
 
 	}
 
@@ -241,4 +244,96 @@ public class Tests {
 		
 	}
 
+	public static void test23() {
+
+		ArrayList<Edge> edges = new ArrayList<Edge>();
+
+		edges.add(new Edge(new Point(500.8226, 232.94935, null), new Point(556.53559, 415.35253, null)));
+		edges.add(new Edge(new Point(250.74011, 530.70506, null), new Point(785.02147, 466.83217, null)));
+		edges.add(new Edge(new Point(503.32655, 562.16485, null), new Point(705.11, 375.26, null)));
+		edges.add(new Edge(new Point(186.88927, 251.38034, null), new Point(692.06215, 248.52036, null)));
+		edges.add(new Edge(new Point(765.30282, 415.35253, null), new Point(410.11, 188.35, null)));
+		
+		LineArrangement la = new LineArrangement(edges);
+		
+		System.out.println();
+		System.out.println("****FACES OF THE ARRANGEMENT****");
+
+		Halfedge h;
+		for(int i = 0; i < la.faces.size(); i++) {
+
+			Face f = la.faces.get(i);
+
+			System.out.println();
+			System.out.println("****FACE #" + i +"****"); 
+
+			h = f.h;
+			Point pp;
+
+			do {
+				
+				pp = h.target;
+				System.out.println();
+				System.out.println("Halfedge");
+				System.out.println("target: " + h.target.x + ", " + h.target.y);
+
+				h =h.next;
+			} while(f.h.target != h.target);
+
+
+		}
+
+		
+	}
+	
+	public static void test24() {
+
+		ArrayList<Point> points = new ArrayList<Point>();
+
+		points.add(new Point(286, 130, null));
+		points.add(new Point(515, 74, null));
+		points.add(new Point(514, 190, null));
+		points.add(new Point(350, 239, null));
+
+		Point p = new Point(426, 166, null);
+		
+		InverseAttractionRegion inv = new InverseAttractionRegion(points, p);
+		
+		System.out.println();
+		System.out.println("****FACES OF THE ARRANGEMENT****");
+
+		Halfedge h;
+		for(int i = 0; i < inv.faces.size(); i++) {
+
+			Face f = inv.faces.get(i);
+
+			System.out.println();
+			System.out.println("****FACE #" + i +"****"); 
+
+			h = f.h;
+			Point pp;
+
+			do {
+				
+				pp = h.target;
+				System.out.println();
+				System.out.println("Halfedge");
+				System.out.println("target: " + h.target.x + ", " + h.target.y);
+
+				h =h.next;
+			} while(f.h.target != h.target);
+
+
+		}
+
+		
+	}
+	
+	public static void test25() {
+		
+		Turn t = new Turn(new Point(286, 130, null), new Point(515, 74, null), new Point(514, 190, null));
+		
+		System.out.println(t.value);
+		
+	}
 }

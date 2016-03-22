@@ -59,5 +59,14 @@ public class Triangle {
 		return strictlyContains(new Point(qx, qy, null));
 
 	}
+	
+	public Point findCentroid() {
+		
+		double x = (a.x+b.x+c.x)/(double)3;
+		double y = (a.y+b.y+c.y)/(double)3;
+		
+		return new Point(x, y, null);
+		
+	}
 
 }

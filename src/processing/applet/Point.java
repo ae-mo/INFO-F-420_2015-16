@@ -1,4 +1,4 @@
-package dataStructures;
+
 public class Point implements Cloneable{
 
 	public static final double EPSILON = 0.01;

@@ -2,12 +2,17 @@ package inverseAttractionRegion;
 
 import java.util.ArrayList;
 
+import attractionRegion.AttractionRegion;
 import dataStructures.DCEL;
 import dataStructures.Edge;
 import dataStructures.Face;
 import dataStructures.Halfedge;
+import dataStructures.LineArrangement;
 import dataStructures.Point;
+import dataStructures.Triangle;
+import operations.CrossProduct;
 import operations.SPT;
+import operations.Turn;
 
 public class InverseAttractionRegion {
 
@@ -30,7 +35,6 @@ public class InverseAttractionRegion {
 	private void computeInverseAttractionRegion(ArrayList<Point> points, Point p) throws CloneNotSupportedException {
 
 		DCEL polygon = new DCEL();
-		DCEL arrangement = new DCEL();
 		ArrayList<Edge> edges = new ArrayList<Edge>();
 		SPT spt;
 
@@ -44,10 +48,45 @@ public class InverseAttractionRegion {
 
 		do {
 
-			edges.add(h.getEdge());
+			edges.add(new Edge(new Point(h.twin.target.x, h.twin.target.y, null), new Point(h.target.x, h.target.y, null)));
+			h = h.next;
 		} while (h.target != f.h.target);
 		
+		Point prev, next;
+		Turn c;
 		
+		for(Point v: polygon.vertices) {
+			
+			prev = v.h.prev.twin.target;
+			next = v.h.target;
+			c = new Turn(prev, v, next);
+			
+			if(c.value < 0) {
+				
+				edges.add(findPerpendicularEdge(new Edge(v, prev)));
+				edges.add(findPerpendicularEdge(new Edge(v, next)));
+				
+			}
+			
+		}
+		
+		LineArrangement Ap = new LineArrangement(edges);
+		AttractionRegion attr;
+		
+		for(int i = 1; i < Ap.faces.size(); i ++) {
+			
+			f = Ap.faces.get(i);
+			Point candidate = this.findPointInConvexFace(f);
+			
+			if(polygon.faces.get(1).contains(candidate)) {
+				
+				attr = new AttractionRegion(candidate, this.clonePoints(points));
+				
+				if(attr.face.contains(p))
+					this.faces.add(f);
+			}
+			
+		}
 
 	}
 
@@ -57,6 +96,39 @@ public class InverseAttractionRegion {
 		for(Point item: points) clone.add((Point) item.clone());
 		return clone;
 
+	}
+	
+	private Edge findPerpendicularEdge(Edge e) {
+		
+		double newX = e.a.x -(e.b.y - e.a.y);
+		double newY = e.a.y +(e.b.x - e.a.x);
+		
+		return new Edge(new Point(e.a.x, e.a.y, null), new Point(newX, newY, null));
+	}
+	
+	private Point findPointInConvexFace(Face f) {
+		
+		Halfedge h = f.h;
+		Point prev, next;
+		Turn t;
+		
+		do {
+			
+			prev = h.prev.twin.target;
+			next = h.target;
+			t = new Turn(prev, h.twin.target, next);
+			
+			if(t.value > 0) {
+				
+				Triangle tr = new Triangle(prev, h.twin.target, next);
+				
+				return tr.findCentroid();
+			}
+			
+			h = h.next;
+		} while (f.h.target != h.target);
+		
+		return null;
 	}
 
 }

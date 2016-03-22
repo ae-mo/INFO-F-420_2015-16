@@ -1,4 +1,4 @@
-/* @pjs font="/fonts/Charybdis.ttf"; */
+/* @pjs font="../../fonts/Charybdis.ttf"; */
 
 ArrayList<Point> points, beacons, defaultBeacons;
 Point start, end;
@@ -14,7 +14,7 @@ PImage bg;
 void setup() {
 
   size(1068, 600);
-  myFont = createFont("/fonts/Charybdis.ttf");
+  myFont = createFont("../../fonts/Charybdis.ttf");
   textFont(myFont);
   MIN_BEACONS = 1
   MAX_SECS = 5;

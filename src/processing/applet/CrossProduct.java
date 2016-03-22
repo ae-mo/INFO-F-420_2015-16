@@ -1,6 +1,4 @@
-package operations;
-import dataStructures.Edge;
-import dataStructures.Point;
+
 
 public class CrossProduct {
 	

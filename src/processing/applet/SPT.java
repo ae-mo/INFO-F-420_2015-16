@@ -1,13 +1,6 @@
-package operations;
 
 import java.util.ArrayList;
 
-import dataStructures.DCEL;
-import dataStructures.Edge;
-import dataStructures.Face;
-import dataStructures.Graph;
-import dataStructures.Halfedge;
-import dataStructures.Point;
 
 public class SPT {
 	
@@ -152,7 +145,7 @@ public class SPT {
 			
 			h = h.next;
 			
-		} while(!h.target.equals(f.h.target));
+		} while(h.target != f.h.target);
 		
 		return intersects;
 		

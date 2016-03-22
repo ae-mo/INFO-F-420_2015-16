@@ -1,16 +1,4 @@
-package attractionRegion;
 import java.util.ArrayList;
-
-import dataStructures.DCEL;
-import dataStructures.Edge;
-import dataStructures.Face;
-import dataStructures.Halfedge;
-import dataStructures.Point;
-import dataStructures.RedBlackBST;
-import operations.CrossProduct;
-import operations.DotProduct;
-import operations.RadialSort;
-import operations.Turn;
 
 public class AttractionRegion {
 
@@ -365,7 +353,7 @@ public class AttractionRegion {
 
 		den = (x1 -x2)*(y3 - y4) - (y1 - y2)*(x3 - x4);
 
-		if((Math.abs(den) <= this.EPSILON)) return null;
+		if(den == 0) return null;
 		
 		if(Math.abs(x1-x2)<= this.EPSILON) {
 			
