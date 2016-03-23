@@ -14,13 +14,18 @@ public class SPT {
 	public DCEL polygon;
 	public Graph graph;
 	public ArrayList<Edge> edges;
-	
+	public ArrayList<Point> points;
 	public SPT(Point p, ArrayList<Point> points) {
 		
+		this.points = points;
 		graph = new Graph();
 		polygon = new DCEL();
 		edges = new ArrayList<Edge>();
-		polygon.initialize(points);
+		try {
+			polygon.initialize(this.clonePoints(points));
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
 		this.computeSPT(p, polygon);
 		
 	}
@@ -91,7 +96,7 @@ public class SPT {
 			Point b;
 			for(int j=1; j<path.size(); j++) {
 				String s = path.get(j);
-				b = polygon.vertices.get(Integer.valueOf(s));
+				b = this.points.get(Integer.valueOf(s));
 				this.edges.add(new Edge(a, b));
 				
 				a = b;
@@ -193,5 +198,12 @@ public class SPT {
 		
 		return true;
 		
+	}
+	private ArrayList<Point> clonePoints(ArrayList<Point> points) throws CloneNotSupportedException {
+
+		ArrayList<Point> clone = new ArrayList<Point>(points.size());
+		for(Point item: points) clone.add(new Point(item.x, item.y, null));
+		return clone;
+
 	}
 }

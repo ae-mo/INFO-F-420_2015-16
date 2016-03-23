@@ -90,15 +90,15 @@ public class DCEL {
 		h.next = h1;
 
 		Halfedge i = h2;
-		i.face = f2;
+		
+		while (true) {
 
-		while (!i.target.equals(v)) {
-
-			i = i.next;
 			i.face = f2;
+			if(i.target.equals(v)) break;
+			i = i.next;
 		}
 
-		
+
 		h1.next = i.next;
 		h1.next.prev = h1;
 		i.next = h2;
@@ -111,10 +111,10 @@ public class DCEL {
 			i = i.next;
 		} while (!i.target.equals(u));
 
-		
-	
+		i.face = f1;
+
 		this.faces.remove(f);
-		
+
 		this.faces.add(f2);
 		this.faces.add(f1);
 		newFaces[0] = this.faces.size() - 1;
@@ -125,7 +125,7 @@ public class DCEL {
 
 		return newFaces;
 	}
-	
+
 	/**
 	 * Splits a face into two new faces, creating a new edge between two of its vertices.
 	 * @param f
@@ -133,7 +133,7 @@ public class DCEL {
 	 * @param v
 	 */
 	public void splitFace2(int face, Halfedge h, Point v) {
-		
+
 		Point u = h.target;
 
 		Face f1 = new Face();
@@ -154,15 +154,16 @@ public class DCEL {
 		h.next = h1;
 
 		Halfedge i = h2;
-		i.face = f2;
 
-		while (!i.target.equals(v)) {
 
-			i = i.next;
+		while (true) {
+
 			i.face = f2;
+			if(i.target.equals(v)) break;
+			i = i.next;
 		}
 
-		
+
 		h1.next = i.next;
 		h1.next.prev = h1;
 		i.next = h2;
@@ -174,16 +175,19 @@ public class DCEL {
 			i.face = f1;
 			i = i.next;
 		} while (!i.target.equals(u));
+		
+		i.face = f1;
 
 		this.faces.set(face, f1);
-		
+
 		this.faces.add(f2);
 
 		this.halfedges.add(h1);
 		this.halfedges.add(h2);
 
+
 	}
-	
+
 	/**
 	 * Splits and edge, represented by a halfedge, into two new edges, incident to a given point.
 	 * @param halfedge
@@ -191,68 +195,61 @@ public class DCEL {
 	 * @return
 	 */
 	public Face splitEdge(Halfedge h, Point w) {
-	
+
 
 		Face f1 = h.face;
 		Face f2 = h.twin.face;
-		
+
 		Halfedge h1 = new Halfedge();
-		Halfedge h2 = new Halfedge();
-		
+		Halfedge h2 = h;
+
 		Halfedge k1 = new Halfedge();
-		Halfedge k2 = new Halfedge();
-		
+		Halfedge k2 = h.twin;
+
 		h1.face = f1;
 		h1.next = h2;
 		h1.prev = h.prev;
 		h1.twin = k2;
 		h1.target = w;
-		
-		h2.face = f1;
-		h2.next = h.next;
-		h2.prev = h1;
-		h2.twin = k1;
-		h2.target = h.target;
-		
+
 		k1.face = f2;
 		k1.next = k2;
 		k1.prev = h.twin.prev;
 		k1.twin = h2;
 		k1.target = w;
 
-		k2.face = f2;
-		k2.next = h.twin.next;
-		k2.prev = k1;
-		k2.twin = h1;
-		k2.target = h.twin.target;
-		
 		h1.prev.next = h1;
+		h1.prev.target.h = h1;
 		k1.prev.next = k1;
-		
+		k1.prev.target.h = h2.next;
+
 		h2.next.prev = h2;
 		k2.next.prev = k2;
-		
-		w.h = h2;
-		
-		f1.h = h2;
-		f2.h = k2;
 
-		this.halfedges.remove(h.twin);
-		this.halfedges.remove(h);
-		
-		this.halfedges.add(h2);
-		this.halfedges.add(k2);
+
+		//h2.face = f1;
+		//h2.next = h.next;
+		h2.prev = h1;
+		h2.twin = k1;
+		//h2.target = h.target;
+
+
+		//k2.face = f2;
+		//k2.next = h.twin.next;
+		k2.prev = k1;
+		k2.twin = h1;
+		//k2.target = h.twin.target;
+
+
+		w.h = h2;
+
 		this.halfedges.add(h1);
 		this.halfedges.add(k1);
-		
-		int size = this.halfedges.size();
-		
 
-		
 		this.vertices.add(w);
-		
+
 		return f1;
-		
+
 	}
 
 	/**
@@ -262,10 +259,10 @@ public class DCEL {
 	 * @return
 	 */
 	public void initialize(ArrayList<Point> points) {
-		
+
 		if(initialized) return;
 		if(points.size() < 3) throw new IllegalArgumentException("Provide at least 3 vertices!");
-		
+
 		Point p1 = points.get(0);
 		Point p2 = points.get(1);
 
@@ -289,12 +286,12 @@ public class DCEL {
 		h2.prev = h1;
 
 		f.h = h1;
-		
+
 		this.vertices.add(p1);
 		this.vertices.add(p2);
 		this.halfedges.add(h1);
 		this.halfedges.add(h2);
-		
+
 		int he = this.halfedges.size() - 2;
 
 		for(int i = 2; i < points.size(); i++) {
@@ -305,12 +302,11 @@ public class DCEL {
 
 		this.splitFace(this.faces.get(0), this.halfedges.get(he), this.vertices.get(0));
 		p1.h = p1.h.prev.twin;
-		
+
 		for(Point v: this.vertices)
 			v.h = v.h.prev.twin;
-		
-		this.initialized = true;
 
+		this.initialized = true;
 
 	}
 }

@@ -290,12 +290,18 @@ public class Tests {
 
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		points.add(new Point(286, 130, null));
-		points.add(new Point(515, 74, null));
-		points.add(new Point(514, 190, null));
-		points.add(new Point(350, 239, null));
+		points.add(new Point(306, 212, null));
+		points.add(new Point(585, 148, null));
+		points.add(new Point(674, 312, null));
+		points.add(new Point(464, 305, null));
+		points.add(new Point(780, 374, null));
+		points.add(new Point(718, 483, null));
+		points.add(new Point(373, 391, null));
+		points.add(new Point(429, 261, null));
+		points.add(new Point(524, 262, null));
+		points.add(new Point(352, 236, null));
 
-		Point p = new Point(426, 166, null);
+		Point p = new Point(595, 400, null);
 		
 		InverseAttractionRegion inv = new InverseAttractionRegion(points, p);
 		

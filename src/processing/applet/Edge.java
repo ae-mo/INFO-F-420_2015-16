@@ -1,5 +1,4 @@
 
-
 /*
  * Represents a polygon's edge.
  * 

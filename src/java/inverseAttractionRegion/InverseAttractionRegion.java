@@ -39,32 +39,37 @@ public class InverseAttractionRegion {
 		SPT spt;
 
 		polygon.initialize(this.clonePoints(points));
-		spt = new SPT(p, this.clonePoints(points));
-
-		edges.addAll(spt.edges);
 
 		Face f = polygon.faces.get(1);
 		Halfedge h = f.h;
+		
+		ArrayList<Point> arrangementPoints = this.clonePoints(points);
 
-		do {
-
-			edges.add(new Edge(new Point(h.twin.target.x, h.twin.target.y, null), new Point(h.target.x, h.target.y, null)));
-			h = h.next;
-		} while (h.target != f.h.target);
+		for(int i = 0; i < arrangementPoints.size(); i++) {
+			
+			edges.add(new Edge(arrangementPoints.get(i), arrangementPoints.get((i+1) % arrangementPoints.size())));
+			
+		}
+		
+		spt = new SPT(p, arrangementPoints);
+		edges.addAll(spt.edges);
 		
 		Point prev, next;
 		Turn c;
 		
-		for(Point v: polygon.vertices) {
+		for(int i = 0; i < arrangementPoints.size(); i++) {
 			
-			prev = v.h.prev.twin.target;
-			next = v.h.target;
+			Point v = arrangementPoints.get(i);
+			
+			prev = i-1 >= 0 ? arrangementPoints.get(i-1) :
+				arrangementPoints.get((arrangementPoints.size()-i+1) % arrangementPoints.size());
+			next = arrangementPoints.get((i+1) % arrangementPoints.size());
 			c = new Turn(prev, v, next);
 			
 			if(c.value < 0) {
 				
-				edges.add(findPerpendicularEdge(new Edge(v, prev)));
-				edges.add(findPerpendicularEdge(new Edge(v, next)));
+				edges.add(findPerpendicularEdge(new Edge(v, prev), arrangementPoints));
+				edges.add(findPerpendicularEdge(new Edge(v, next), arrangementPoints));
 				
 			}
 			
@@ -78,7 +83,7 @@ public class InverseAttractionRegion {
 			f = Ap.faces.get(i);
 			Point candidate = this.findPointInConvexFace(f);
 			
-			if(polygon.faces.get(1).contains(candidate)) {
+			if(candidate != null && polygon.faces.get(1).contains(candidate)) {
 				
 				attr = new AttractionRegion(candidate, this.clonePoints(points));
 				
@@ -93,17 +98,24 @@ public class InverseAttractionRegion {
 	private ArrayList<Point> clonePoints(ArrayList<Point> points) throws CloneNotSupportedException {
 
 		ArrayList<Point> clone = new ArrayList<Point>(points.size());
-		for(Point item: points) clone.add((Point) item.clone());
+		for(Point item: points) clone.add(new Point(item.x, item.y, null));
 		return clone;
 
 	}
 	
-	private Edge findPerpendicularEdge(Edge e) {
+	private Edge findPerpendicularEdge(Edge e, ArrayList<Point> points) {
 		
 		double newX = e.a.x -(e.b.y - e.a.y);
 		double newY = e.a.y +(e.b.x - e.a.x);
 		
-		return new Edge(new Point(e.a.x, e.a.y, null), new Point(newX, newY, null));
+		Point result = new Point(newX, newY, null);
+		
+		Point duplicate = this.findDuplicate(result, points);
+		
+		if(duplicate != null)
+			return new Edge(e.a, duplicate);
+		
+		return new Edge(e.a, result);
 	}
 	
 	private Point findPointInConvexFace(Face f) {
@@ -127,6 +139,15 @@ public class InverseAttractionRegion {
 			
 			h = h.next;
 		} while (f.h.target != h.target);
+		
+		return null;
+	}
+	
+	private Point findDuplicate(Point p, ArrayList<Point> points) {
+		
+		for(Point t: points)
+			if(p.equals(t))
+				return t;
 		
 		return null;
 	}

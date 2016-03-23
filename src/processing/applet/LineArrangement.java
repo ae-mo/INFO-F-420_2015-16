@@ -1,264 +1,287 @@
 
+
 import java.util.ArrayList;
+
+
 public class LineArrangement {
 
-  public static final double EPSILON = 0.01;
-  public double SCREEN_X, SCREEN_Y;
-  public ArrayList<Face> faces;
+	public static final double EPSILON = 0.01;
+	public double SCREEN_X, SCREEN_Y;
+	public ArrayList<Face> faces;
 
-  public LineArrangement(ArrayList<Edge> edges) {
+	public LineArrangement(ArrayList<Edge> edges) {
 
-    SCREEN_X = 1068;
-    SCREEN_Y = 600;
+		SCREEN_X = 1068;
+		SCREEN_Y = 600;
 
-    edges = this.removeDuplicateLines(edges);
-    this.computeLineArrangement(edges);
+		edges = this.removeDuplicateLines(edges);
+		this.computeLineArrangement(edges);
 
-  }
+	}
 
-  private void computeLineArrangement(ArrayList<Edge> edges) {
+	private void computeLineArrangement(ArrayList<Edge> edges) {
 
-    DCEL arrangement = new DCEL();
+		DCEL arrangement = new DCEL();
 
-    ArrayList<Point> points = new ArrayList<Point>();
-    points.add(new Point(0, 0, null));
-    points.add(new Point(this.SCREEN_X, 0, null));
-    points.add(new Point(this.SCREEN_X, this.SCREEN_Y, null));
-    points.add(new Point(0, this.SCREEN_Y, null));
+		ArrayList<Point> points = new ArrayList<Point>();
+		points.add(new Point(0, 0, null));
+		points.add(new Point(this.SCREEN_X, 0, null));
+		points.add(new Point(this.SCREEN_X, this.SCREEN_Y, null));
+		points.add(new Point(0, this.SCREEN_Y, null));
 
-    arrangement.initialize(points);
+		arrangement.initialize(points);
 
-    int size;
-    ArrayList<Halfedge> splitHalfedges;
-    ArrayList<Point> edgeIntersections, vertexIntersections;
-    Face f;
-    Halfedge h;
-    Edge e;
-    Point v;
+		int size;
+		ArrayList<Halfedge> splitHalfedges;
+		ArrayList<Point> edgeIntersections, vertexIntersections;
+		Face f;
+		Halfedge h;
+		Edge e;
+		Point v;
 
-    for(Edge l: edges) {
+		for(Edge l: edges) {
+			System.out.println("hey");
+			size = arrangement.faces.size();
 
-      size = arrangement.faces.size();
+			for(int i = 1; i < size; i++) {
 
-      for(int i = 1; i < size; i++) {
-        
-        splitHalfedges = new ArrayList<Halfedge>();
-        edgeIntersections = new ArrayList<Point>();
-        vertexIntersections = new ArrayList<Point>();
+				splitHalfedges = new ArrayList<Halfedge>();
+				edgeIntersections = new ArrayList<Point>();
+				vertexIntersections = new ArrayList<Point>();
 
-        f = arrangement.faces.get(i);
-        h = f.h;
+				f = arrangement.faces.get(i);
+				h = f.h;
 
-        do {
+				do {
 
-          e = h.getEdge();
-          
-          if(e.strictlyIntersectsLine(l)) {
-            
-            v = this.computeLineLineIntersection(l.a.x, l.a.y, l.b.x, l.b.y, e.a.x, e.a.y, e.b.x, e.b.y);
-            splitHalfedges.add(h);
-            edgeIntersections.add(v);
-          }
-          else if(e.intersectsLine(l)) {
-            
-            Turn lAlBeA = new Turn(l.a, l.b, e.a);
-            Turn lAlBeB = new Turn(l.a, l.b, e.b);
-            
-            if(lAlBeA.value == 0)
-              v = e.a;
-            else
-              v = e.b;
-            
-            Halfedge h1 = this.findHalfedgeInFace(v, f);
-            
-            Point prev = h1.prev.twin.target;
-            Point next = h1.target;
-            
-            Point v1 = !l.a.equals(v) ? l.a : l.b;
-            
-            Turn v1vp = new Turn(v1, v, prev);
-            Turn v1vn = new Turn(v1, v, next);
-            
-            if((v1vp.value > 0 && v1vn.value < 0) || (v1vp.value < 0 && v1vn.value > 0))
-              vertexIntersections.add(v);
-            
-          }
-          
-          h = h.next;
+					e = h.getEdge();
 
-        } while(!f.h.target.equals(h.target));
-        
-        vertexIntersections = this.removeDuplicatePoints(vertexIntersections);
-        
-        if(edgeIntersections.size() > 0 || vertexIntersections.size() > 0) {
-          
-          if(edgeIntersections.size() == 2) {
-            
-            f=arrangement.splitEdge(splitHalfedges.get(0), edgeIntersections.get(0));
-            arrangement.splitEdge(splitHalfedges.get(1), edgeIntersections.get(1));
-            
-            h = this.findHalfedgeInFace(edgeIntersections.get(0), f);
-            h = h.prev;
-            
-            arrangement.splitFace2(i, h, edgeIntersections.get(1));
-            
-          }
-          else if(edgeIntersections.size() == 1) {
-            
-            f= arrangement.splitEdge(splitHalfedges.get(0), edgeIntersections.get(0));
-            h = this.findHalfedgeInFace(edgeIntersections.get(0), f);
-            h = h.prev;
-            
-            arrangement.splitFace2(i, h, vertexIntersections.get(0));
+					if(e.strictlyIntersectsLine(l)) {
 
-            
-          }
-          else if(edgeIntersections.size() == 0) {
-            
-            h = this.findHalfedgeInFace(vertexIntersections.get(0), f);
-            h = h.prev;
-            
-            arrangement.splitFace2(i, h, vertexIntersections.get(1));
+						v = this.computeLineLineIntersection(l.a.x, l.a.y, l.b.x, l.b.y, e.a.x, e.a.y, e.b.x, e.b.y);
 
-            
-          }          
-        }
+						Point dup = this.findDuplicate(v, arrangement.vertices);
 
-      }
+						if(dup != null)
+							v = dup;
 
-    }
-    
-    this.faces = arrangement.faces;
+						splitHalfedges.add(h);
+						edgeIntersections.add(v);
+					}
+					else if(e.intersectsLine(l)) {
 
-  }
+						Turn lAlBeA = new Turn(l.a, l.b, e.a);
+						Turn lAlBeB = new Turn(l.a, l.b, e.b);
 
-  private ArrayList<Edge> removeDuplicateLines(ArrayList<Edge> edges) {
+						if(lAlBeA.value == 0)
+							v = e.a;
+						else
+							v = e.b;
 
-    ArrayList<Edge> uniqueEdges = new ArrayList<Edge>(); 
-    boolean duplicate;
-    Edge current, test;
-    Turn a1b1b2, a1b1a2;
+						Point dup = this.findDuplicate(v, arrangement.vertices);
 
-    for(int i=0; i < edges.size(); i++) {
+						if(dup != null)
+							v = dup;
 
-      duplicate = false;
-      current = edges.get(i);
+						Halfedge h1 = this.findHalfedgeInFace(v, f);
 
-      for(int j = i+1; j< edges.size(); j++) {
+						Point prev = h1.prev.twin.target;
+						Point next = h1.target;
 
-        test = edges.get(j);
-        a1b1b2 = new Turn(current.a, current.b, test.b);
-        a1b1a2 = new Turn(current.a, current.b, test.a);
+						Point v1 = !l.a.equals(v) ? l.a : l.b;
 
-        if(a1b1b2.value == 0 && a1b1a2.value == 0) {
+						Turn v1vp = new Turn(v1, v, prev);
+						Turn v1vn = new Turn(v1, v, next);
 
-          duplicate = true;
-          break;
+						if((v1vp.value > 0 && v1vn.value < 0) || (v1vp.value < 0 && v1vn.value > 0))
+							vertexIntersections.add(v);
 
-        }
+					}
 
-      }
+					h = h.next;
 
-      if(!duplicate)
-        uniqueEdges.add(current);
+				} while(!f.h.target.equals(h.target));
 
-    }
+				vertexIntersections = this.removeDuplicatePoints(vertexIntersections);
 
-    return uniqueEdges;
+				if(edgeIntersections.size() > 0 || vertexIntersections.size() > 0) {
 
-  }
-  
-  private ArrayList<Point> removeDuplicatePoints(ArrayList<Point> points) {
-    
-    ArrayList<Point> uniquePoints = new ArrayList<Point>(); 
-    boolean duplicate;
-    Point current, test;
-    
-    for(int i=0; i < points.size(); i++) {
+					if(edgeIntersections.size() == 2) {
 
-      duplicate = false;
-      current = points.get(i);
+						f=arrangement.splitEdge(splitHalfedges.get(0), edgeIntersections.get(0));
+						arrangement.splitEdge(splitHalfedges.get(1), edgeIntersections.get(1));
 
-      for(int j = i+1; j< points.size(); j++) {
+						h = this.findHalfedgeInFace(edgeIntersections.get(0), f);
+						h = h.prev;
 
-        test = points.get(j);
+						arrangement.splitFace2(i, h, edgeIntersections.get(1));
 
-        if(current.equals(test)) {
+					}
+					else if(edgeIntersections.size() == 1) {
 
-          duplicate = true;
-          break;
+						f= arrangement.splitEdge(splitHalfedges.get(0), edgeIntersections.get(0));
+						h = this.findHalfedgeInFace(edgeIntersections.get(0), f);
+						h = h.prev;
 
-        }
+						arrangement.splitFace2(i, h, vertexIntersections.get(0));
 
-      }
 
-      if(!duplicate)
-        uniquePoints.add(current);
+					}
+					else if(edgeIntersections.size() == 0) {
 
-    }
+						h = this.findHalfedgeInFace(vertexIntersections.get(0), f);
+						h = h.prev;
 
-    return uniquePoints;
+						arrangement.splitFace2(i, h, vertexIntersections.get(1));
 
-    
-  }
-  
-  private Point computeLineLineIntersection(double x1,  double y1,  double x2,  double y2,  double x3,  double y3,  double x4,  double y4) {
 
-    double den, xNum, yNum;
-    double x, y;
+					}					
+				}
 
-    den = (x1 -x2)*(y3 - y4) - (y1 - y2)*(x3 - x4);
+			}
 
-    if(Math.abs(den) <= this.EPSILON) return null;
-    
-    if(Math.abs(x1-x2)<= this.EPSILON) {
-      
-      y = (y4 - y3)/(x4 - x3) * (x1 - x3) + y3;
-      
-      return new Point(x1, y, null);
-      
-    }
-    
-    if(Math.abs(x3-x4)<= this.EPSILON) {
-      
-      y = (y2 - y1)/(x2 - x1) * (x3 - x1) + y1;
-      
-      return new Point(x3, y, null);
-      
-    }
+		}
 
-    xNum = (x1*y2-y1*x2)*(x3 - x4) - (x1-x2)*(x3*y4-y3*x4);
-    yNum = (x1*y2-y1*x2)*(y3 - y4) - (y1-y2)*(x3*y4-y3*x4);
+		this.faces = arrangement.faces;
 
-    x = xNum / den;
-    y = yNum / den;
+	}
 
-    return new Point(x, y, null);
+	private ArrayList<Edge> removeDuplicateLines(ArrayList<Edge> edges) {
 
-  }
-  
-  private Halfedge findHalfedgeInFace(Point p, Face f) {
-    
-    Halfedge h = p.h;
-    
-    do {
-      
-      Halfedge h1 = h;
-      
-      do {
-        
-        if(h1.face.equals(f))
-          return h;
-        
-        h1 = h1.next;
-        
-      } while(h1.target != h.target);
-      
-      h = h.prev.twin;
-      
-    } while (!p.h.target.equals(h.target));
-    
-    return null;
-    
-  }
+		ArrayList<Edge> uniqueEdges = new ArrayList<Edge>(); 
+		boolean duplicate;
+		Edge current, test;
+		Turn a1b1b2, a1b1a2;
+
+		for(int i=0; i < edges.size(); i++) {
+
+			duplicate = false;
+			current = edges.get(i);
+
+			for(int j = i+1; j< edges.size(); j++) {
+
+				test = edges.get(j);
+				a1b1b2 = new Turn(current.a, current.b, test.b);
+				a1b1a2 = new Turn(current.a, current.b, test.a);
+
+				if(a1b1b2.value == 0 && a1b1a2.value == 0) {
+
+					duplicate = true;
+					break;
+
+				}
+
+			}
+
+			if(!duplicate)
+				uniqueEdges.add(current);
+
+		}
+
+		return uniqueEdges;
+
+	}
+
+	private ArrayList<Point> removeDuplicatePoints(ArrayList<Point> points) {
+
+		ArrayList<Point> uniquePoints = new ArrayList<Point>(); 
+		boolean duplicate;
+		Point current, test;
+
+		for(int i=0; i < points.size(); i++) {
+
+			duplicate = false;
+			current = points.get(i);
+
+			for(int j = i+1; j< points.size(); j++) {
+
+				test = points.get(j);
+
+				if(current.equals(test)) {
+
+					duplicate = true;
+					break;
+
+				}
+
+			}
+
+			if(!duplicate)
+				uniquePoints.add(current);
+
+		}
+
+		return uniquePoints;
+
+
+	}
+
+	private Point computeLineLineIntersection(double x1,  double y1,  double x2,  double y2,  double x3,  double y3,  double x4,  double y4) {
+
+		double den, xNum, yNum;
+		double x, y;
+
+		den = (x1 -x2)*(y3 - y4) - (y1 - y2)*(x3 - x4);
+
+		if(Math.abs(den) <= this.EPSILON) return null;
+
+		if(Math.abs(x1-x2)<= this.EPSILON) {
+
+			y = (y4 - y3)/(x4 - x3) * (x1 - x3) + y3;
+
+			return new Point(x1, y, null);
+
+		}
+
+		if(Math.abs(x3-x4)<= this.EPSILON) {
+
+			y = (y2 - y1)/(x2 - x1) * (x3 - x1) + y1;
+
+			return new Point(x3, y, null);
+
+		}
+
+		xNum = (x1*y2-y1*x2)*(x3 - x4) - (x1-x2)*(x3*y4-y3*x4);
+		yNum = (x1*y2-y1*x2)*(y3 - y4) - (y1-y2)*(x3*y4-y3*x4);
+
+		x = xNum / den;
+		y = yNum / den;
+
+		return new Point(x, y, null);
+
+	}
+
+	private Halfedge findHalfedgeInFace(Point p, Face f) {
+
+		Halfedge h = p.h;
+
+		do {
+
+			Halfedge h1 = h;
+
+			do {
+
+				if(h1.equals(f.h))
+					return h;
+
+				h1 = h1.next;
+
+			} while(h1.target != h.target);
+
+			h = h.prev.twin;
+
+		} while (!p.h.target.equals(h.target));
+
+		return null;
+
+	}
+
+	private Point findDuplicate(Point p, ArrayList<Point> points) {
+
+		for(Point t: points)
+			if(p.equals(t))
+				return t;
+
+		return null;
+	}
 }
