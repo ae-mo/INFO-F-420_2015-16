@@ -1,4 +1,5 @@
-
+PrintWriter polyPoints;
+PrintWriter beaconPoints;
 int r, g, bl;
 ArrayList<Point> points;
 Point b;    
@@ -13,11 +14,20 @@ void setup() {
   background(r, g, bl);
 
   points = new ArrayList<Point>();
+  polyPoints = createWriter("points.txt");
+  beaconPoints = createWriter("beacons.txt");
 }
 
 void draw() {
-  if (keyPressed)  
+  if (keyPressed)  {
+  
+    polyPoints.flush();
+    polyPoints.close();
+    beaconPoints.flush();
+    beaconPoints.close();
     test21();
+  }
+    
 }
 
 void mouseClicked() {
@@ -25,6 +35,7 @@ void mouseClicked() {
 
     Point p = new Point(mouseX, mouseY, null);
     points.add(p);
+    polyPoints.println("points.add(new Point("+ p.x + ", " + p.y + ", null));");
     text(p.x + ", " + p.y, (float) p.x, (float)p.y);
 
     if (points.size() > 1) {
@@ -37,7 +48,8 @@ void mouseClicked() {
   } else if (mouseButton == RIGHT) {
 
     b = new Point(mouseX, mouseY, null);
-
+    
+    beaconPoints.println("m.add(new Point("+ b.x + ", " + b.y + ", null));");
     point((float)b.x, (float)b.y);
     text(b.x + ", " + b.y, (float) b.x, (float)b.y);
   }
@@ -47,7 +59,32 @@ void mouseClicked() {
 void test21() {
   
   System.out.println("Started");
-
+  
+  points.add(new Point(329.0, 308.0, null));
+    points.add(new Point(348.0, 178.0, null));
+    points.add(new Point(475.0, 171.0, null));
+    points.add(new Point(400.0, 123.0, null));
+    points.add(new Point(315.0, 147.0, null));
+    points.add(new Point(321.0, 95.0, null));
+    points.add(new Point(474.0, 107.0, null));
+    points.add(new Point(432.0, 74.0, null));
+    points.add(new Point(592.0, 62.0, null));
+    points.add(new Point(576.0, 145.0, null));
+    points.add(new Point(527.0, 139.0, null));
+    points.add(new Point(596.0, 229.0, null));
+    points.add(new Point(704.0, 122.0, null));
+    points.add(new Point(621.0, 74.0, null));
+    points.add(new Point(875.0, 109.0, null));
+    points.add(new Point(813.0, 310.0, null));
+    points.add(new Point(768.0, 222.0, null));
+    points.add(new Point(593.0, 288.0, null));
+    points.add(new Point(546.0, 381.0, null));
+    points.add(new Point(493.0, 259.0, null));
+    points.add(new Point(527.0, 258.0, null));
+    points.add(new Point(413.0, 206.0, null));
+    
+    b = new Point(514.0, 172.0, null);
+  
   line((float)points.get(0).x, (float)points.get(0).y, (float) points.get(points.size()-1).x, (float)points.get(points.size()-1).y);
   
   InverseAttractionRegion inv = new InverseAttractionRegion(points, b);

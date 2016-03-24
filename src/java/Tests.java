@@ -290,18 +290,31 @@ public class Tests {
 
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		points.add(new Point(306, 212, null));
-		points.add(new Point(585, 148, null));
-		points.add(new Point(674, 312, null));
-		points.add(new Point(464, 305, null));
-		points.add(new Point(780, 374, null));
-		points.add(new Point(718, 483, null));
-		points.add(new Point(373, 391, null));
-		points.add(new Point(429, 261, null));
-		points.add(new Point(524, 262, null));
-		points.add(new Point(352, 236, null));
+		points.add(new Point(329.0, 308.0, null));
+		points.add(new Point(348.0, 178.0, null));
+		points.add(new Point(475.0, 171.0, null));
+		points.add(new Point(400.0, 123.0, null));
+		points.add(new Point(315.0, 147.0, null));
+		points.add(new Point(321.0, 95.0, null));
+		points.add(new Point(474.0, 107.0, null));
+		points.add(new Point(432.0, 74.0, null));
+		points.add(new Point(592.0, 62.0, null));
+		points.add(new Point(576.0, 145.0, null));
+		points.add(new Point(527.0, 139.0, null));
+		points.add(new Point(596.0, 229.0, null));
+		points.add(new Point(704.0, 122.0, null));
+		points.add(new Point(621.0, 74.0, null));
+		points.add(new Point(875.0, 109.0, null));
+		points.add(new Point(813.0, 310.0, null));
+		points.add(new Point(768.0, 222.0, null));
+		points.add(new Point(593.0, 288.0, null));
+		points.add(new Point(546.0, 381.0, null));
+		points.add(new Point(493.0, 259.0, null));
+		points.add(new Point(527.0, 258.0, null));
+		points.add(new Point(413.0, 206.0, null));
 
-		Point p = new Point(595, 400, null);
+
+		Point p = new Point(514.0, 172.0, null);
 		
 		InverseAttractionRegion inv = new InverseAttractionRegion(points, p);
 		

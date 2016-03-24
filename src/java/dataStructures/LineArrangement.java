@@ -85,7 +85,10 @@ public class LineArrangement {
 							v = dup;
 
 						Halfedge h1 = this.findHalfedgeInFace(v, f);
-
+						
+						if (h1 == null)
+							continue;
+						
 						Point prev = h1.prev.twin.target;
 						Point next = h1.target;
 
@@ -107,30 +110,37 @@ public class LineArrangement {
 
 				if(edgeIntersections.size() > 0 || vertexIntersections.size() > 0) {
 
-					if(edgeIntersections.size() == 2) {
+					if(edgeIntersections.size() == 2 && vertexIntersections.size() == 0) {
 
 						f=arrangement.splitEdge(splitHalfedges.get(0), edgeIntersections.get(0));
 						arrangement.splitEdge(splitHalfedges.get(1), edgeIntersections.get(1));
 
 						h = this.findHalfedgeInFace(edgeIntersections.get(0), f);
+
+						if (h == null)
+							continue;
 						h = h.prev;
 
 						arrangement.splitFace2(i, h, edgeIntersections.get(1));
 
 					}
-					else if(edgeIntersections.size() == 1) {
+					else if(edgeIntersections.size() == 1 && vertexIntersections.size() == 1) {
 
 						f= arrangement.splitEdge(splitHalfedges.get(0), edgeIntersections.get(0));
 						h = this.findHalfedgeInFace(edgeIntersections.get(0), f);
+						if (h == null)
+							continue;
 						h = h.prev;
 
 						arrangement.splitFace2(i, h, vertexIntersections.get(0));
 
 
 					}
-					else if(edgeIntersections.size() == 0) {
+					else if(edgeIntersections.size() == 0 && vertexIntersections.size() == 2) {
 
 						h = this.findHalfedgeInFace(vertexIntersections.get(0), f);
+						if (h == null)
+							continue;
 						h = h.prev;
 
 						arrangement.splitFace2(i, h, vertexIntersections.get(1));

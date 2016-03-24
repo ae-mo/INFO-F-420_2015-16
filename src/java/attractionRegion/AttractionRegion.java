@@ -221,9 +221,7 @@ public class AttractionRegion {
 			System.out.println("Ray: " + b.x + ", " + b.y+ "; "+p1.x + ", " + p1.y);
 			System.out.println("Edge: " + e.a.x + ", " + e.a.y+ "; "+e.b.x + ", " + e.b.y);
 
-			Point p2 = this.computePointOnLine(b,  p1, 1.1);
-
-			if(e.intersectsRay(p1, p2)) { // add it to the status
+			if(e.intersectsRay(b, p1)) { // add it to the status
 
 				Turn bEab = new Turn(b, e.a, e.b);
 				Turn bEba = new Turn(b, e.b, e.a);
