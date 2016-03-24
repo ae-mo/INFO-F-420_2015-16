@@ -23,7 +23,7 @@ public class MinimumBeaconPath {
 
 	public MinimumBeaconPath(ArrayList<Point> points, ArrayList<Point> candidateBeacons,
 			Point start, Point end) {
-		
+
 		g = new Graph();
 		this.points = points;
 		this.beacons = new ArrayList<Point>();
@@ -47,7 +47,6 @@ public class MinimumBeaconPath {
 		beacons.add(end);
 		ArrayList<Point> clonedPoints;
 		AttractionRegion attr;
-		ArrayList<Graph.Edge> edges = new ArrayList<Graph.Edge>();
 
 		for(Point c: beacons) {
 
@@ -72,7 +71,7 @@ public class MinimumBeaconPath {
 
 						b2 = beacons.get(c);
 						dist = Math.sqrt(Math.pow(b2.x-b.x, 2) + Math.pow(b2.y-b.y, 2));
-						edges.add(g.new Edge(String.valueOf(d), String.valueOf(c), dist));
+						g.addEdge(String.valueOf(d), String.valueOf(c), dist);
 
 					}
 
@@ -83,9 +82,22 @@ public class MinimumBeaconPath {
 		}
 
 		Graph.Edge[] graph = new Graph.Edge[1];
-		g.addEdges(edges.toArray(graph));
+		g.addEdges(g.edges.toArray(graph));
 		int start = beacons.size() - 2;
 		int end = beacons.size() - 1;
+
+		if(!g.graph.containsKey(String.valueOf(start))) {
+
+			this.beacons = null;
+			return;
+		}
+
+		if(!g.graph.containsKey(String.valueOf(end))) {
+
+			this.beacons = null;
+			return;
+		}
+
 		g.dijkstra(String.valueOf(start));
 		ArrayList<String> path = new ArrayList<String>();
 		path = g.getPath(String.valueOf(end), path);
@@ -93,7 +105,7 @@ public class MinimumBeaconPath {
 		if(path == null)
 			this.beacons = null;
 		else {
-			
+
 			int point;
 			for(String d: path) {
 
@@ -101,7 +113,6 @@ public class MinimumBeaconPath {
 				this.beacons.add(beacons.get(point));
 
 			}
-
 
 		}
 

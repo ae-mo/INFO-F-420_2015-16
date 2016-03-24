@@ -32,7 +32,6 @@ public class SPT {
 	
 	private void computeSPT(Point p, DCEL polygon) {
 		
-		ArrayList<Graph.Edge> edges = new ArrayList<Graph.Edge>();
 		Graph.Edge[] edgesArray = new Graph.Edge[1];
 		double dist;
 		for(int i = 0; i < polygon.vertices.size(); i++) {
@@ -48,7 +47,7 @@ public class SPT {
 				if(v1.h.target.equals(v2) || v1.h.prev.twin.target.equals(v2)) {
 					
 					dist = computeDistance(v1, v2);
-					edges.add(graph.new Edge(String.valueOf(i), String.valueOf(j), dist));
+					graph.addEdge(String.valueOf(i), String.valueOf(j), dist);
 					continue;
 					
 				}
@@ -61,7 +60,7 @@ public class SPT {
 					
 					if(!intersects) {
 						dist = computeDistance(v1, v2);
-						edges.add(graph.new Edge(String.valueOf(i), String.valueOf(j), dist));
+						graph.addEdge(String.valueOf(i), String.valueOf(j), dist);
 						}
 						
 				}
@@ -78,7 +77,7 @@ public class SPT {
 				
 			if(!intersects) {
 				dist = computeDistance(p, v);
-				edges.add(graph.new Edge(String.valueOf(polygon.vertices.size()), String.valueOf(i), dist));
+				graph.addEdge(String.valueOf(polygon.vertices.size()), String.valueOf(i), dist);
 			}
 				
 		}
