@@ -1,72 +1,282 @@
-int r, g, bl;
-ArrayList<Point> points;
-Point b;
+/* @pjs font="../../fonts/Charybdis.ttf"; */
+int br, bg, bb;
+ArrayList<Point> points, beacons;
+DCEL polygon;
+int strokePoly;
+int routePoint;
+Point start, end;
+
+boolean drawing, drawn, attraction, inverse, route;
+
 void setup() {
 
   size(1068, 600);
+  myFont = createFont("../../fonts/Charybdis.ttf");
+  textFont(myFont);
+  noLoop();
+  br = 59;
+  bg = 185; 
+  bb = 255;
+  
+  routPoint = 0;
 
-  r = 255;
-  g = 255;
-  bl = 255;
+  drawing = attraction = inverse = drawn = route = false;
+  
+  strokePoly = 2;
 
-  background(r, g, bl);
+  background(br, bg, bb);
 
+  polygon = new DCEL();
   points = new ArrayList<Point>();
+  beacons = new ArrayList<Point>();
 }
 
-void draw() {
-  if (keyPressed)  {
-
-    test21();
+void keyPressed() {
+  if (drawing)  {
+	  
+    background(br, bg, bb);
+	polygon.initialize(points);
+	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+	
+	drawing= false;
+	drawn = true;
+	
   }
     
 }
 
 void mouseClicked() {
-  if (mouseButton == LEFT) {
+	
+	if(drawing) {
+		
+		Point p = new Point(mouseX, mouseY, null);
+		points.add(p);
+		if (points.size() > 1) {
 
-    Point p = new Point(mouseX, mouseY, null);
-    points.add(p);
-    text(p.x + ", " + p.y, (float) p.x, (float)p.y);
+		  Point p1 = points.get(points.size()-2);
+		  Point p2 = points.get(points.size()-1);
 
-    if (points.size() > 1) {
+		  drawLine(p1.x, p1.y, p2.x, p2.y, 0, 0, 0, 2);					
+		}
+	}
+	else if(attraction) {
+		
+		Point b = findNearest(mouseX, mouseY);
+		
+		if(b!= null) {
+			
+			AttractionRegion attr = new AttractionRegion(b, clonePoints(points));
+			drawShapeFromFace(attr.face, 100, 255, 100, 0, 200, 0, 0, 0);
+			drawPoints(beacons, 0, 0, 255, 5);
+			drawPoint(b, 255, 0, 0, 5);
+			
+			enableAttraction();
+			enableInverse();
+			
+			if(beacons.size() >= 2)
+				enableRoute();
+			
+			attraction = false;
+			
+			
+		}
+		
+	}
+	else if(inverse) {
+		
+		Point c = findNearest(mouseX, mouseY);
+		
+		if(c!= null) {
+			
+			InverseAttractionRegion inv = new InverseAttractionRegion(points, c);
+			
+			 for (int i = 0; i < inv.faces.size(); i++) {
 
-      Point p1 = points.get(points.size()-2);
-      Point p2 = points.get(points.size()-1);
+				Face f = inv.faces.get(i); 
+				drawShapeFromFace(f, 217, 204, 255, 217, 204, 255, 0);
 
-      line((float)p1.x, (float) p1.y, (float) p2.x, (float) p2.y);
-    }
-  } else if (mouseButton == RIGHT) {
+			}
+			
+			drawPoints(beacons, 0, 0, 255, 5);
+			drawPoint(c, 255, 0, 0, 5);
+			
+			enableAttraction();
+			enableInverse();
+			
+			if(beacons.size() >= 2)
+				enableRoute();
+			
+			inverse = false;
+			
+		}
+		
+	}
+	else if(route) {
+		
+		if(routePoint == 0) {
+			
+			start = findNearest(mouseX, mouseY);
+			
+			if(start!=null) {
+				drawPoint(start, 255, 0, 0, 5);
+				routePoint++;
+			}
+		}
+		
+		else if(routePoint == 1) {
+			
+			end = findNearest(mouseX, mouseY);
+			
+			if(end!=null) {
+				drawPoint(end, 0, 255, 0, 5);
+				
+				ArrayList<Point> clonedBeacons = clonePoints(beacons);
+				
+				clonedBeacons.remove(start);
+				clonedBeacons.remove(end);
+				
+				showRouting(points, clonedBeacons, start, end);
+					
+				start = null;
+				end = null;
+				routePoint = 0;
+				route = false;
+				
+				enableAttraction();
+				enableInverse();
+				enableRoute();
+				
+			}
+		}
+		
+	}
+	else {
+		
+		Point b = new Point(mouseX, mouseY, null);
+		
+		if(drawn && polygon.faces.get(1).contains(b)) {
+			
+			beacons.add(b);
+			drawPoint(b, 0, 0, 255, 5);
+			
+			if(beacons.size() == 1) {
+				
+				enableAttraction();
+				enableInverse();
+				
+			}
+			if(beacons.size() == 2)
+				enableRoute();
+		
+		}
+		
+	}
 
-    b = new Point(mouseX, mouseY, null);
-   
-    point((float)b.x, (float)b.y);
-    text(b.x + ", " + b.y, (float) b.x, (float)b.y);
+}
+
+void showRouting(ArrayList<Point> points, ArrayList<Point> beacons, Point start, Point end) {
+
+  MinimumBeaconPath mbp = new MinimumBeaconPath(points, beacons, start, end); 
+
+  if (mbp.beacons == null) {
+    showText("NOT ROUTED!", 30, 30, 255, 0, 0, 30);
+    return;
   }
+  
+  int i=1;
+  for (Point p : mbp.beacons) {
+
+	showText(i.toString(), (float) p.x - 20, (float)p.y, 255, 0, 0, 30);
+    i++;
+  }
+	
+}
+
+void clear() {
+	
+	disableButtons();
+	
+	points = new ArrayList<Point>();
+	beacons = new ArrayList<Point>();
+	polygon = new DCEL();
+	
+	background(br, bg, bb);
+	attraction = inverse = drawn = drawing= false;
+	enableDraw();
+	enableClear();
+	
+}
+
+/*******************************************
+*************** LOGIC FUNCTIONS ************
+*******************************************/
+
+void toggleDraw() {
+	
+	drawing= true;
+	attraction = inverse = route =false;
+	
 }
 
 
-void test21() {
-  
-  line((float)points.get(0).x, (float)points.get(0).y, (float) points.get(points.size()-1).x, (float)points.get(points.size()-1).y);
-  
-  InverseAttractionRegion inv = new InverseAttractionRegion(points, b);
-  
-  for (int i = 0; i < inv.faces.size(); i++) {
+void toggleAttraction() {
+	
+	background(br, bg, bb);	
+	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+	drawPoints(beacons, 0, 0, 255, 5);
+			
+	attraction = true;
+	drawing= inverse = route =false;
+	
+}
 
-    Face f = inv.faces.get(i);
-    
-    drawShapeFromFace(f, 220, 255, 100, 220, 255, 100, 0);
 
-  }
-  
+void toggleInverse() {
+	
+	background(br, bg, bb);	
+	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+	drawPoints(beacons, 0, 0, 255, 5);
+	
+	inverse = true;
+	attraction = drawing= route =false;
+	
+}
 
-  text(b.x + ", " + b.y, (float) b.x, (float)b.y);  
+void toggleRoute() {
+	
+	background(br, bg, bb);	
+	drawShapeFromPoints(points, 255, 255, 0, 255, 200, 0, strokePoly);
+	drawPoints(beacons, 0, 0, 255, 5);
+	
+	route = true;
+	attraction = drawing= inverse = false;
+	
 }
 
 /*******************************************
 *************** UTILITY FUNCTIONS **********
 *******************************************/
+
+ArrayList<Point> clonePoints(ArrayList<Point> points) {
+
+		ArrayList<Point> clone = new ArrayList<Point>(points.size());
+		for(Point item: points) clone.add(new Point(item.x, item.y, null));
+		return clone;
+
+	}
+
+Point findNearest(float x, float y) {
+	
+	for(Point b: beacons) {
+		
+		if(Math.abs(b.x - x) < 15 && Math.abs(b.y - y) < 15)
+			return b;
+		
+	}
+	
+	return null;
+	
+}
 
 void showText(String inputText, float x, float y, int r1, int g1, int b1, int size) {
 	
@@ -75,6 +285,15 @@ void showText(String inputText, float x, float y, int r1, int g1, int b1, int si
 	text(inputText, x, y);
 	
 }
+
+void drawLine(double x1, double y1, double x2, double y2, int r1, int g1, int b1, int strokeSize) {
+
+	stroke(r1, g1, b1);
+	strokeWeight(strokeSize);
+	
+	line((float)x1, (float) y1, (float) x2, (float) y2);
+}
+
 
 void drawPoints(ArrayList<Point> points, int r1, int g1, int b1, int size) {
 	
@@ -165,46 +384,49 @@ class MinimumBeaconPath {
 		this.start = start;
 		this.end = end;
 
-		try {
-			this.computeMinimumBeaconPath();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.computeMinimumBeaconPath();
+	
 	}
 
-	private void computeMinimumBeaconPath() throws CloneNotSupportedException {
+	private void computeMinimumBeaconPath() {
 
 		ArrayList<Face> attractionRegions = new ArrayList<Face>();
-		ArrayList<Point> beacons = new ArrayList<Point>(this.candidateBeacons);
-		beacons.add(start);
-		beacons.add(end);
+		ArrayList<Point> beaconsR = new ArrayList<Point>();
+		
+		for(int i = 0; i < this.candidateBeacons.size(); i++)
+			beaconsR.add(this.candidateBeacons.get(i));
+		
+		beaconsR.add(this.start);
+		beaconsR.add(this.end);
 		ArrayList<Point> clonedPoints;
 		AttractionRegion attr;
 		var map = {};
-		for(Point c: beacons) {
-
+		for(Point c: beaconsR) {
+			console.log(beaconsR);
 			clonedPoints = this.clonePoints(this.points);
 			attr = new AttractionRegion(c, clonedPoints);
+			console.log(attr.face);
 			attractionRegions.add(attr.face);
 
 		}
 
-		for(int c = 0; c < beacons.size(); c++) {
+		for(int c = 0; c < beaconsR.size(); c++) {
 			
 			Point b;
 			Point b2;
 			double dist;
 			Face f = attractionRegions.get(c);
-			for(int d = 0; d < beacons.size(); d++) {
+			for(int d = 0; d < beaconsR.size(); d++) {
 
-				b = beacons.get(d);
+				b = beaconsR.get(d);
 				if(d!=c) {
 
 					if(f.contains(b)) {
 
-						b2 = beacons.get(c);
+						b2 = beaconsR.get(c);
 						dist = Math.sqrt(Math.pow(b2.x-b.x, 2) + Math.pow(b2.y-b.y, 2));
+					    if(map[d.toString()] == null)
+							map[d.toString()] = {};
 						map[d.toString()][c.toString()] = dist;
 
 					}
@@ -216,9 +438,9 @@ class MinimumBeaconPath {
 		}
 		
 		
-		int start = beacons.size() - 2;
-		int end = beacons.size() - 1;
-
+		int start = beaconsR.size() - 2;
+		int end = beaconsR.size() - 1;
+		console.log(beaconsR.size());
 		if(map[start.toString()] == null) {
 
 			this.beacons = null;
@@ -231,31 +453,33 @@ class MinimumBeaconPath {
 			return;
 		}
 
-		var g = new graph(map);
+		var g = new Graph(map);
 		
 		var path = g.findShortestPath(start.toString(), end.toString());
-
+		
+		console.log(path);
+		
 		if(path == null)
 			this.beacons = null;
 		else {
 
-			int point;
+			var point;
 			var i;
 			for(i = 0; i < path.length; i++) {
 
 				point = parseInt(path[i]);
-				this.beacons.add(beacons.get(point));
-
+				this.beacons.add(beaconsR.get(point));
+				console.log(this.beacons.get(i));
 			}
 
 		}
 
 	}
 
-	private ArrayList<Point> clonePoints(ArrayList<Point> points) throws CloneNotSupportedException {
+	private ArrayList<Point> clonePoints(ArrayList<Point> points) {
 
-		ArrayList<Point> clone = new ArrayList<Point>(points.size());
-		for(Point item: points) clone.add((Point) item.clone());
+		ArrayList<Point> clone = new ArrayList<Point>();
+		for(Point item: points) clone.add(new Point(item.x, item.y, null));
 		return clone;
 
 	}
@@ -967,7 +1191,6 @@ class SPT {
 					if(map[i.toString()] == null)
 						map[i.toString()] = {};
 					map[i.toString()][j.toString()] = dist;
-					console.log(map);
 					continue;
 					
 				}
@@ -983,7 +1206,7 @@ class SPT {
 						if(map[i.toString()] == null)
 							map[i.toString()] = {};
 						map[i.toString()][j.toString()] = dist;
-						console.log(map);
+
 						}
 						
 				}
