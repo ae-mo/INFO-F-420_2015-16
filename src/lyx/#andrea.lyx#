@@ -3385,62 +3385,8 @@ Given a polygon
 \begin_inset Formula $p$
 \end_inset
 
- is attracted (see Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:IA"
-
-\end_inset
-
- for an example).
+ is attracted ().
  
-\end_layout
-
-\begin_layout Definition
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/27.png
-	scale 35
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset Formula $IA\left(p\right)$
-\end_inset
-
- is shown in purple.
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:IA"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout --Separator--
@@ -3613,103 +3559,6 @@ Given two points
  .
 \end_layout
 
-\begin_layout Theorem
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/28.png
-	scale 35
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset Formula $s$
-\end_inset
-
- and 
-\begin_inset Formula $t$
-\end_inset
-
- belong to the same face in 
-\begin_inset Formula $\mathit{A_{p}}$
-\end_inset
-
- but, while 
-\begin_inset Formula $s$
-\end_inset
-
- cannot attract 
-\begin_inset Formula $p$
-\end_inset
-
-,
-\begin_inset Newline newline
-\end_inset
-
- 
-\begin_inset Formula $t$
-\end_inset
-
- can.
- Also 
-\begin_inset Formula $s'$
-\end_inset
-
- and 
-\begin_inset Formula $t'$
-\end_inset
-
- are in the same face, but 
-\begin_inset Formula $s'$
-\end_inset
-
- attracts 
-\begin_inset Formula $p$
-\end_inset
-
- and 
-\begin_inset Formula $t'$
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-dg does not.
- (Image redrawn from REF)
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:IA-wrong"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
 This is a great simplification, because it's telling us that we can just
  test a single point in a face of the considered arrangement.
@@ -3721,14 +3570,7 @@ This is a great simplification, because it's telling us that we can just
 \begin_inset Formula $b$
 \end_inset
 
-, as discovered by the authors of REF (see Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:IA-wrong"
-
-\end_inset
-
- for an example).
+, as discovered by the authors of REF.
  There it is noted that we need to slightly modify the line arrangement,
  by considering these sets of lines:
 \end_layout
@@ -3838,12 +3680,7 @@ procedure InverseAttractionRegion(P, p)
 
 \begin_layout Plain Layout
 
-	Compute SPT(p)
-\end_layout
-
-\begin_layout Plain Layout
-
-	for each edge e in SPT(p)
+	for each edge e in P do
 \end_layout
 
 \begin_layout Plain Layout
@@ -3868,37 +3705,13 @@ procedure InverseAttractionRegion(P, p)
 
 \begin_layout Plain Layout
 
-		Add the lines r1 and r2 through r and perpendicular        
-\end_layout
-
-\begin_layout Plain Layout
-
-			to the edges incident on r to Ap
-\end_layout
-
-\begin_layout Plain Layout
-
-	end for
-\end_layout
-
-\begin_layout Plain Layout
-
-	for each edge e in P do
-\end_layout
-
-\begin_layout Plain Layout
-
-		Add line e to Ap
+		Add the lines r1 and r2 through r and perpendicular to the edges incident
+ on r to Ap
 \end_layout
 
 \begin_layout Plain Layout
 
 	end for
-\end_layout
-
-\begin_layout Plain Layout
-
-	Remove duplicate lines in Ap
 \end_layout
 
 \begin_layout Plain Layout
@@ -3962,7 +3775,7 @@ running-time algorithm for
 \begin_inset Formula $IA(p)$
 \end_inset
 
- (adapted from 
+ (taken from 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "biro2013beacon"

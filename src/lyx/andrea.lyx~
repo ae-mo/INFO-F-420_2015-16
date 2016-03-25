@@ -3385,12 +3385,66 @@ Given a polygon
 \begin_inset Formula $p$
 \end_inset
 
- is attracted.
+ is attracted (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:IA"
+
+\end_inset
+
+ for an example).
  
 \end_layout
 
-\begin_layout Standard
-a
+\begin_layout Definition
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/27.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $IA\left(p\right)$
+\end_inset
+
+ is shown in purple.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:IA"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Definition
@@ -3437,8 +3491,12 @@ name "sub:Algorithm-Inverse"
 \end_layout
 
 \begin_layout Standard
-In order to obtain the inverse attraction region of a point, we can consider
- a line arrangement induced by a polygon 
+According to REF, in order to obtain the inverse attraction region of a
+ point 
+\begin_inset Formula $p$
+\end_inset
+
+, we can consider a line arrangement induced by a polygon 
 \begin_inset Formula $P$
 \end_inset
 
@@ -3446,16 +3504,31 @@ In order to obtain the inverse attraction region of a point, we can consider
 \begin_inset Formula $\mathit{A_{p}}$
 \end_inset
 
-, constructed in the following way: take the lines defined by the edges
- of 
+, constructed by taking the following sets of lines:
+\end_layout
+
+\begin_layout Enumerate
+the lines defined by the edges of 
 \begin_inset Formula $P$
 \end_inset
 
- and, for each reflex vertex, those intersecting it that are perpendicular
- to its incident edges.
-\begin_inset Newline newline
+; 
+\end_layout
+
+\begin_layout Enumerate
+for each reflex vertex, those lines intersecting it that are perpendicular
+ to its incident edges;
+\end_layout
+
+\begin_layout Enumerate
+lines through 
+\begin_inset Formula $p$
 \end_inset
 
+ and each reflex vertex.
+\end_layout
+
+\begin_layout Standard
 The author of REF claims some properties interesting properties for this
  arrangement that give ideas for an algorithm.
 \end_layout
@@ -3540,6 +3613,103 @@ Given two points
  .
 \end_layout
 
+\begin_layout Theorem
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/28.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $s$
+\end_inset
+
+ and 
+\begin_inset Formula $t$
+\end_inset
+
+ belong to the same face in 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+ but, while 
+\begin_inset Formula $s$
+\end_inset
+
+ cannot attract 
+\begin_inset Formula $p$
+\end_inset
+
+,
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $t$
+\end_inset
+
+ can.
+ Also 
+\begin_inset Formula $s'$
+\end_inset
+
+ and 
+\begin_inset Formula $t'$
+\end_inset
+
+ are in the same face, but 
+\begin_inset Formula $s'$
+\end_inset
+
+ attracts 
+\begin_inset Formula $p$
+\end_inset
+
+ and 
+\begin_inset Formula $t'$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+dg does not.
+ (Image redrawn from REF)
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:IA-wrong"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 This is a great simplification, because it's telling us that we can just
  test a single point in a face of the considered arrangement.
@@ -3551,9 +3721,20 @@ This is a great simplification, because it's telling us that we can just
 \begin_inset Formula $b$
 \end_inset
 
-, as discovered by the authors of REF.
- There it is noted that we need to add the segments of the Shortest Path
- Tree of of a point 
+, as discovered by the authors of REF (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:IA-wrong"
+
+\end_inset
+
+ for an example).
+ There it is noted that we need to slightly modify the line arrangement,
+ by considering these sets of lines:
+\end_layout
+
+\begin_layout Enumerate
+line through the segments of the Shortest Path Tree of a point 
 \begin_inset Formula $p$
 \end_inset
 
@@ -3561,9 +3742,76 @@ This is a great simplification, because it's telling us that we can just
 \begin_inset Formula $\textrm{SPT}\left(p\right)$
 \end_inset
 
-) to the arrangement in order to make the algorithm work properly (see REF
- for details).
- We now give the pseudocode of the algorithm.
+);
+\end_layout
+
+\begin_layout Enumerate
+for each reflex vertex, those lines intersecting it that are perpendicular
+ to its incident edges;
+\end_layout
+
+\begin_layout Enumerate
+lines through the edges of 
+\begin_inset Formula $P$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+With this arrangement the algorithm works properly (see REF for details).
+ Note that the lines through 
+\begin_inset Formula $\textrm{SPT}\left(p\right)$
+\end_inset
+
+ generalize includes the sets of lines 1 and 3 of the old arrangement, and
+ that the last set of lines is there to discriminate the points that are
+ inside 
+\begin_inset Formula $P$
+\end_inset
+
+.
+ The authors of REF claim the following about the new 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Lemma
+Given two points 
+\begin_inset Formula $b_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $b_{2}$
+\end_inset
+
+ and a point 
+\begin_inset Formula $p$
+\end_inset
+
+, if 
+\begin_inset Formula $b_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $b_{2}$
+\end_inset
+
+ are in the same region of 
+\begin_inset Formula $\mathit{A_{p}}$
+\end_inset
+
+, they either both attract 
+\begin_inset Formula $p$
+\end_inset
+
+ or not.
+\end_layout
+
+\begin_layout Standard
+We now give the pseudocode of the algorithm.
 \end_layout
 
 \begin_layout Paragraph*
@@ -3590,7 +3838,12 @@ procedure InverseAttractionRegion(P, p)
 
 \begin_layout Plain Layout
 
-	for each edge e in P do
+	Compute SPT(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each edge e in SPT(p)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3615,13 +3868,37 @@ procedure InverseAttractionRegion(P, p)
 
 \begin_layout Plain Layout
 
-		Add the lines r1 and r2 through r and perpendicular to the edges incident
- on r to Ap
+		Add the lines r1 and r2 through r and perpendicular        
+\end_layout
+
+\begin_layout Plain Layout
+
+			to the edges incident on r to Ap
 \end_layout
 
 \begin_layout Plain Layout
 
 	end for
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each edge e in P do
+\end_layout
+
+\begin_layout Plain Layout
+
+		Add line e to Ap
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for
+\end_layout
+
+\begin_layout Plain Layout
+
+	Remove duplicate lines in Ap
 \end_layout
 
 \begin_layout Plain Layout
@@ -3720,12 +3997,13 @@ This algorithm uses an attraction region algorithm (
 \end_inset
 
 ).
+ The shortest path tree can be computed in linear time (see REF).
  There are 
 \begin_inset Formula $O\left(n^{2}\right)$
 \end_inset
 
  faces in the arrangement, but walking through them in a breadth-first fashion
- using the dual graph allows updating the attraction regions, quickly, making
+ using the dual graph allows updating the attraction regions quickly, making
  the overall complexity 
 \begin_inset Formula $O\left(n^{2}\right)$
 \end_inset
@@ -3739,6 +4017,18 @@ The space complexity is
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Paragraph*
+Implementation
+\end_layout
+
+\begin_layout Standard
+The algorithm was implemented straightforwardly, without any optimization.
+ Thus, it might be a bit slow in some cases (the user needs to wait a second
+ or two to see the result) due to the fact that the faces of the arrangement
+ tend to explode.
+ For quite complex polygons the algorithm might get stuck.
 \end_layout
 
 \begin_layout Subsection
@@ -3842,7 +4132,7 @@ This algorithm's main task consists in building a directed graph, that has
 .
  Once the graph is computed, the routing path is simply a shortest path
  between the starting point and the destination.
- We now give the pseudocode of the algorithm
+ We now give the pseudocode of the algorithm.
 \end_layout
 
 \begin_layout Paragraph*
@@ -4090,10 +4380,6 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -4121,8 +4407,8 @@ key "biro2013beacon"
 \end_layout
 
 \begin_layout --Separator--
-We can compare the length of the path obtained with this algorithm thanks
- to the following lemma.
+We can compare the length of the path obtained with this algorithm with
+ thathof the minimum one thanks to the following lemma.
 \end_layout
 
 \begin_layout Lemma
