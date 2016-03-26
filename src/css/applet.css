@@ -7,7 +7,7 @@ html {
 
 body {
 	min-height: 100%;
-    margin-bottom: 450px;
+    margin-bottom: 50px;
 	-webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -26,6 +26,6 @@ footer {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 450px;
+  height: 50px;
   background-color: #fafafa;
 }

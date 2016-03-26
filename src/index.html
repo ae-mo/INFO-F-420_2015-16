@@ -128,6 +128,8 @@
 									  </ul>
 									</div>
 								</li>
+								<li><a href="#d-applet">Applet</a></li>
+								<li><a href="#d-biblio">Bibliography</a></li>
 							  </ul>
 							</nav>
 						</div>
@@ -458,6 +460,25 @@
 								</div>
 								<p>In order to detect when we have “merged” the lists, which is something we know will happen, we will check, for example if we are adding the current beacon to the list 1 (i.e. we are heading towards P2), whether the two triangles we are peeling off are “influenced” by the beacon from the other list, list 2 in the case. If so, this would be the next beacon we would have to add, therefore we have already finished because we have found all the beacons in the path. Once we have found all the beacons required to route, this algorithm has finished.<br/>
 								Finally, we have to arrange the two lists and join them in succession to build the actual path of beacons between the two points. We are done!</p>
+							</div>
+							<div id="d-applet">
+								<h1>Applet</h1>
+								<p>An applet has been implemented to illustrate the Sufficient Beacons algorithm. Click on the button below to use it. Instructions are included in the destination page.</p>
+								<div class="row">&nbsp;</div>
+									<div class="row">&nbsp;</div>
+									<div class="centera">
+										<a id="draw" href="html/applet/david/index.html" class="btn-lg btn-danger">Applet</a>
+									</div>
+							</div>
+							<div id="d-biblio">
+								<h1>Bibliography</h1>
+								<ol><li>M. Biro, J. Gao, J. Iwerks, I. Kostitsyna, and J. S. B. Mitchell. Combinatorics of beacon-based routing and coverage. Proc. the 25th Canadian Conf. Comput. Geom. (CCCG 2013), 2013.</li></ol>
+								<h3>Algorithm</h3>
+								<ol>
+									<li>Emo Welzl. Lecture notes. Chapter 5: Plane Graphs and the DCEL. 2012</li>
+									<li>Stefan Langerman. Lecture notes. Triangles and polygon triangulation. (Ear clipping method). Academic year 2015-2016.</li>
+									<li>Two Ears Theorem. 2016. Wikipedia. https://en.wikipedia.org/wiki/Two_ears_theorem</li>
+								</ol>
 							</div>
 							<div class="row">&nbsp;</div>
 							<div class="row">&nbsp;</div>
@@ -2916,9 +2937,25 @@ References
 							<p>The videogame is the result of team work. David designed the polygons for the levels, provided the default beacons and the lower bounds on beacons for each level. Andrea took care of the programming part.</p>
 							<h3>Credits</h3>
 							<p>
-								Thanks to Stefan Langerman, our Computational Geometry teacher from Algorithms Research Group in the Université Libre de Bruxelles, for his helpful advises throughout the conception and implementation of this project.
-								Thanks also to Irina Kostitsyna, for answering so quickly to our doubts about the paper [1] and confirm our thoughts. 
-							</p>	
+								Thanks to Stefan Langerman, our Computational Geometry teacher from Algorithms Research Group in the Université Libre de Bruxelles, for his helpful advises throughout the conception and implementation of this project. Additional thanks to him from Andrea, for outlining the Shortest Path Tree algorithm.
+								Thanks also to Irina Kostitsyna, for answering so quickly to our doubts and confirm our thoughts.
+							</p>
+							<h4>Videogame</h4>
+							<p>Title artwork by <a href="http://textcraft.net/">Textcraft</a>.</p>
+				<p>Game font: Charybdis by <a href="http://www.tepidmonkey.net/">Tepid Monkey Fonts</a>.</p>
+				<p>1st and 3rd level music: Investigations Kevin MacLeod (<a href="incompetech.com">incompetech.com</a>) <br/>
+					Licensed under Creative Commons: By Attribution 3.0 License <br/>
+					<a href="http://creativecommons.org/licenses/by/3.0/">http://creativecommons.org/licenses/by/3.0/</a>.</p>
+				<p>2nd and 4th level music: Sneaky Adventure Kevin MacLeod (<a href="incompetech.com">incompetech.com</a>) <br/>
+					Licensed under Creative Commons: By Attribution 3.0 License <br/>
+					<a href="http://creativecommons.org/licenses/by/3.0/">http://creativecommons.org/licenses/by/3.0/</a>.</p>
+				<p>Routing music: Good Starts Jungle Punks.</p>
+				<p>Win sound: Ta Da Sound (<a href="soundbible.com">soundbible.com</a>) <br/>
+					Licensed under Creative Commons: By Attribution 3.0 License <br/>
+					<a href="http://creativecommons.org/licenses/by/3.0/">http://creativecommons.org/licenses/by/3.0/</a>.</p>
+				<p>Lose sound: Sad Trombone Sound (<a href="soundbible.com">soundbible.com</a>) <br/>
+					Licensed under Creative Commons: By Attribution 3.0 License <br/>
+					<a href="http://creativecommons.org/licenses/by/3.0/">http://creativecommons.org/licenses/by/3.0/</a>.</p>
 							<div class="row">&nbsp;</div>
 							<div class="row">&nbsp;</div>
 						</div>

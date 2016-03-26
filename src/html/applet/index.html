@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha256-QSktus/KATft+5BD6tKvAwzSxP75hHX0SrIjYto471M= 
 	sha512-787L1W8XyGQkqtvQigyUGnPxsRudYU2fEunzUP5c59Z3m4pKl1YaBGTcdhfxOfBvqTmJFmb6GDgm0iQRVWOvLQ==" crossorigin="anonymous">
-		<link rel="stylesheet" type="text/css" href="../../css/level.css">
+		<link rel="stylesheet" type="text/css" href="../../css/applet.css">
 	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	  	<script src="../../js/graph.js"></script>
 	  	<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.16/processing.min.js"></script>
@@ -130,6 +130,17 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-12">
+						<div>
+							<h3>Instructions</h3>
+		                      <ul>
+		                        <li>Hit the button <b>DRAW</b> to draw a polygon. Click inside the drawing area to place a vertex at the desired position. Please specify the vertices in <i>clockwise order</i>. After specifying the last vertex, press <b>Enter</b>.</li>
+		                        <li>Click inside a polygon to specify as many beacons as you want. You can introduce new beacons at any time, as long as there is a polygon in the drawing area.</li>
+		                        <li>Hit the button <b>ATTRACTION</b> (<b>INVERSE</b>) and then click on a beacon to see its attraction region (inverse attraction region).</li>
+		                        <li>You can display the routing path with candidate beacons between two desired beacons: click on <b>ROUTE</b>, then click on a beacon to be used as starting point (will become red) and on another beacon that will be used as destination (will become green). If the two points are routed, you will see a number at each of the beacons in the routing sequence, that indicates its position in the sequence. Otherwise, the text <b>"Not Routed!"</b> will appear.</li>
+		                        <li>Hit the <b>CLEAR</b> button at any time to start fresh.</li>
+		                      </ul>
+		                      <p><b>ATTENTION</b>: the inverse attraction region algorithm might require 1 or 2 seconds when it has to deal with quite complex polygons. If it takes more, it means it got stuck. In that case, you might have to close you browser.</p>
+						</div>
 						    <div class="well">
 						    	<canvas id="applet" data-processing-sources="../../processing/applet/applet.pde"></canvas>
 						    </div>
@@ -137,7 +148,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-1">
-							<a id="back" href="../../index.html#andrea" class="btn btn-danger">
+							<a id="back" href="../../index.html" class="btn btn-danger">
 								<span class="glyphicon glyphicon-backward"></span> Back
 							</a>
 						</div>
@@ -169,5 +180,10 @@
 				</div>
 			</div>
 		</div>
+		<footer>
+					<div class="row">&nbsp;</div>
+				  <p>Theme: Lumen by <a href="https://bootswatch.com/">Bootswach</a>.</p>
+
+		</footer>
 	</body>
 </html>
