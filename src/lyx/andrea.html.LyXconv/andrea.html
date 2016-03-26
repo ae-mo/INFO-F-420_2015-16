@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2016-02-29"/>
+<meta name="create-date" content="2016-03-25"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 <script type="text/javascript"
@@ -44,30 +44,31 @@ s
 t
 </script>
 </span>.<br/>
-The content of this page is a re-elaboration from <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span> and <span class="bibcites">[<a class="bibliocite" name="cite-1" href="#biblio-1"><span class="bib-index">1</span></a>]</span>.<br/>
-In Section <a class="Reference" href="#sec:Setting-and-Terminology">2↓</a> we describe the generic setting that we consider throughout the page and give basic definitions; in Section <a class="Reference" href="#sec:The-Attraction-Region">3↓</a> we define the Attraction Region of a beacon, give its properties and algorithms to compute it; in Section <a class="Reference" href="#sec:The-Inverse-Attraction">4↓</a> we discuss the Inverse Attraction Region of a point, following an outline that is similar to the previous section; Section <a class="Reference" href="#sec:Algorithms-for-Beacon-Based">5↓</a> contains two algorithm that route an object from a point <span class="MathJax_Preview"><script type="math/tex">
+The content of this page is re-elaborated from <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span> and <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>]</span>.<br/>
+In Section <a class="Reference" href="#sec:Setting-and-Terminology">2↓</a> we describe the generic setting that we consider throughout the page and give basic definitions; in Section <a class="Reference" href="#sec:The-Attraction-Region">3↓</a> we define the Attraction Region of a beacon and give its properties and algorithms to compute it; in Section <a class="Reference" href="#sec:The-Inverse-Attraction">4↓</a> we discuss the Inverse Attraction Region of a point, following an outline that is similar to that of the previous section; Section <a class="Reference" href="#sec:Algorithms-for-Beacon-Based">5↓</a> presents two algorithms that route an object from a point <span class="MathJax_Preview"><script type="math/tex">
 s
 </script>
 </span> to a point <span class="MathJax_Preview"><script type="math/tex">
 t
 </script>
-</span>. One requires a set of candidate intermediate beacons, the other is a polynomial-time approximation of the optimal route.
+</span>. One requires a set of candidate intermediate beacons, the other is a polynomial-time approximation of the optimal routing path. Finally, in Section <a class="Reference" href="#sec:Applet">6↓</a>, we provide the link to an applet that allows to experiment with the concepts described in this page.
 </div>
 <h1 class="Section">
 <a class="toc" name="toc-Section-2">2</a> Setting and Terminology<a class="Label" name="sec:Setting-and-Terminology"> </a>
 </h1>
 <div class="Unindented">
+All the terminology and mathematical statements in this Section are taken from <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>]</span> and <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>.<br/>
 We consider a <i>polygon</i> <span class="MathJax_Preview"><script type="math/tex">
 P
 </script>
-</span>, whose boundary edges are oriented counterclockwise (the edges of a hole are instead oriented clockwise). A <i>beacon</i> <span class="MathJax_Preview"><script type="math/tex">
+</span>, not self-intersecting, possibly with holes, whose boundary edges are oriented counterclockwise (the edges of a hole are instead oriented clockwise). A <i>beacon</i> <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
 </span> is a point in the interior of <span class="MathJax_Preview"><script type="math/tex">
 \partial P
 </script>
 </span> that can be activated to exercise a ’magnetic pull’ on an object initially placed at a point <span class="MathJax_Preview"><script type="math/tex">
-p\epsilon P
+p\in P
 </script>
 </span>. <div class="float">
 <a class="Label" name="Figure-1"> </a><div class="figure">
@@ -92,16 +93,19 @@ b
 </span> is active, the object decreases its Euclidean distance from <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span> greedily, following a straight line towards b until it reaches either <span class="MathJax_Preview"><script type="math/tex">
+</span> greedily, following a straight line towards <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span> or<span class="MathJax_Preview"><script type="math/tex">
+</span> until it reaches either <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span> or <span class="MathJax_Preview"><script type="math/tex">
 \partial P
 </script>
 </span>. In the second case, it slides along <span class="MathJax_Preview"><script type="math/tex">
 \partial P
 </script>
-</span> provided that its distance from <span class="MathJax_Preview"><script type="math/tex">
+</span>, provided that its distance from <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
 </span> decreases monotonically. When the object is no more constrained by <span class="MathJax_Preview"><script type="math/tex">
@@ -149,7 +153,7 @@ b
 </span> is referred to as <span class="MathJax_Preview"><script type="math/tex">
 D\left(b\right)
 </script>
-</span> If an object starting at <span class="MathJax_Preview"><script type="math/tex">
+</span>. If an object starting at <span class="MathJax_Preview"><script type="math/tex">
 p
 </script>
 </span> is able to reach <span class="MathJax_Preview"><script type="math/tex">
@@ -186,14 +190,14 @@ t
 </span> are <i>routed</i> if we can find a set <span class="MathJax_Preview"><script type="math/tex">
 M'
 </script>
-</span>of beacon points that, if activated in the right sequence, can route an object from <span class="MathJax_Preview"><script type="math/tex">
+</span> of beacon points that, when activated in the right sequence, can route an object from <span class="MathJax_Preview"><script type="math/tex">
 s
 </script>
 </span> to <span class="MathJax_Preview"><script type="math/tex">
 t
 </script>
-</span>.i<div class="float">
-<a class="Label" name="Figure-3"> </a><div class="figure">
+</span>. See Figure <a class="Reference" href="#fig:routed">3↓</a> for an example.<div class="float">
+<a class="Label" name="fig:routed"> </a><div class="figure">
 <img class="embedded" src="5.png" alt="figure 5.png" style="width: 947px; max-width: 1895px; height: 560px; max-height: 1121px;"/>
 <div class="caption">
 Figure 3 <span class="MathJax_Preview"><script type="math/tex">
@@ -225,7 +229,7 @@ d
 b
 </script>
 </span>, which we define as the set of points <span class="MathJax_Preview"><script type="math/tex">
-p\epsilon P
+p\in P
 </script>
 </span> that will eventually get stuck at <span class="MathJax_Preview"><script type="math/tex">
 d
@@ -291,11 +295,140 @@ We can distinguish points belonging to <span class="MathJax_Preview"><script typ
 </span> under the influence of <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span>. It can be easily seen that all dead points are even boundary points.
+</span>. Can we characterize even and odd boundary points in some other way? Yes, as the following proposition states. This characterization will be useful later.
+</div>
+<div class="Proposition">
+Given a poligon <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>, a point <span class="MathJax_Preview"><script type="math/tex">
+p\in\partial P
+</script>
+</span> and a beacon <span class="MathJax_Preview"><script type="math/tex">
+b\in P
+</script>
+</span>, <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> is an odd (even) boundary point with respect to <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span> if and only if the line segment <span class="MathJax_Preview"><script type="math/tex">
+\overline{bp}
+</script>
+</span> crosses <span class="MathJax_Preview"><script type="math/tex">
+\partial P
+</script>
+</span> an odd (even) number of times.
+</div>
+<div class="Proof">
+Let us consider the line segment <span class="MathJax_Preview"><script type="math/tex">
+\overline{bp}
+</script>
+</span> . Let us assume it crosses <span class="MathJax_Preview"><script type="math/tex">
+\partial P
+</script>
+</span> <span class="MathJax_Preview"><script type="math/tex">
+k
+</script>
+</span> times. We have that the crossings divide <span class="MathJax_Preview"><script type="math/tex">
+\overline{bp}
+</script>
+</span> into <span class="MathJax_Preview"><script type="math/tex">
+k+1
+</script>
+</span> segments. The first one lies of course entirely in <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>, and the same holds for all odd numbered segments. Conversely, all even numbered segments lie outside <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>. Now, if <span class="MathJax_Preview"><script type="math/tex">
+\overline{bp}
+</script>
+</span> crosses <span class="MathJax_Preview"><script type="math/tex">
+\partial P
+</script>
+</span> an even number of times, counting <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> as a crossing, the final segment before <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> lies outside <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>, thus an object at <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> cannot move along <span class="MathJax_Preview"><script type="math/tex">
+\overline{bp}
+</script>
+</span> because it is constrained by the edge(s) containing <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span>, making <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> an even boundary point. On the other hand, if <span class="MathJax_Preview"><script type="math/tex">
+\overline{bp}
+</script>
+</span> crosses <span class="MathJax_Preview"><script type="math/tex">
+\partial P
+</script>
+</span> an odd number of times, the last segment is inside <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>, making <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> an odd boundary point.
+</div>
+<div class="--Separator--">
+From the previous proposition we get the following Corollary.
+</div>
+<div class="Corollary">
+Given a dead point <span class="MathJax_Preview"><script type="math/tex">
+d
+</script>
+</span> with respect to a beacon <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span> in a polygon <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>, the line segment <span class="MathJax_Preview"><script type="math/tex">
+\overline{bd}
+</script>
+</span> intersects <span class="MathJax_Preview"><script type="math/tex">
+\partial P
+</script>
+</span> an even number of times.
+</div>
+<div class="Unindented">
+Another useful Theorem (see <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span> for its proof) bounds the number of dead points that can be found on an edge.
+</div>
+<div class="Theorem">
+Given an edge <span class="MathJax_Preview"><script type="math/tex">
+e
+</script>
+</span> of <span class="MathJax_Preview"><script type="math/tex">
+\partial P
+</script>
+</span>, <span class="MathJax_Preview"><script type="math/tex">
+e
+</script>
+</span> contains at most <span class="MathJax_Preview"><script type="math/tex">
+1
+</script>
+</span> dead point.
 </div>
 <h1 class="Section">
 <a class="toc" name="toc-Section-3">3</a> The Attraction Region<a class="Label" name="sec:The-Attraction-Region"> </a>
 </h1>
+<div class="Unindented">
+All the terminology and mathematical statements in this Section are taken from <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>]</span> and <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>.
+</div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-3.1">3.1</a> Definition
 </h2>
@@ -313,9 +446,12 @@ A(b)
 b
 </script>
 </span> is the set of points <span class="MathJax_Preview"><script type="math/tex">
-p\epsilon P
+p\in P
 </script>
-</span> that are attracted to b.
+</span> that are attracted to <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span>.
 </div>
 <div class="Definition">
 <div class="float">
@@ -360,7 +496,7 @@ If <span class="MathJax_Preview"><script type="math/tex">
 P
 </script>
 </span> is convex it has no dead points, so the lower bound can be easily observed. For the upper bound, consider a beacon <span class="MathJax_Preview"><script type="math/tex">
-b\epsilon P
+b\in P
 </script>
 </span>. It can be easily seen that at least <span class="MathJax_Preview"><script type="math/tex">
 3
@@ -377,13 +513,13 @@ b
 </span> that crosses these edges would cross them first. Thus we would have an odd number of crossings for each of these three edges, that consequently cannot contain dead points. Finally, an edge contains at most <span class="MathJax_Preview"><script type="math/tex">
 1
 </script>
-</span> dead point, so the given upper bound holds.
+</span> dead point, so the given upper bound holds. See Figure <a class="Reference" href="#fig:dead-bound">a↓</a> for an example.
 </div>
 <div class="Unindented">
 <div class="float">
 <a class="Label" name="Figure-6"> </a><div class="multifigure">
 <span class="float">
-<div class="figure">
+<a class="Label" name="fig:dead-bound"> </a><div class="figure">
 <img class="embedded" src="8.png" alt="figure 8.png" style="width: 390px; max-width: 781px; height: 799px; max-height: 1598px;"/>
 <div class="caption">
 (a) <span class="MathJax_Preview"><script type="math/tex">
@@ -399,7 +535,7 @@ P
 
 </span>
 <span class="float">
-<div class="figure">
+<a class="Label" name="fig:dead-holes"> </a><div class="figure">
 <img class="embedded" src="9.png" alt="figure 9.png" style="width: 400px; max-width: 817px; height: 792px; max-height: 1618px;"/>
 <div class="caption">
 (b) <span class="MathJax_Preview"><script type="math/tex">
@@ -415,7 +551,8 @@ P
 
 </span>
 <div class="caption">
-Figure 6 Polygons showing that the upper bounds for dead points are reachable.
+Figure 6 Polygons showing that the upper bounds for dead points are reachable.<br/>
+(Images adapted from <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>)
 </div>
 
 </div>
@@ -458,15 +595,42 @@ P'
 n-\sum_{i}n_{i}
 </script>
 </span> vertices. <span class="MathJax_Preview"><script type="math/tex">
-b\epsilon P
+b\in P
 </script>
 </span> so <span class="MathJax_Preview"><script type="math/tex">
 P'
 </script>
-</span> as at most <span class="MathJax_Preview"><script type="math/tex">
+</span> has at most <span class="MathJax_Preview"><script type="math/tex">
 n-\sum_{i}n_{i}-3
 </script>
-</span>. To be continued with figures
+</span>. Now consider a hole <span class="MathJax_Preview"><script type="math/tex">
+i
+</script>
+</span>, with <span class="MathJax_Preview"><script type="math/tex">
+n_{i}
+</script>
+</span> vertices, and <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span> alone. At least one edge of <span class="MathJax_Preview"><script type="math/tex">
+i
+</script>
+</span> is visible to <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span>, thus <span class="MathJax_Preview"><script type="math/tex">
+i
+</script>
+</span> can have at most <span class="MathJax_Preview"><script type="math/tex">
+n_{i}-1
+</script>
+</span>dead points on its boundary. The same holds for the other holes. By summing up the individual contributions, we get <span class="MathJax_Preview"><script type="math/tex">
+\sum_{i}\left(n_{i}-1\right)=\left(\sum_{i}n_{i}\right)-h
+</script>
+</span>. If we combine this result with the one for the ploygon without holes we get <span class="MathJax_Preview"><script type="math/tex">
+n-\sum_{i}n_{i}-3+\sum_{i}n_{i}-h=n-h-3
+</script>
+</span> dead points. See figure <a class="Reference" href="#fig:dead-holes">b↑</a> for an example.
 </div>
 <div class="Unindented">
 Thanks to these theorems, we can limit the number of dead points for a beacon <span class="MathJax_Preview"><script type="math/tex">
@@ -475,7 +639,7 @@ b
 </span>, thus we can also limit the number of its dead regions. We take a step further towards our goal by stating that the dead regions of <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span> and <span class="MathJax_Preview"><script type="math/tex">
+</span> togheter with <span class="MathJax_Preview"><script type="math/tex">
 A\left(b\right)
 </script>
 </span> form a partition of <span class="MathJax_Preview"><script type="math/tex">
@@ -511,7 +675,7 @@ d
 </span>, thus fulfilling the requirement that the regions taken togheter yeld <span class="MathJax_Preview"><script type="math/tex">
 P
 </script>
-</span>. It remains to show that these regions don’t overlap. In a situation as that of Figure, our definitions are not enough precise to decide along which edge incident to a reflex vertex <span class="MathJax_Preview"><script type="math/tex">
+</span>. It remains to show that these regions don’t overlap. In a situation as that of Figure <a class="Reference" href="#fig:disambiguation">a↓</a>, our definitions are not enough precise to decide along which edge incident to a reflex vertex <span class="MathJax_Preview"><script type="math/tex">
 v
 </script>
 </span> an object at <span class="MathJax_Preview"><script type="math/tex">
@@ -532,7 +696,7 @@ P
 <div class="float">
 <a class="Label" name="Figure-7"> </a><div class="multifigure">
 <span class="float">
-<div class="figure">
+<a class="Label" name="fig:disambiguation"> </a><div class="figure">
 <img class="embedded" src="10.png" alt="figure 10.png" style="width: 334px; max-width: 669px; height: 510px; max-height: 1021px;"/>
 <div class="caption">
 (a) We arbitrarily decide that <span class="MathJax_Preview"><script type="math/tex">
@@ -576,10 +740,10 @@ b
 </span>. How to do this? It turns out that we need to use a particular kind of vertices in <span class="MathJax_Preview"><script type="math/tex">
 P
 </script>
-</span>, called split vertices. We elaborate on them in the next subsection.
+</span>, called split vertices. We elaborate on them in the next Subsection.
 </div>
 <h2 class="Subsection">
-<a class="toc" name="toc-Subsection-3.3">3.3</a> Split Vertices
+<a class="toc" name="toc-Subsection-3.3">3.3</a> Split Vertices<a class="Label" name="sub:Split-Vertices"> </a>
 </h2>
 <div class="Unindented">
 We start by defining <i>cut vertices</i>, which are a particular case of reflex vertices.
@@ -620,7 +784,7 @@ p
 
 </div>
 <br/>
-How do we recognize a cut vertex? We can simply compute two dot products, as the next proposition precises.
+How do we recognize a cut vertex? We can simply compute two cross products, as the next proposition precises.
 </div>
 <div class="Proposition">
 Given a reflex vertex <span class="MathJax_Preview"><script type="math/tex">
@@ -873,7 +1037,7 @@ e
 </span> under the attracion of <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span> , and show that any possible case is infeasible. Objects placed on <span class="MathJax_Preview"><script type="math/tex">
+</span>, and show that any possible case is infeasible. Objects placed on <span class="MathJax_Preview"><script type="math/tex">
 e
 </script>
 </span> will eventually reach <span class="MathJax_Preview"><script type="math/tex">
@@ -915,7 +1079,7 @@ e
 </span> is on the the boundary of at most two regions, because the points on a ray move unconstrained until they all meet <span class="MathJax_Preview"><script type="math/tex">
 \partial P
 </script>
-</span> at hte same location, meaning that they will end up in the same point. Thus ray on different sides of <span class="MathJax_Preview"><script type="math/tex">
+</span> at the same location, meaning that they will end up in the same point. Thus rays on different sides of <span class="MathJax_Preview"><script type="math/tex">
 e
 </script>
 </span> are in different regions, that have <span class="MathJax_Preview"><script type="math/tex">
@@ -1061,7 +1225,7 @@ c
 </span> isn’t parallel to a ray casted from the beacon <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span>, that intesects <span class="MathJax_Preview"><script type="math/tex">
+</span> that intesects <span class="MathJax_Preview"><script type="math/tex">
 c
 </script>
 </span>, because otherwise objects on some points of the ray would move unconstrained until they would cross <span class="MathJax_Preview"><script type="math/tex">
@@ -1208,8 +1372,8 @@ b
 </span>, then compute the corresponding ray vertices to obtain the split edges and the components of the divided edges of <span class="MathJax_Preview"><script type="math/tex">
 P
 </script>
-</span>. In case of a polygon with holes this is not enough; we also need to discard the edges that we meet twice when walking along the boundaries of the regions. By doing this we will obtain a set of regions, namely the dead regions, each containing a different dead point, and the atracion region.<br/>
-There are a few more properties of the attraction region of a beacon that are worth mentioning; we give them in the next section.
+</span>. In case of a polygon with holes this is not enough; we also need to discard the edges that we meet twice when walking along the boundaries of the regions. By doing this we will obtain a set of regions, namely the dead regions, each containing a different dead point, and the attraction region.<br/>
+There are a few more properties of the attraction region of a beacon that are worth mentioning; we give them in the next Subsection.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-3.4">3.4</a> Additional Properties
@@ -1241,8 +1405,8 @@ A\left(b\right)
 </script>
 </span> is connected.
 </div>
-<div class="Unindented">
-a
+<div class="--Separator--">
+
 </div>
 <div class="Theorem">
 Given a beacon <span class="MathJax_Preview"><script type="math/tex">
@@ -1259,8 +1423,8 @@ P
 </script>
 </span> is simple (not necessarily if it has holes).
 </div>
-<div class="Unindented">
-a
+<div class="--Separator--">
+
 </div>
 <div class="Corollary">
 Given a beacon <span class="MathJax_Preview"><script type="math/tex">
@@ -1287,10 +1451,10 @@ O\left(n\right)
 </span>, as well as <span class="MathJax_Preview"><script type="math/tex">
 A\left(b\right)
 </script>
-</span>. There exist cases with also<span class="MathJax_Preview"><script type="math/tex">
+</span>. There exist cases where <span class="MathJax_Preview"><script type="math/tex">
 \Omega\left(n\right)
 </script>
-</span>.
+</span> holds to.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-3.5">3.5</a> Algorithms for the Attraction Region
@@ -1299,7 +1463,10 @@ A\left(b\right)
 In this subsection we review the existing algorithms for computing the attraction region of a beacon <span class="MathJax_Preview"><script type="math/tex">
 b
 </script>
-</span>. There are four algorithms in total. We will describe in detail only the first one, which is the one that we implented. In the complexity analyses, <span class="MathJax_Preview"><script type="math/tex">
+</span> in a polygon <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>. There are four algorithms in total. We will describe in detail only the first one, which is the one that was implented. In the complexity analyses, <span class="MathJax_Preview"><script type="math/tex">
 n
 </script>
 </span> refers to the number of vertices of a polygon.
@@ -1308,14 +1475,17 @@ n
 <a class="toc" name="toc-Subsubsection-3.5.1">3.5.1</a> Algorithm 1
 </h3>
 <div class="Unindented">
-This algorithm exploits the idea that we mentioned in Subsection REF. It employs a rotational sweep technique. First it sorts the vertices of a polygon radially around a beacon, then it examines the sorted list to find split vertices, maintining a status of the edges intersecting the sweep line in order of increasing distance from the beacon. Once a split vertex is found, it determines the corresponding ray vertex. In the end it will yeld the partition induced by the beacon. For a polygon with holes, we have to be careful excluding edges contained in a region, as we mentioned in Subsection REF. We now give the pseudocode of the algorithm (taken from <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span>).
+This algorithm exploits the idea that we mentioned in Subsection <a class="Reference" href="#sub:Split-Vertices">3.3↑</a>. It employs a rotational sweep technique. First it sorts the vertices of a polygon radially about a beacon <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span>, then it examines the sorted list to find split vertices, maintining a status of the edges intersecting the sweep line in order of increasing distance from the beacon. Once a split vertex is found, it determines the corresponding ray vertex. In the end it will yeld the partition induced by the beacon. For a polygon with holes, we have to be careful excluding edges contained in a region, as we mentioned in Subsection <a class="Reference" href="#sub:Split-Vertices">3.3↑</a>. We now give the pseudocode of the algorithm.
 </div>
 <div class="Paragraph-">
 <a class="toc" name="toc-Paragraph--1"></a><div class="float">
-<a class="Label" name="Algorithm-1"> </a><div class="algorithm">
+<a class="Label" name="alg:Algo1"> </a><div class="algorithm">
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>procedure AttractionRegion(P, b)
-<span class="number-left">2</span>	Sort the vertices by angle about b, and keep in an ordered event list L=(p1, p2, ..., pn)
+<span class="number-left">2</span>	Sort the vertices by angle about b, and keep in an ordered event list L=(p1, p2, ..., pn)     
 <span class="number-left">3</span>	Find the order of intersection of edges from p1 along the ray bp1 and store as status S
 <span class="number-left">4</span>	for the next vertex pi in L do
 <span class="number-left">5</span>		Update S as necessary
@@ -1333,7 +1503,7 @@ This algorithm exploits the idea that we mentioned in Subsection REF. It employs
 Algorithm 1 <span class="MathJax_Preview"><script type="math/tex">
 O(n\log n)
 </script>
-</span> running-time algorithm in simple polygons
+</span> running-time algorithm in simple polygons (taken from <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>)
 </div>
 
 </div>
@@ -1349,7 +1519,7 @@ O(n\log n)
 </span> as usual. Maintining a sweep line status also costs <span class="MathJax_Preview"><script type="math/tex">
 O(n\log n)
 </script>
-</span>. Determining if a vertex is a split vertex takes constant time (we saw how to do this in Section REF). Finding the ray vertex also takes constant time, because we can exploit the sweep line status to find the edge on which it lies.<br/>
+</span>. Determining if a vertex is a split vertex takes constant time (we saw how to do this in Subsection <a class="Reference" href="#sub:Split-Vertices">3.3↑</a>). Finding the ray vertex also takes constant time, because we can exploit the sweep line status to find the edge on which it lies.<br/>
 In polygons with holes, the time spent walking on regions’ boundaries is linear, so it is dominated, for instance, by the sorting algorithm.<br/>
 The space complexity is <span class="MathJax_Preview"><script type="math/tex">
 O(n)
@@ -1366,13 +1536,51 @@ O(n)
 <a class="toc" name="toc-Paragraph--2"></a>Implementation
 </div>
 <div class="Unindented">
-In our implementation, we used a modified version of the quicksort algorithm in order to obtain the ordered event list, and we used a red-black binary search tree to maintain the sweep line status. An input polygon is stored and updated during the algorithm by using a doubly connected edge list. Adding a split edge and splitting the edge on which its ray vertex lies is achieved by a split-edge operation using the ray vertex, followed by a split-face that adds the split edge. 
+In our implementation, we used a modified version of the quicksort algorithm in order to obtain the ordered event list, and we used a red-black binary search tree to maintain the sweep line status. An input polygon is stored and updated during the algorithm by using a doubly connected edge list. Adding a split edge and splitting the edge on which its ray vertex lies is achieved by a split-edge operation using the ray vertex, followed by a split-face that adds the split edge. It is worth mentioning that Algorithm <a class="Reference" href="#alg:Algo1">1↑</a> contains a little error. At line <span class="MathJax_Preview"><script type="math/tex">
+3
+</script>
+</span>, we are asked to find the edges that intersect the ray <span class="MathJax_Preview"><script type="math/tex">
+\overrightarrow{bp_{1}}
+</script>
+</span> with its origin translated at <span class="MathJax_Preview"><script type="math/tex">
+p{}_{1}
+</script>
+</span>, but in this way we might miss some edges that we would need to take into account when processing a split vertex <span class="MathJax_Preview"><script type="math/tex">
+p_{i}
+</script>
+</span> coming after and that we wouldn’t be able to meet as the sweep line advances from <span class="MathJax_Preview"><script type="math/tex">
+p_{1}
+</script>
+</span> to <span class="MathJax_Preview"><script type="math/tex">
+p_{i}
+</script>
+</span>. See Figure <a class="Reference" href="#fig:algo-wrong">14↓</a> for an example. This error caused crashes in the implementation and it can be solved by including in the status the edges intersecting <span class="MathJax_Preview"><script type="math/tex">
+\overrightarrow{bp_{1}}
+</script>
+</span> with its origin at <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span>.
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="fig:algo-wrong"> </a><div class="figure">
+<img class="embedded" src="29.png" alt="figure 29.png" style="width: 794px; max-width: 2269px; height: 546px; max-height: 1561px;"/>
+<div class="caption">
+Figure 14 The sweep line (shown in green) rotates counterclockwise. <br/>
+The missed edges are shown in red.
+</div>
+
+</div>
+
+</div>
+
 </div>
 <h3 class="Subsubsection">
 <a class="toc" name="toc-Subsubsection-3.5.2">3.5.2</a> Algorithm 2
 </h3>
 <div class="Unindented">
-The second algorithm is similar to the first one, but in order to compute split edges it uses the geodesic triangulation data structure described in REF, which we don’t treat here beacuse it is not directly related to the topic. Basically this data structure allows performing ray shooting queries efficiently, after some initial preprocessing, thus avoiding sorting and maintaining a sweepline status, in order to find ray vertices.
+The second algorithm is similar to the first one, but in order to compute split edges it uses the geodesic triangulation data structure described in <span class="bibcites">[<a class="bibliocite" name="cite-1" href="#biblio-1"><span class="bib-index">1</span></a>]</span>, which we don’t treat here beacuse it is not directly related to the topic. Basically this data structure allows performing ray shooting queries efficiently, after some initial preprocessing, thus avoiding sorting and maintaining a sweepline status, in order to find ray vertices.
 </div>
 <div class="Paragraph-">
 <a class="toc" name="toc-Paragraph--3"></a>Complexity analysis
@@ -1381,7 +1589,7 @@ The second algorithm is similar to the first one, but in order to compute split 
 Preprocessing the polygon for the geodesic triangulation takes <span class="MathJax_Preview"><script type="math/tex">
 O(n\log n)
 </script>
-</span>, although it might be completed in linear time by using the fastest triangulation algorightm known. A ray shooting query takes <span class="MathJax_Preview"><script type="math/tex">
+</span>, although it might be completed in linear time by using the fastest triangulation algorigthm known (see <span class="bibcites">[<a class="bibliocite" name="cite-5" href="#biblio-5"><span class="bib-index">5</span></a>]</span>). A ray shooting query takes <span class="MathJax_Preview"><script type="math/tex">
 O(\log n)
 </script>
 </span> for a split vertex and since we might have <span class="MathJax_Preview"><script type="math/tex">
@@ -1397,7 +1605,7 @@ O\left(n\sqrt{h}+h^{\frac{3}{2}}\log h+n\log n\right)
 </span>, while the query time is <span class="MathJax_Preview"><script type="math/tex">
 O\left(\sqrt{h}\log n\right)
 </script>
-</span> (REF). Thus, getting the raw arrangement takes <span class="MathJax_Preview"><script type="math/tex">
+</span> (<span class="bibcites">[<a class="bibliocite" name="cite-1" href="#biblio-1"><span class="bib-index">1</span></a>]</span>). Thus, getting the raw arrangement takes <span class="MathJax_Preview"><script type="math/tex">
 O\left(\sqrt{h}n\log n\right)
 </script>
 </span>, and it dominates the postprocessing time to eliminate false positives, which is linear as we explained before.<br/>
@@ -1420,7 +1628,7 @@ In polygons with holes we do the same as for the previous algorithms, but only f
 The initial triangulation can be computed in <span class="MathJax_Preview"><script type="math/tex">
 O(n)
 </script>
-</span> time, due to the algorithm in REF. Its dual, from which we obtain the directed tree and a list of interesting triangles can be obtained in linear time by performing a search from the triangle containing the beacon. Each triangle is considered once, and for each triangle we propagate at most two split edges (as the attraction reagon in a simple polygon is simple and all edges outside it are suddenly discarded), so we have a final running time equal to <span class="MathJax_Preview"><script type="math/tex">
+</span> time, thanks to the algorithm described in <span class="bibcites">[<a class="bibliocite" name="cite-5" href="#biblio-5"><span class="bib-index">5</span></a>]</span>. Its dual, from which we obtain the directed tree and a list of interesting triangles can be obtained in linear time by performing a search from the triangle containing the beacon. Each triangle is considered once, and for each triangle we propagate at most two split edges (as the attraction reagon in a simple polygon is simple and all edges outside it are suddenly discarded), so we have a final running time equal to <span class="MathJax_Preview"><script type="math/tex">
 O(n)
 </script>
 </span>.<br/>
@@ -1440,16 +1648,32 @@ O\left(n\right)
 <a class="toc" name="toc-Subsubsection-3.5.4">3.5.4</a> Algorithm 4
 </h3>
 <div class="Unindented">
-The last algorithm employs a radial trapezoidization. First it finds the visibility polygon of a beacon from the triangulation of the polygons, then it considers the remaining regions, for which it computes horizontal trapzoidizations in a projective space that brings the beacon to infinity. Reversing the projection yelds the radial trapezioidization of these regions. For each split vertex, use the trapezoidizations to find the ray vertex.<br/>
-In polygons with holes the complexity is dominated by the triangulation, that here considers also the holes and it’s computed in <span class="MathJax_Preview"><script type="math/tex">
+The last algorithm employs a radial trapezoidization (<span class="bibcites">[<a class="bibliocite" name="cite-7" href="#biblio-7"><span class="bib-index">7</span></a>]</span>). First it finds the visibility polygon of a beacon from the triangulation of the polygon, then it considers the remaining regions, for which it computes horizontal trapezoidizations in a projective space that brings the beacon to infinity. Reversing the projection yelds the radial trapezoidization of these regions. For each split vertex, use the trapezoidizations to find the ray vertex.
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--5"></a>Complexity Analysis
+</div>
+<div class="Unindented">
+The radial trapezoidization can be computed in <span class="MathJax_Preview"><script type="math/tex">
+O\left(n\right)
+</script>
+</span> time and the split edges can be found in <span class="MathJax_Preview"><script type="math/tex">
+O\left(n\right)
+</script>
+</span> time too. Thus, the algorithm takes <span class="MathJax_Preview"><script type="math/tex">
+O\left(n\right)
+</script>
+</span> time in total. In polygons with holes the complexity is dominated by the triangulation, that here considers also the holes and it’s computed in <span class="MathJax_Preview"><script type="math/tex">
 O\left(n+h\log^{1+\epsilon}h\right)
 </script>
-</span>.<br/>
-Space complexity is linear as usual.
+</span>. Space complexity is linear as usual.
 </div>
 <h1 class="Section">
 <a class="toc" name="toc-Section-4">4</a> The Inverse Attraction Region<a class="Label" name="sec:The-Inverse-Attraction"> </a>
 </h1>
+<div class="Unindented">
+All the terminology and mathematical statements in this Section are taken from <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>]</span> and <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>.
+</div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-4.1">4.1</a> Definition
 </h2>
@@ -1469,10 +1693,26 @@ P
 </span> to which <span class="MathJax_Preview"><script type="math/tex">
 p
 </script>
-</span> is attracted. 
+</span> is attracted (see Figure <a class="Reference" href="#fig:IA">15↓</a> for an example). 
 </div>
-<div class="Unindented">
-a
+<div class="Definition">
+<div class="float">
+<a class="Label" name="fig:IA"> </a><div class="figure">
+<img class="embedded" src="27.png" alt="figure 27.png" style="width: 788px; max-width: 2253px; height: 477px; max-height: 1365px;"/>
+<div class="caption">
+Figure 15 <span class="MathJax_Preview"><script type="math/tex">
+IA\left(p\right)
+</script>
+</span> is shown in purple.
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="--Separator--">
+
 </div>
 <div class="Definition">
 Given a polygon <span class="MathJax_Preview"><script type="math/tex">
@@ -1499,20 +1739,43 @@ R
 </span>.
 </div>
 <h2 class="Subsection">
-<a class="toc" name="toc-Subsection-4.2">4.2</a> Algorithm for the Inverse Attraction Region of a Point
+<a class="toc" name="toc-Subsection-4.2">4.2</a> Algorithm for the Inverse Attraction Region of a Point<a class="Label" name="sub:Algorithm-Inverse"> </a>
 </h2>
 <div class="Unindented">
-In order to obtain the inverse attraction region of a point, we can consider a line arrangement induced by a polygon <span class="MathJax_Preview"><script type="math/tex">
+According to <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>, <a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>, in order to obtain the inverse attraction region of a point <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span>, we can consider a line arrangement induced by a polygon <span class="MathJax_Preview"><script type="math/tex">
 P
+</script>
+</span> and <span class="MathJax_Preview"><script type="math/tex">
+p
 </script>
 </span>, which we call <span class="MathJax_Preview"><script type="math/tex">
 \mathit{A_{p}}
 </script>
-</span>, constructed in the following way: take the lines defined by the edges of <span class="MathJax_Preview"><script type="math/tex">
+</span>, constructed by taking the following sets of lines:
+</div>
+<ol>
+<li>
+the lines defined by the edges of <span class="MathJax_Preview"><script type="math/tex">
 P
 </script>
-</span> and, for each reflex vertex, those intersecting it that are perpendicular to its incident edges.<br/>
-This arrangement has some interesting properties that give ideas for an algorithm.
+</span>; 
+</li>
+<li>
+for each reflex vertex, those lines intersecting it that are perpendicular to its incident edges;
+</li>
+<li>
+lines through <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> and each reflex vertex.
+</li>
+
+</ol>
+<div class="Unindented">
+The authors of <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>, <a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span> claim some interesting properties for this arrangement that give ideas for an algorithm.
 </div>
 <div class="Lemma">
 Given two points <span class="MathJax_Preview"><script type="math/tex">
@@ -1569,36 +1832,156 @@ P
 </span>, if <span class="MathJax_Preview"><script type="math/tex">
 p\epsilon A\left(b_{1}\right)
 </script>
-</span>, then it is also a split vertex for <span class="MathJax_Preview"><script type="math/tex">
+</span>, then <span class="MathJax_Preview"><script type="math/tex">
 p\epsilon A\left(b_{2}\right)
 </script>
-</span> .
+</span> too.
+</div>
+<div class="Theorem">
+<div class="float">
+<a class="Label" name="fig:IA-wrong"> </a><div class="figure">
+<img class="embedded" src="28.png" alt="figure 28.png" style="width: 528px; max-width: 1509px; height: 501px; max-height: 1433px;"/>
+<div class="caption">
+Figure 16 <span class="MathJax_Preview"><script type="math/tex">
+s
+</script>
+</span> and <span class="MathJax_Preview"><script type="math/tex">
+t
+</script>
+</span> belong to the same face in <span class="MathJax_Preview"><script type="math/tex">
+\mathit{A_{p}}
+</script>
+</span> but, while <span class="MathJax_Preview"><script type="math/tex">
+s
+</script>
+</span> cannot attract <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span>,<br/>
+ <span class="MathJax_Preview"><script type="math/tex">
+t
+</script>
+</span> can. Also <span class="MathJax_Preview"><script type="math/tex">
+s'
+</script>
+</span> and <span class="MathJax_Preview"><script type="math/tex">
+t'
+</script>
+</span> are in the same face, but <span class="MathJax_Preview"><script type="math/tex">
+s'
+</script>
+</span> attracts <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> and <span class="MathJax_Preview"><script type="math/tex">
+t'
+</script>
+</span><br/>
+dg does not. (Image redrawn from <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span>)
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="Unindented">
-This is a great simplification, because it’s telling us that we can just test a single point in a face of the considered arrangement. We now give the presudocode of the algorithm (taken from <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span>).
+This is a great simplification, because it’s telling us that we can just test a single point in a face of the considered arrangement. Unfortunately the arrangement <span class="MathJax_Preview"><script type="math/tex">
+\mathit{A_{p}}
+</script>
+</span> doesn’t identify correctly the regions attracting <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span>, as discovered by the authors of <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span> (see Figure <a class="Reference" href="#fig:IA-wrong">16↑</a> for an example). There it is noted that we need to slightly modify the line arrangement, by considering these sets of lines:
+</div>
+<ol>
+<li>
+line through the segments of the Shortest Path Tree of a point <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> (<span class="MathJax_Preview"><script type="math/tex">
+\textrm{SPT}\left(p\right)
+</script>
+</span>);
+</li>
+<li>
+for each reflex vertex, those lines intersecting it that are perpendicular to its incident edges;
+</li>
+<li>
+lines through the edges of <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>.
+</li>
+
+</ol>
+<div class="Unindented">
+With this arrangement the algorithm works properly (see <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span> for details). Note that the lines through <span class="MathJax_Preview"><script type="math/tex">
+\textrm{SPT}\left(p\right)
+</script>
+</span> include the sets of lines at the first and third position in the list for the original arrangement, and that the last set of lines is there to discriminate the points that are inside <span class="MathJax_Preview"><script type="math/tex">
+P
+</script>
+</span>. The authors of <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span> claim the following about the new <span class="MathJax_Preview"><script type="math/tex">
+\mathit{A_{p}}
+</script>
+</span>.
+</div>
+<div class="Lemma">
+Given two points <span class="MathJax_Preview"><script type="math/tex">
+b_{1}
+</script>
+</span> and <span class="MathJax_Preview"><script type="math/tex">
+b_{2}
+</script>
+</span> and a point <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span>, if <span class="MathJax_Preview"><script type="math/tex">
+b_{1}
+</script>
+</span> and <span class="MathJax_Preview"><script type="math/tex">
+b_{2}
+</script>
+</span> are in the same region of <span class="MathJax_Preview"><script type="math/tex">
+\mathit{A_{p}}
+</script>
+</span>, they either both attract <span class="MathJax_Preview"><script type="math/tex">
+p
+</script>
+</span> or not.
+</div>
+<div class="Unindented">
+We now give the pseudocode of the algorithm.
 </div>
 <div class="Paragraph-">
-<a class="toc" name="toc-Paragraph--5"></a><div class="float">
+<a class="toc" name="toc-Paragraph--6"></a><div class="float">
 <a class="Label" name="Algorithm-2"> </a><div class="algorithm">
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>procedure InverseAttractionRegion(P, p)
 <span class="number-left">2</span>	Initialize Ap = ∅
-<span class="number-left">3</span>	for each edge e in P do
-<span class="number-left">4</span>		Add line e to Ap
-<span class="number-left">5</span>	end for
-<span class="number-left">6</span>	for each reflex vertex r in P do
-<span class="number-left">7</span>		Add line rp to Ap
-<span class="number-left">8</span>		Add the lines r1 and r2 through r and perpendicular to the edges incident on r to Ap
-<span class="number-left">9</span>	end for
-<span class="number-left">10</span>	Initialize IA(p) = ∅
-<span class="number-left">11</span>	for each face F of Ap do
-<span class="number-left">12</span>		Choose an arbitrary point bF of F and compute A(bF)
-<span class="number-left">13</span>		if p ∈ A(bF ) then
-<span class="number-left">14</span>			Add F to IA(p)
-<span class="number-left">15</span>		end if
-<span class="number-left">16</span>	end for
-<span class="number-left">17</span>	return IA(p), the inverse attraction region of p
-<span class="number-left">18</span>end procedure
+<span class="number-left">3</span>	Compute SPT(p)
+<span class="number-left">4</span>	for each edge e in SPT(p)
+<span class="number-left">5</span>		Add line e to Ap
+<span class="number-left">6</span>	end for
+<span class="number-left">7</span>	for each reflex vertex r in P do
+<span class="number-left">8</span>		Add line rp to Ap
+<span class="number-left">9</span>		Add the lines r1 and r2 through r and perpendicular        
+<span class="number-left">10</span>			to the edges incident on r to Ap
+<span class="number-left">11</span>	end for
+<span class="number-left">12</span>	for each edge e in P do
+<span class="number-left">13</span>		Add line e to Ap
+<span class="number-left">14</span>	end for
+<span class="number-left">15</span>	Remove duplicate lines in Ap
+<span class="number-left">16</span>	Initialize IA(p) = ∅
+<span class="number-left">17</span>	for each face F of Ap do
+<span class="number-left">18</span>		Choose an arbitrary point bF of F and compute A(bF)
+<span class="number-left">19</span>		if p ∈ A(bF ) then
+<span class="number-left">20</span>			Add F to IA(p)
+<span class="number-left">21</span>		end if
+<span class="number-left">22</span>	end for
+<span class="number-left">23</span>	return IA(p), the inverse attraction region of p
+<span class="number-left">24</span>end procedure
 </pre>
 </div>
 <div class="caption">
@@ -1608,7 +1991,7 @@ O(n^{2})
 </span>running-time algorithm for <span class="MathJax_Preview"><script type="math/tex">
 IA(p)
 </script>
-</span>
+</span> (adapted from <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>)
 </div>
 
 </div>
@@ -1626,10 +2009,10 @@ O\left(n+h\log^{1+\epsilon}h\right)
 </span>) and it tests, for each attraction region computed, if the given point is in it (<span class="MathJax_Preview"><script type="math/tex">
 O\left(n\right)
 </script>
-</span>). There are <span class="MathJax_Preview"><script type="math/tex">
+</span>). The shortest path tree can be computed in linear time (see <span class="bibcites">[<a class="bibliocite" name="cite-6" href="#biblio-6"><span class="bib-index">6</span></a>]</span>). There are <span class="MathJax_Preview"><script type="math/tex">
 O\left(n^{2}\right)
 </script>
-</span> faces in the arrangement, but walking through them in a breadth-first fashion using the dual graph allows updating the attraction regions, quickly, making the overall complexity <span class="MathJax_Preview"><script type="math/tex">
+</span> faces in the arrangement, but walking through them in a breadth-first fashion using the dual graph allows updating the attraction regions quickly, making the overall complexity <span class="MathJax_Preview"><script type="math/tex">
 O\left(n^{2}\right)
 </script>
 </span>.<br/>
@@ -1638,14 +2021,20 @@ O\left(n^{2}\right)
 </script>
 </span>.
 </div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--7"></a>Implementation
+</div>
+<div class="Unindented">
+The algorithm was implemented straightforwardly, without any optimization. Thus, it might be a bit slow in some cases (the user needs to wait a second or two to see the result) due to the fact that the faces of the arrangement tend to explode. For quite complex polygons the algorithm might get stuck. The algorithm for the attraction region that was developed earlier has been used here.
+</div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-4.3">4.3</a> Algorithm for the Inverse Attraction Region of a Region
 </h2>
 <div class="Unindented">
-To compute the attraction region of a region, it is convenient to consider a modified version of the line arrangement considered above. We call the new arrangement <span class="MathJax_Preview"><script type="math/tex">
+To compute the attraction region of a region, it is convenient to consider a modified version of the line arrangement described above. We call the new arrangement <span class="MathJax_Preview"><script type="math/tex">
 \mathit{A_{R}}
 </script>
-</span> and we obtain it by considering the lines from each reflex vertex of the input regions through each reflex vertex of the input polygon. This arrangement has a property that is similar to that of <span class="MathJax_Preview"><script type="math/tex">
+</span> and we obtain it by considering the lines from each reflex vertex of the input regions through each reflex vertex of the input polygon, thus modifying the set of lines at position 3 of the original arrangement for the attraction region of a point. This arrangement has a property that is similar to that of <span class="MathJax_Preview"><script type="math/tex">
 \mathit{A_{p}}
 </script>
 </span> with respect to attracting points in a region.
@@ -1675,28 +2064,35 @@ R\cap A\left(b_{2}\right)\neq\varnothing
 Thanks to this fact we can easily determine te attraction region of <span class="MathJax_Preview"><script type="math/tex">
 R
 </script>
-</span>, by using a point for each face of the arrangement.
+</span>, by using a point for each face of the arrangement. Since the arrangement for the attraction region of a point was incorrect, it might be that this arrangement is incorrect too, but we didn’t investigate on this.
 </div>
 <h1 class="Section">
 <a class="toc" name="toc-Section-5">5</a> Algorithms for Beacon-Based Routing<a class="Label" name="sec:Algorithms-for-Beacon-Based"> </a>
 </h1>
 <div class="Unindented">
-Now that we have seen how to compute these two regions, we would like to use them in order to perform beacon-based routing. We would also like to find the minimum routing paths each time. In this section we consider first the case where we are given a set of candidate beacons, then the case where we have no beacon except the destination, which we solve with a nearly optimal approximation algorithm.
+All the terminology and mathematical statements in this Section are taken from <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>]</span> and <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>.<br/>
+Now that we have seen how to compute the attraction region and the inverse attraction region, we would like to use them in order to perform beacon-based routing. We would also like to find the minimum routing paths each time. In this section we consider first the case where we are given a set of candidate beacons, then the case where we have no beacons except the destination, which we solve with a nearly optimal approximation algorithm.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-5.1">5.1</a> Algorithm for Routing with Candidate Beacons
 </h2>
 <div class="Unindented">
-This algorithm’s main task consists in building a directed graph, that has the candidate beacons, the starting point and the destination as nodes, and edges of the type <span class="MathJax_Preview"><script type="math/tex">
+This algorithm’s main task consists in building a directed graph, that has the candidate beacons, the starting point <span class="MathJax_Preview"><script type="math/tex">
+s
+</script>
+</span> and the destination <span class="MathJax_Preview"><script type="math/tex">
+t
+</script>
+</span> as nodes, and edges of the type <span class="MathJax_Preview"><script type="math/tex">
 \overrightarrow{\left(u,v\right)}
 </script>
 </span> if <span class="MathJax_Preview"><script type="math/tex">
 u\in A\left(v\right)
 </script>
-</span>. Once the graph is computed, the routing path is simply a shortest path between the starting point and the destination. We now give the pseudocode of the algorithm (taken from <span class="bibcites">[<a class="bibliocite" name="cite-2" href="#biblio-2"><span class="bib-index">2</span></a>]</span>).
+</span>. Once the graph is computed, the routing path is simply a shortest path between the starting point and the destination. We now give the pseudocode of the algorithm.
 </div>
 <div class="Paragraph-">
-<a class="toc" name="toc-Paragraph--6"></a><div class="float">
+<a class="toc" name="toc-Paragraph--8"></a><div class="float">
 <a class="Label" name="Algorithm-3"> </a><div class="algorithm">
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>procedure Minimum Beacon Path with Candidates(P,M, s, t)
@@ -1706,7 +2102,7 @@ u\in A\left(v\right)
 <span class="number-left">5</span>	for each c ∈ C do 
 <span class="number-left">6</span>		Compute A(c) 
 <span class="number-left">7</span>		for each triangle t ∈ T do 
-<span class="number-left">8</span>			Record the subset of t that is attractable to c 
+<span class="number-left">8</span>			Record the subset of t that is attractable to c     
 <span class="number-left">9</span>			for each d ∈ M ∩ t do 
 <span class="number-left">10</span>				if d ∈ A(c) then 
 <span class="number-left">11</span>					Add directed edge dc to G 
@@ -1723,7 +2119,8 @@ u\in A\left(v\right)
 Algorithm 3 <span class="MathJax_Preview"><script type="math/tex">
 O(m(n+m))
 </script>
-</span>running-time algorithm in simple polygons
+</span>running-time algorithm in <br/>
+simple polygons (taken from <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>)
 </div>
 
 </div>
@@ -1732,26 +2129,179 @@ O(m(n+m))
 
 </div>
 <div class="Paragraph-">
-<a class="toc" name="toc-Paragraph--7"></a>Complexity Analysis
+<a class="toc" name="toc-Paragraph--9"></a>Complexity Analysis
+</div>
+<div class="Unindented">
+In a simple polygon, the main contribution to the time complexity is given by the for loop. There are <span class="MathJax_Preview"><script type="math/tex">
+m+2
+</script>
+</span> point in <span class="MathJax_Preview"><script type="math/tex">
+C
+</script>
+</span>, and for each of them we spend <span class="MathJax_Preview"><script type="math/tex">
+O\left(n\right)
+</script>
+</span> time computing its attraction region and <span class="MathJax_Preview"><script type="math/tex">
+O\left(n+m\right)
+</script>
+</span> time to determine the edges o include in <span class="MathJax_Preview"><script type="math/tex">
+G
+</script>
+</span>, yelding a total running time of <span class="MathJax_Preview"><script type="math/tex">
+O\left(m\left(n+m\right)\right)
+</script>
+</span>. In a polygon with holes, the triangulation now takes <span class="MathJax_Preview"><script type="math/tex">
+O\left(n+h\log^{1+\epsilon}h\right)
+</script>
+</span> time. As before we spend <span class="MathJax_Preview"><script type="math/tex">
+O\left(n\right)
+</script>
+</span> for each attraction region, but <span class="MathJax_Preview"><script type="math/tex">
+O\left(n+m\log h\right)
+</script>
+</span> to identify the candidate beacons in the triangles. Thus the total running time is <span class="MathJax_Preview"><script type="math/tex">
+O\left(mn+m^{2}\log h+h\log^{1+\epsilon}h\right)
+</script>
+</span>. The space complexity is dominated by the attraction regions and it’s <span class="MathJax_Preview"><script type="math/tex">
+O\left(mn\right)
+</script>
+</span>.
 </div>
 <div class="Paragraph-">
-<a class="toc" name="toc-Paragraph--8"></a>Implementation
+<a class="toc" name="toc-Paragraph--10"></a>Implementation
+</div>
+<div class="Unindented">
+When it came to implementing the algorithm, it didn’t seem necessary to compute a triangulation and to examine each of the resulting triangles. Indeed, simply checking each ordered pair of beacons is enough, and it doesn’t increase the time complexity. The shortest path is found by using Dijkstra’s shortest path algorithm.
 </div>
 <h2 class="Subsection">
 <a class="toc" name="toc-Subsection-5.2">5.2</a> Approximation Algorithm
 </h2>
 <div class="Unindented">
-This algorithm stars from a triangulation of a given polygon, then it builds a 
+This algorithm starts from a triangulation of a given polygon, then it builds a directed graph in the following way: the nodes are the triangles in the triangulation, and if a triangle <span class="MathJax_Preview"><script type="math/tex">
+b
+</script>
+</span> intersect the inverse attraction region of another triangle <span class="MathJax_Preview"><script type="math/tex">
+a
+</script>
+</span>, add the directed edge <span class="MathJax_Preview"><script type="math/tex">
+\overrightarrow{ba}
+</script>
+</span> to the graph (see <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span> for the computation of the inverse attraction region of a region). To find a sequence of beacons routing <span class="MathJax_Preview"><script type="math/tex">
+s
+</script>
+</span> to <span class="MathJax_Preview"><script type="math/tex">
+t
+</script>
+</span>, find a shortest path between the triangles containing the two points using the graph, and finally take a beacon for each triangle, using the information on the inverse attraction regions. The pseudocode of this algorithm follows.
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--11"></a><div class="float">
+<a class="Label" name="Algorithm-4"> </a><div class="algorithm">
+<div class="listing">
+<pre class="listing"><span class="number-left">1</span>procedure Approximate Minimum Beacon Path(P, s, t)
+<span class="number-left">2</span>	Compute a triangulation T of P
+<span class="number-left">3</span>	Initialize directed graph G = (T , ∅) 
+<span class="number-left">4</span>	for each triangle a ∈ T do 
+<span class="number-left">5</span>		Compute IA(a) 
+<span class="number-left">6</span>		for each triangle b ∈ T do 
+<span class="number-left">7</span>			if b ∩ IA(a) ≠ ∅ then 
+<span class="number-left">8</span>				Add directed edge → ba to G 
+<span class="number-left">9</span>			end if 
+<span class="number-left">10</span>		end for 
+<span class="number-left">11</span>	end for 
+<span class="number-left">12</span>	Find a shortest path p from s to t in G
+<span class="number-left">13</span>	for each triangle a on the shortest path starting from t do 
+<span class="number-left">14</span>		Find the corresponding ‘attracting’ point and ‘attracted’ point 
+<span class="number-left">15</span>		Link the points together along the shortest path
+<span class="number-left">16</span>	end for 
+<span class="number-left">17</span>	return the sequence of beacons 
+<span class="number-left">18</span>end procedure
+</pre>
+</div>
+<div class="caption">
+Algorithm 4 <span class="MathJax_Preview"><script type="math/tex">
+O\left(n^{3}\right)
+</script>
+</span>running-time algorithm (taken from <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>)
+</div>
+
+</div>
+
+</div>
+Complexity Analysis
+</div>
+<div class="Unindented">
+The running time is determined by the computations of the inverse attraction regions of the triangles. As explained in <span class="bibcites">[<a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>, this takes <span class="MathJax_Preview"><script type="math/tex">
+O\left(n^{2}\right)
+</script>
+</span> time. Since we do this for each triangle, the total running time is <span class="MathJax_Preview"><script type="math/tex">
+O\left(n^{3}\right)
+</script>
+</span>.
+</div>
+<div class="Indented">
+<div class="defskip"> </div>
+</div>
+<div class="Indented">
+We can compare the length of the path obtained with this algorithm with thathof the minimum one thanks to the following lemma.
+</div>
+<div class="Lemma">
+The shortest path from the triangle containing <span class="MathJax_Preview"><script type="math/tex">
+s
+</script>
+</span> to that containing <span class="MathJax_Preview"><script type="math/tex">
+t
+</script>
+</span> in the graph described above is at most that of a minimum beacon path from <span class="MathJax_Preview"><script type="math/tex">
+s
+</script>
+</span> to <span class="MathJax_Preview"><script type="math/tex">
+t
+</script>
+</span>.
+</div>
+<div class="Unindented">
+Since the beacon path obtained by the algorithm uses two beacons for each triangle, we have an amount of beacons that is at most two times the necessary beacons. If we iteratively compute the inverse attraction region for each triangle ( <span class="MathJax_Preview"><script type="math/tex">
+\textrm{IA}\left(...\textrm{IA}\left(a\right)\right)
+</script>
+</span> ), we obtain a beacon path that has at most <span class="MathJax_Preview"><script type="math/tex">
+k+1
+</script>
+</span> beacons every <span class="MathJax_Preview"><script type="math/tex">
+k
+</script>
+</span> beacons in the optimal path. This gives us a polynomial-time approximation of the minimum beacon path (see <span class="bibcites">[<a class="bibliocite" name="cite-3" href="#biblio-3"><span class="bib-index">3</span></a>, <a class="bibliocite" name="cite-4" href="#biblio-4"><span class="bib-index">4</span></a>]</span>).
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-6">6</a> Applet<a class="Label" name="sec:Applet"> </a>
+</h1>
+<div class="Unindented">
+An applet was developed to illustrate interactively the main concepts of this page. It can be reached by clicking on the button below. Instructions are included in the destination page.
 </div>
 <div class="Indented">
 <h1 class="biblio">
 References
 </h1>
 <p class="biblio">
-<span class="entry">[<a class="biblioentry" name="biblio-1"><span class="bib-index">1</span></a>] </span> <span class="bib-authors">Michael Biro, Justin Iwerks, Irina Kostitsyna, Joseph S. B. Mitchell</span>. <span class="bib-title">Algorithms and Data Structures: 13th International Symposium, WADS 2013, London, ON, Canada, August 12-14, 2013. Proceedings</span>. <span class="bib-publisher">Springer Berlin Heidelberg</span>, <span class="bib-year">2013</span>. URL <a href="http://dx.doi.org/10.1007/978-3-642-40104-6_14"><span class="bib-url">http://dx.doi.org/10.1007/978-3-642-40104-6_14</span></a>.
+<span class="entry">[<a class="biblioentry" name="biblio-1"><span class="bib-index">1</span></a>] </span> <span class="bib-authors">B. Chazelle, H. Edelsbrunner, M. Grigni, L. Guibas, J. Hershberger, M. Sharir, J. Snoeyink</span>. <span class="bib-title">Ray shooting in polygons using geodesic triangulations</span>. <i><span class="bib-journal">Algorithmica</span></i>, <span class="bib-volume">12</span>(<span class="bib-number">1</span>):<span class="bib-pages">54—68</span>, <span class="bib-year">1994</span>.
 </p>
 <p class="biblio">
-<span class="entry">[<a class="biblioentry" name="biblio-2"><span class="bib-index">2</span></a>] </span> <span class="bib-authors">Michael Biro</span>. <span class="bib-title">Beacon-based routing and guarding</span>. <span class="bib-year">2013</span>.
+<span class="entry">[<a class="biblioentry" name="biblio-2"><span class="bib-index">2</span></a>] </span> <span class="bib-authors">Bahram Kouhestani, David Rappaport, Kai Salomaa</span>. <span class="bib-title">On the Inverse Beacon Attraction Region of a Point</span>.  <i><span class="bib-booktitle">CCCG</span></i>, <span class="bib-year">2015</span>.
+</p>
+<p class="biblio">
+<span class="entry">[<a class="biblioentry" name="biblio-3"><span class="bib-index">3</span></a>] </span> <span class="bib-authors">Michael Biro, Justin Iwerks, Irina Kostitsyna, Joseph S. B. Mitchell</span>. <span class="bib-title">Algorithms and Data Structures: 13th International Symposium, WADS 2013, London, ON, Canada, August 12-14, 2013. Proceedings</span>. <span class="bib-publisher">Springer Berlin Heidelberg</span>, <span class="bib-year">2013</span>. URL <a href="http://dx.doi.org/10.1007/978-3-642-40104-6_14"><span class="bib-url">http://dx.doi.org/10.1007/978-3-642-40104-6_14</span></a>.
+</p>
+<p class="biblio">
+<span class="entry">[<a class="biblioentry" name="biblio-4"><span class="bib-index">4</span></a>] </span> <span class="bib-authors">Michael Biro</span>. <span class="bib-title">Beacon-based routing and guarding</span>. <span class="bib-year">2013</span>.
+</p>
+<p class="biblio">
+<span class="entry">[<a class="biblioentry" name="biblio-5"><span class="bib-index">5</span></a>] </span> <span class="bib-authors">Bernard Chazelle</span>. <span class="bib-title">Triangulating a Simple Polygon in Linear Time</span>. <i><span class="bib-journal">Discrete Comput. Geom.</span></i>, <span class="bib-volume">6</span>(<span class="bib-number">5</span>):<span class="bib-pages">485—524</span>, <span class="bib-year">1991</span>. URL <a href="http://dx.doi.org/10.1007/BF02574703"><span class="bib-url">http://dx.doi.org/10.1007/BF02574703</span></a>.
+</p>
+<p class="biblio">
+<span class="entry">[<a class="biblioentry" name="biblio-6"><span class="bib-index">6</span></a>] </span> <span class="bib-authors">L Guibas, J Hershberger, D Leven, M Sharir, R Tarjan</span>. <span class="bib-title">Linear Time Algorithms for Visibility and Shortest Path Problems Inside Simple Polygons</span>.  <i><span class="bib-booktitle">Proceedings of the Second Annual Symposium on Computational Geometry</span></i>:<span class="bib-pages">1—13</span>, <span class="bib-year">1986</span>. URL <a href="http://doi.acm.org/10.1145/10515.10516"><span class="bib-url">http://doi.acm.org/10.1145/10515.10516</span></a>.
+</p>
+<p class="biblio">
+<span class="entry">[<a class="biblioentry" name="biblio-7"><span class="bib-index">7</span></a>] </span> <span class="bib-authors">N. Mouawad</span>. <span class="bib-title">Minimal obscuring sets: the parallel view case</span>.  <i><span class="bib-booktitle">Proc. 2nd Canad. Conf. Comput. Geom.</span></i>:<span class="bib-pages">232—235</span>, <span class="bib-year">1990</span>.
 </p>
 
 </div>

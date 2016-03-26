@@ -364,7 +364,16 @@ void drawShapeFromPoints(ArrayList<Point> points, int r1, int g1, int b1, int r2
 /**
 * Minimum Beacon Path
 * (Impementation of the routing algorithm with candidate
-*   beacons described in REF and REF)
+*   beacons described in: 
+*
+*		Michael Biro, Justin Iwerks, Irina Kostitsyna, Joseph S. B. Mitchell. Algorithms and Data
+* 		Structures: 13th International Symposium, WADS 2013, London, ON, Canada, August 12-14, 2013. Proceedings. Springer
+* 		Berlin Heidelberg, 2013. URL http://dx.doi.org/10.1007/978-3-642-40104-6_14.
+*  
+*   and 
+*
+*       Michael Biro. Beacon-based routing and guarding. 2013.
+* )
 */
 class MinimumBeaconPath {
 
@@ -492,7 +501,16 @@ class MinimumBeaconPath {
 
 /**
 * Inverse Attraction Region
-* (Implemented following the guidelines in REF and REF) 
+* (Implemented following the guidelines in:
+*
+*		Michael Biro, Justin Iwerks, Irina Kostitsyna, Joseph S. B. Mitchell. Algorithms and Data
+* 		Structures: 13th International Symposium, WADS 2013, London, ON, Canada, August 12-14, 2013. Proceedings. Springer
+* 		Berlin Heidelberg, 2013. URL http://dx.doi.org/10.1007/978-3-642-40104-6_14.
+*  
+*   and 
+*
+*       Michael Biro. Beacon-based routing and guarding. 2013.
+* )
 **/
 
 class InverseAttractionRegion {
@@ -1037,7 +1055,9 @@ class AttractionRegion {
 
 /**
 * Key (for the binary search tree)
-* (Adapted from URL)
+* (Adapted from: 
+*      http://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html
+* )
 **/
 class Key implements Comparable<Key>{
 
@@ -1828,7 +1848,9 @@ class LineArrangement {
 
 /**
 * Red Black Binary Search Tree
-* (Adapted from URL)
+* (Adapted from: 
+*      http://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html
+* )
 **/
 
 /**

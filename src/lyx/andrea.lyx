@@ -118,7 +118,7 @@ In this page we will look at how beacons interact with objects placed in
 \begin_inset Newline newline
 \end_inset
 
-The content of this page is a re-elaboration from 
+The content of this page is re-elaborated from 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "biro2013beacon"
@@ -151,8 +151,8 @@ reference "sec:The-Attraction-Region"
 
 \end_inset
 
- we define the Attraction Region of a beacon, give its properties and algorithms
- to compute it; in Section 
+ we define the Attraction Region of a beacon and give its properties and
+ algorithms to compute it; in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:The-Inverse-Attraction"
@@ -160,14 +160,14 @@ reference "sec:The-Inverse-Attraction"
 \end_inset
 
  we discuss the Inverse Attraction Region of a point, following an outline
- that is similar to the previous section; Section 
+ that is similar to that of the previous section; Section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:Algorithms-for-Beacon-Based"
 
 \end_inset
 
- contains two algorithms that route an object from a point 
+ presents two algorithms that route an object from a point 
 \begin_inset Formula $s$
 \end_inset
 
@@ -178,6 +178,15 @@ reference "sec:Algorithms-for-Beacon-Based"
 .
  One requires a set of candidate intermediate beacons, the other is a polynomial
 -time approximation of the optimal routing path.
+ Finally, in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Applet"
+
+\end_inset
+
+, we provide the link to an applet that allows to experiment with the concepts
+ described in this page.
 \end_layout
 
 \begin_layout Section
@@ -219,8 +228,8 @@ polygon
 \begin_inset Formula $P$
 \end_inset
 
-, whose boundary edges are oriented counterclockwise (the edges of a hole
- are instead oriented clockwise).
+, not self-intersecting, possibly with holes, whose boundary edges are oriented
+ counterclockwise (the edges of a hole are instead oriented clockwise).
  A 
 \emph on
 beacon
@@ -235,7 +244,7 @@ beacon
 
  that can be activated to exercise a 'magnetic pull' on an object initially
  placed at a point 
-\begin_inset Formula $p\epsilon P$
+\begin_inset Formula $p\in P$
 \end_inset
 
 .
@@ -293,11 +302,15 @@ When
 \begin_inset Formula $b$
 \end_inset
 
- greedily, following a straight line towards b until it reaches either 
+ greedily, following a straight line towards 
 \begin_inset Formula $b$
 \end_inset
 
- or
+ until it reaches either 
+\begin_inset Formula $b$
+\end_inset
+
+ or 
 \begin_inset Formula $\partial P$
 \end_inset
 
@@ -477,8 +490,8 @@ routed
 \begin_inset Formula $M'$
 \end_inset
 
-of beacon points that, if activated in the right sequence, can route an
- object from 
+ of beacon points that, when activated in the right sequence, can route
+ an object from 
 \begin_inset Formula $s$
 \end_inset
 
@@ -571,7 +584,7 @@ dead region
 \end_inset
 
 , which we define as the set of points 
-\begin_inset Formula $p\epsilon P$
+\begin_inset Formula $p\in P$
 \end_inset
 
  that will eventually get stuck at 
@@ -889,8 +902,15 @@ Given a dead point
 \end_layout
 
 \begin_layout Standard
-Another useful Theorem (see REF for its proof) bounds the number of dead
- points that can be found on an edge.
+Another useful Theorem (see 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+ for its proof) bounds the number of dead points that can be found on an
+ edge.
 \end_layout
 
 \begin_layout Theorem
@@ -965,10 +985,14 @@ The Attraction Region
 \end_inset
 
  is the set of points 
-\begin_inset Formula $p\epsilon P$
+\begin_inset Formula $p\in P$
 \end_inset
 
- that are attracted to b.
+ that are attracted to 
+\begin_inset Formula $b$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Definition
@@ -1056,7 +1080,7 @@ If
 
  is convex it has no dead points, so the lower bound can be easily observed.
  For the upper bound, consider a beacon 
-\begin_inset Formula $b\epsilon P$
+\begin_inset Formula $b\in P$
 \end_inset
 
 .
@@ -1204,14 +1228,21 @@ name "fig:dead-holes"
 
 \begin_layout Plain Layout
 Polygons showing that the upper bounds for dead points are reachable.
+\begin_inset Newline newline
+\end_inset
+
+(Images adapted from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+)
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -1271,14 +1302,14 @@ th hole, then
 
  vertices.
  
-\begin_inset Formula $b\epsilon P$
+\begin_inset Formula $b\in P$
 \end_inset
 
  so 
 \begin_inset Formula $P'$
 \end_inset
 
- as at most 
+ has at most 
 \begin_inset Formula $n-\sum_{i}n_{i}-3$
 \end_inset
 
@@ -1347,7 +1378,7 @@ Thanks to these theorems, we can limit the number of dead points for a beacon
 \begin_inset Formula $b$
 \end_inset
 
- and 
+ togheter with 
 \begin_inset Formula $A\left(b\right)$
 \end_inset
 
@@ -1404,8 +1435,15 @@ First of all, an object starting at a point in
 
 .
  It remains to show that these regions don't overlap.
- In a situation as that of Figure, our definitions are not enough precise
- to decide along which edge incident to a reflex vertex 
+ In a situation as that of Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:disambiguation"
+
+\end_inset
+
+, our definitions are not enough precise to decide along which edge incident
+ to a reflex vertex 
 \begin_inset Formula $v$
 \end_inset
 
@@ -1463,6 +1501,13 @@ We arbitrarily decide that
 \end_inset
 
  goes always left.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:disambiguation"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1566,11 +1611,18 @@ This result gives us an interesting hint, because it tells us that to identify
 \end_inset
 
 , called split vertices.
- We elaborate on them in the next subsection.
+ We elaborate on them in the next Subsection.
 \end_layout
 
 \begin_layout Subsection
 Split Vertices
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Split-Vertices"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1646,7 +1698,7 @@ status collapsed
 \begin_inset Newline newline
 \end_inset
 
-How do we recognize a cut vertex? We can simply compute two dot products,
+How do we recognize a cut vertex? We can simply compute two cross products,
  as the next proposition precises.
 \end_layout
 
@@ -2172,7 +2224,7 @@ and
 \begin_inset Formula $b$
 \end_inset
 
- , and show that any possible case is infeasible.
+, and show that any possible case is infeasible.
  Objects placed on 
 \begin_inset Formula $e$
 \end_inset
@@ -2236,8 +2288,8 @@ and
 \begin_inset Formula $\partial P$
 \end_inset
 
- at hte same location, meaning that they will end up in the same point.
- Thus ray on different sides of 
+ at the same location, meaning that they will end up in the same point.
+ Thus rays on different sides of 
 \begin_inset Formula $e$
 \end_inset
 
@@ -2534,7 +2586,7 @@ is on the boundary of a different region per different component.
 \begin_inset Formula $b$
 \end_inset
 
-, that intesects 
+ that intesects 
 \begin_inset Formula $c$
 \end_inset
 
@@ -2848,7 +2900,7 @@ Now we can define a concrete strategy for obtaining the attraction region
 \end_inset
 
 There are a few more properties of the attraction region of a beacon that
- are worth mentioning; we give them in the next section.
+ are worth mentioning; we give them in the next Subsection.
 \end_layout
 
 \begin_layout Subsection
@@ -2892,8 +2944,8 @@ Given a beacon
  is connected.
 \end_layout
 
-\begin_layout Standard
-a
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Theorem
@@ -2916,8 +2968,8 @@ Given a beacon
  is simple (not necessarily if it has holes).
 \end_layout
 
-\begin_layout Standard
-a
+\begin_layout --Separator--
+
 \end_layout
 
 \begin_layout Corollary
@@ -2954,11 +3006,11 @@ The partition of
 \end_inset
 
 .
- There exist cases with also
+ There exist cases where 
 \begin_inset Formula $\Omega\left(n\right)$
 \end_inset
 
-.
+ holds to.
 \end_layout
 
 \begin_layout Subsection
@@ -2977,7 +3029,7 @@ n region of a beacon
 
 .
  There are four algorithms in total.
- We will describe in detail only the first one, which is the one that we
+ We will describe in detail only the first one, which is the one that was
  implented.
  In the complexity analyses, 
 \begin_inset Formula $n$
@@ -2991,16 +3043,33 @@ Algorithm 1
 \end_layout
 
 \begin_layout Standard
-This algorithm exploits the idea that we mentioned in Subsection REF.
+This algorithm exploits the idea that we mentioned in Subsection 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Split-Vertices"
+
+\end_inset
+
+.
  It employs a rotational sweep technique.
- First it sorts the vertices of a polygon radially around a beacon, then
- it examines the sorted list to find split vertices, maintining a status
- of the edges intersecting the sweep line in order of increasing distance
- from the beacon.
+ First it sorts the vertices of a polygon radially about a beacon 
+\begin_inset Formula $b$
+\end_inset
+
+, then it examines the sorted list to find split vertices, maintining a
+ status of the edges intersecting the sweep line in order of increasing
+ distance from the beacon.
  Once a split vertex is found, it determines the corresponding ray vertex.
  In the end it will yeld the partition induced by the beacon.
  For a polygon with holes, we have to be careful excluding edges contained
- in a region, as we mentioned in Subsection REF.
+ in a region, as we mentioned in Subsection 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Split-Vertices"
+
+\end_inset
+
+.
  We now give the pseudocode of the algorithm.
 \end_layout
 
@@ -3024,7 +3093,7 @@ procedure AttractionRegion(P, b)
 \begin_layout Plain Layout
 
 	Sort the vertices by angle about b, and keep in an ordered event list L=(p1,
- p2, ..., pn)
+ p2, ..., pn)     
 \end_layout
 
 \begin_layout Plain Layout
@@ -3103,6 +3172,13 @@ key "biro2013beacon"
 \end_inset
 
 )
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Algo1"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3134,7 +3210,14 @@ The algorithm requires a comparison-based sorting algorithm in order to
 
 .
  Determining if a vertex is a split vertex takes constant time (we saw how
- to do this in Section REF).
+ to do this in Subsection 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Split-Vertices"
+
+\end_inset
+
+).
  Finding the ray vertex also takes constant time, because we can exploit
  the sweep line status to find the edge on which it lies.
 \begin_inset Newline newline
@@ -3173,7 +3256,108 @@ In our implementation, we used a modified version of the quicksort algorithm
  Adding a split edge and splitting the edge on which its ray vertex lies
  is achieved by a split-edge operation using the ray vertex, followed by
  a split-face that adds the split edge.
+ It is worth mentioning that Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Algo1"
+
+\end_inset
+
+ contains a little error.
+ At line 
+\begin_inset Formula $3$
+\end_inset
+
+, we are asked to find the edges that intersect the ray 
+\begin_inset Formula $\overrightarrow{bp_{1}}$
+\end_inset
+
+ with its origin translated at 
+\begin_inset Formula $p{}_{1}$
+\end_inset
+
+, but in this way we might miss some edges that we would need to take into
+ account when processing a split vertex 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ coming after and that we wouldn't be able to meet as the sweep line advances
+ from 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+ to 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+.
+ See Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:algo-wrong"
+
+\end_inset
+
+ for an example.
+ This error caused crashes in the implementation and it can be solved by
+ including in the status the edges intersecting 
+\begin_inset Formula $\overrightarrow{bp_{1}}$
+\end_inset
+
+ with its origin at 
+\begin_inset Formula $b$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Users/Andrea/Documents/ULB/Computational Geometry/Project/INFO-F-420_2015-16/src/img/andrea/29.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The sweep line (shown in green) rotates counterclockwise.
  
+\begin_inset Newline newline
+\end_inset
+
+The missed edges are shown in red.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:algo-wrong"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -3183,8 +3367,14 @@ Algorithm 2
 \begin_layout Standard
 The second algorithm is similar to the first one, but in order to compute
  split edges it uses the geodesic triangulation data structure described
- in REF, which we don't treat here beacuse it is not directly related to
- the topic.
+ in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ef07543a33454cf48f81f5668cc3d512"
+
+\end_inset
+
+, which we don't treat here beacuse it is not directly related to the topic.
  Basically this data structure allows performing ray shooting queries efficientl
 y, after some initial preprocessing, thus avoiding sorting and maintaining
  a sweepline status, in order to find ray vertices.
@@ -3200,7 +3390,14 @@ Preprocessing the polygon for the geodesic triangulation takes
 \end_inset
 
 , although it might be completed in linear time by using the fastest triangulati
-on algorightm known.
+on algorigthm known (see 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Chazelle:1991:TSP:120885.120892"
+
+\end_inset
+
+).
  A ray shooting query takes 
 \begin_inset Formula $O(\log n)$
 \end_inset
@@ -3225,7 +3422,14 @@ In polygons with holes, the preprocessing time becomes
 \begin_inset Formula $O\left(\sqrt{h}\log n\right)$
 \end_inset
 
- (REF).
+ (
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ef07543a33454cf48f81f5668cc3d512"
+
+\end_inset
+
+).
  Thus, getting the raw arrangement takes 
 \begin_inset Formula $O\left(\sqrt{h}n\log n\right)$
 \end_inset
@@ -3284,7 +3488,14 @@ The initial triangulation can be computed in
 \begin_inset Formula $O(n)$
 \end_inset
 
- time, due to the algorithm in REF.
+ time, thanks to the algorithm described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Chazelle:1991:TSP:120885.120892"
+
+\end_inset
+
+.
  Its dual, from which we obtain the directed tree and a list of interesting
  triangles can be obtained in linear time by performing a search from the
  triangle containing the beacon.
@@ -3327,26 +3538,48 @@ Algorithm 4
 \end_layout
 
 \begin_layout Standard
-The last algorithm employs a radial trapezoidization.
- First it finds the visibility polygon of a beacon from the triangulation
- of the polygons, then it considers the remaining regions, for which it
- computes horizontal trapzoidizations in a projective space that brings
- the beacon to infinity.
- Reversing the projection yelds the radial trapezioidization of these regions.
- For each split vertex, use the trapezoidizations to find the ray vertex.
-\begin_inset Newline newline
+The last algorithm employs a radial trapezoidization (
+\begin_inset CommandInset citation
+LatexCommand cite
+key "geom-2261"
+
 \end_inset
 
-In polygons with holes the complexity is dominated by the triangulation,
+).
+ First it finds the visibility polygon of a beacon from the triangulation
+ of the polygon, then it considers the remaining regions, for which it computes
+ horizontal trapezoidizations in a projective space that brings the beacon
+ to infinity.
+ Reversing the projection yelds the radial trapezoidization of these regions.
+ For each split vertex, use the trapezoidizations to find the ray vertex.
+\end_layout
+
+\begin_layout Paragraph*
+Complexity Analysis
+\end_layout
+
+\begin_layout Standard
+The radial trapezoidization can be computed in 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+ time and the split edges can be found in 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+ time too.
+ Thus, the algorithm takes 
+\begin_inset Formula $O\left(n\right)$
+\end_inset
+
+ time in total.
+ In polygons with holes the complexity is dominated by the triangulation,
  that here considers also the holes and it's computed in 
 \begin_inset Formula $O\left(n+h\log^{1+\epsilon}h\right)$
 \end_inset
 
 .
-\begin_inset Newline newline
-\end_inset
-
-Space complexity is linear as usual.
+ Space complexity is linear as usual.
 \end_layout
 
 \begin_layout Section
@@ -3358,6 +3591,25 @@ name "sec:The-Inverse-Attraction"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+All the terminology and mathematical statements in this Section are taken
+ from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -3491,13 +3743,23 @@ name "sub:Algorithm-Inverse"
 \end_layout
 
 \begin_layout Standard
-According to REF, in order to obtain the inverse attraction region of a
- point 
+According to 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013,biro2013beacon"
+
+\end_inset
+
+, in order to obtain the inverse attraction region of a point 
 \begin_inset Formula $p$
 \end_inset
 
 , we can consider a line arrangement induced by a polygon 
 \begin_inset Formula $P$
+\end_inset
+
+ and 
+\begin_inset Formula $p$
 \end_inset
 
 , which we call 
@@ -3529,8 +3791,15 @@ lines through
 \end_layout
 
 \begin_layout Standard
-The author of REF claims some properties interesting properties for this
- arrangement that give ideas for an algorithm.
+The authors of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013,biro2013beacon"
+
+\end_inset
+
+ claim some interesting properties for this arrangement that give ideas
+ for an algorithm.
 \end_layout
 
 \begin_layout Lemma
@@ -3606,11 +3875,11 @@ Given two points
 \begin_inset Formula $p\epsilon A\left(b_{1}\right)$
 \end_inset
 
-, then it is also a split vertex for 
+, then 
 \begin_inset Formula $p\epsilon A\left(b_{2}\right)$
 \end_inset
 
- .
+ too.
 \end_layout
 
 \begin_layout Theorem
@@ -3686,7 +3955,14 @@ status collapsed
 \end_inset
 
 dg does not.
- (Image redrawn from REF)
+ (Image redrawn from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kouhestani2015OnTI"
+
+\end_inset
+
+)
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:IA-wrong"
@@ -3717,11 +3993,18 @@ This is a great simplification, because it's telling us that we can just
 \begin_inset Formula $\mathit{A_{p}}$
 \end_inset
 
- doesn't identify correctly identify the regions attracting 
+ doesn't identify correctly the regions attracting 
 \begin_inset Formula $b$
 \end_inset
 
-, as discovered by the authors of REF (see Figure 
+, as discovered by the authors of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kouhestani2015OnTI"
+
+\end_inset
+
+ (see Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:IA-wrong"
@@ -3759,19 +4042,33 @@ lines through the edges of
 \end_layout
 
 \begin_layout Standard
-With this arrangement the algorithm works properly (see REF for details).
+With this arrangement the algorithm works properly (see 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kouhestani2015OnTI"
+
+\end_inset
+
+ for details).
  Note that the lines through 
 \begin_inset Formula $\textrm{SPT}\left(p\right)$
 \end_inset
 
- generalize includes the sets of lines 1 and 3 of the old arrangement, and
- that the last set of lines is there to discriminate the points that are
- inside 
+ include the sets of lines at the first and third position in the list for
+ the original arrangement, and that the last set of lines is there to discrimina
+te the points that are inside 
 \begin_inset Formula $P$
 \end_inset
 
 .
- The authors of REF claim the following about the new 
+ The authors of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kouhestani2015OnTI"
+
+\end_inset
+
+ claim the following about the new 
 \begin_inset Formula $\mathit{A_{p}}$
 \end_inset
 
@@ -3818,7 +4115,7 @@ We now give the pseudocode of the algorithm.
 \begin_inset Float algorithm
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset listings
@@ -3997,7 +4294,14 @@ This algorithm uses an attraction region algorithm (
 \end_inset
 
 ).
- The shortest path tree can be computed in linear time (see REF).
+ The shortest path tree can be computed in linear time (see 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Guibas:1986:LTA:10515.10516"
+
+\end_inset
+
+).
  There are 
 \begin_inset Formula $O\left(n^{2}\right)$
 \end_inset
@@ -4029,6 +4333,8 @@ The algorithm was implemented straightforwardly, without any optimization.
  or two to see the result) due to the fact that the faces of the arrangement
  tend to explode.
  For quite complex polygons the algorithm might get stuck.
+ The algorithm for the attraction region that was developed earlier has
+ been used here.
 \end_layout
 
 \begin_layout Subsection
@@ -4037,13 +4343,15 @@ Algorithm for the Inverse Attraction Region of a Region
 
 \begin_layout Standard
 To compute the attraction region of a region, it is convenient to consider
- a modified version of the line arrangement considered above.
+ a modified version of the line arrangement described above.
  We call the new arrangement 
 \begin_inset Formula $\mathit{A_{R}}$
 \end_inset
 
  and we obtain it by considering the lines from each reflex vertex of the
- input regions through each reflex vertex of the input polygon.
+ input regions through each reflex vertex of the input polygon, thus modifying
+ the set of lines at position 3 of the original arrangement for the attraction
+ region of a point.
  This arrangement has a property that is similar to that of 
 \begin_inset Formula $\mathit{A_{p}}$
 \end_inset
@@ -4085,6 +4393,9 @@ Thanks to this fact we can easily determine te attraction region of
 \end_inset
 
 , by using a point for each face of the arrangement.
+ Since the arrangement for the attraction region of a point was incorrect,
+ it might be that this arrangement is incorrect too, but we didn't investigate
+ on this.
 \end_layout
 
 \begin_layout Section
@@ -4099,12 +4410,32 @@ name "sec:Algorithms-for-Beacon-Based"
 \end_layout
 
 \begin_layout Standard
-Now that we have seen how to compute these two regions, we would like to
- use them in order to perform beacon-based routing.
+All the terminology and mathematical statements in this Section are taken
+ from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+Now that we have seen how to compute the attraction region and the inverse
+ attraction region, we would like to use them in order to perform beacon-based
+ routing.
  We would also like to find the minimum routing paths each time.
  In this section we consider first the case where we are given a set of
- candidate beacons, then the case where we have no beacon except the destination
-, which we solve with a nearly optimal approximation algorithm.
+ candidate beacons, then the case where we have no beacons except the destinatio
+n, which we solve with a nearly optimal approximation algorithm.
 \end_layout
 
 \begin_layout Subsection
@@ -4139,7 +4470,7 @@ This algorithm's main task consists in building a directed graph, that has
 \begin_inset Float algorithm
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset listings
@@ -4184,7 +4515,7 @@ procedure Minimum Beacon Path with Candidates(P,M, s, t)
 
 \begin_layout Plain Layout
 
-			Record the subset of t that is attractable to c 
+			Record the subset of t that is attractable to c     
 \end_layout
 
 \begin_layout Plain Layout
@@ -4249,7 +4580,11 @@ end procedure
 \begin_inset Formula $O(m(n+m))$
 \end_inset
 
-running-time algorithm in simple polygons (taken from 
+running-time algorithm in 
+\begin_inset Newline newline
+\end_inset
+
+simple polygons (taken from 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "biro2013beacon"
@@ -4336,6 +4671,7 @@ When it came to implementing the algorithm, it didn't seem necessary to
  compute a triangulation and to examine each of the resulting triangles.
  Indeed, simply checking each ordered pair of beacons is enough, and it
  doesn't increase the time complexity.
+ The shortest path is found by using Dijkstra's shortest path algorithm.
 \end_layout
 
 \begin_layout Subsection
@@ -4357,8 +4693,14 @@ This algorithm starts from a triangulation of a given polygon, then it builds
 \begin_inset Formula $\overrightarrow{ba}$
 \end_inset
 
- to the graph (see REF for the computation of the inverse attraction region
- of a region).
+ to the graph (see 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+ for the computation of the inverse attraction region of a region).
  To find a sequence of beacons routing 
 \begin_inset Formula $s$
 \end_inset
@@ -4367,17 +4709,118 @@ This algorithm starts from a triangulation of a given polygon, then it builds
 \begin_inset Formula $t$
 \end_inset
 
- find a shortest path from between the triangles containing the two points
- using the graph, and finally take a beacon for each triangle, using the
- information on the inverse attraction regions.
+, find a shortest path between the triangles containing the two points using
+ the graph, and finally take a beacon for each triangle, using the information
+ on the inverse attraction regions.
  The pseudocode of this algorithm follows.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph*
 \begin_inset Float algorithm
 wide false
 sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=Ada,numbers=left"
+inline true
 status open
+
+\begin_layout Plain Layout
+
+procedure Approximate Minimum Beacon Path(P, s, t)
+\end_layout
+
+\begin_layout Plain Layout
+
+	Compute a triangulation T of P
+\end_layout
+
+\begin_layout Plain Layout
+
+	Initialize directed graph G = (T , ∅) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each triangle a ∈ T do 
+\end_layout
+
+\begin_layout Plain Layout
+
+		Compute IA(a) 
+\end_layout
+
+\begin_layout Plain Layout
+
+		for each triangle b ∈ T do 
+\end_layout
+
+\begin_layout Plain Layout
+
+			if b ∩ IA(a) ≠ ∅ then 
+\end_layout
+
+\begin_layout Plain Layout
+
+				Add directed edge → ba to G 
+\end_layout
+
+\begin_layout Plain Layout
+
+			end if 
+\end_layout
+
+\begin_layout Plain Layout
+
+		end for 
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for 
+\end_layout
+
+\begin_layout Plain Layout
+
+	Find a shortest path p from s to t in G
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each triangle a on the shortest path starting from t do 
+\end_layout
+
+\begin_layout Plain Layout
+
+		Find the corresponding ‘attracting’ point and ‘attracted’ point 
+\end_layout
+
+\begin_layout Plain Layout
+
+		Link the points together along the shortest path
+\end_layout
+
+\begin_layout Plain Layout
+
+	end for 
+\end_layout
+
+\begin_layout Plain Layout
+
+	return the sequence of beacons 
+\end_layout
+
+\begin_layout Plain Layout
+
+end procedure
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Caption Standard
@@ -4403,10 +4846,40 @@ key "biro2013beacon"
 
 \end_inset
 
+Complexity Analysis
+\end_layout
+
+\begin_layout Standard
+The running time is determined by the computations of the inverse attraction
+ regions of the triangles.
+ As explained in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "biro2013beacon"
+
+\end_inset
+
+, this takes 
+\begin_inset Formula $O\left(n^{2}\right)$
+\end_inset
+
+ time.
+ Since we do this for each triangle, the total running time is 
+\begin_inset Formula $O\left(n^{3}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
 
 \end_layout
 
-\begin_layout --Separator--
+\begin_layout Standard
+\noindent
 We can compare the length of the path obtained with this algorithm with
  thathof the minimum one thanks to the following lemma.
 \end_layout
@@ -4436,12 +4909,12 @@ The shortest path from the triangle containing
 Since the beacon path obtained by the algorithm uses two beacons for each
  triangle, we have an amount of beacons that is at most two times the necessary
  beacons.
- If we iteratively compute the inverse attraction region for each triangle,
- (
-\begin_inset Formula $\textrm{IA\left(...\textrm{IA}\left(a\right)\right)}$
+ If we iteratively compute the inverse attraction region for each triangle
+ ( 
+\begin_inset Formula $\textrm{IA}\left(...\textrm{IA}\left(a\right)\right)$
 \end_inset
 
-), we obtain a beacon path that has at most 
+ ), we obtain a beacon path that has at most 
 \begin_inset Formula $k+1$
 \end_inset
 
@@ -4450,34 +4923,40 @@ Since the beacon path obtained by the algorithm uses two beacons for each
 \end_inset
 
  beacons in the optimal path.
- This gives us a polynomial time approximation of the minimum beacon path
- (see REF).
+ This gives us a polynomial-time approximation of the minimum beacon path
+ (see 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Biro2013,biro2013beacon"
+
+\end_inset
+
+).
 \end_layout
 
-\begin_layout Paragraph*
-Complexity Analysis
+\begin_layout Section
+Applet
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Applet"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The running time is determined by the computations of the inverse attraction
- regions of the triangles.
- As explained in REF, this takes 
-\begin_inset Formula $O\left(n^{2}\right)$
-\end_inset
-
- time.
- Since we do this for each triangle, the total running time is 
-\begin_inset Formula $O\left(n^{3}\right)$
-\end_inset
-
-.
+An applet was developed to illustrate interactively the main concepts of
+ this page.
+ It can be reached by clicking on the button below.
+ Instructions are included in the destination page.
 \end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 btprint "btPrintAll"
-bibfiles "geometric-routing,routing-guarding"
+bibfiles "geometric-routing,routing-guarding,inverse,10516,geodesic,triang,trap"
 options "plain"
 
 \end_inset
