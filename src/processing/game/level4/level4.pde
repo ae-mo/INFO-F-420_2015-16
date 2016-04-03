@@ -1,4 +1,4 @@
-/* Copyright 2016 Andrea Morciano
+/* Copyright 2016 Andrea Morciano, David Alvarez Bobillo
 */
 
 /*
